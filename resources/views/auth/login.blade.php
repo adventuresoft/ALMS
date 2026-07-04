@@ -8,72 +8,76 @@
         }
     </style>
 @endpush
-@section('content')
-     <section>
-        <div style="height: 100vh; display: flex; justify-content: center; align-items: center;">
-            <div class="d-md-flex">
-                <div class="d-md-flex justify-content-between align-items-start flex-column "
-                    style="background: #bbe5d1; padding: 10px 80px;">
-                    <div class="top-div mx-auto text-left mt-5">
-                        <h6 class="fw-normal mb-1" style="letter-spacing: 1px;">Welcome to</h6>
-                        <h3 class="mb-1" style="color: #253f99">ALMS</h3>
-                        <h6 class="text-danger">General Section, Dhaka</h6>
+@php
+    $role = request()->query('role');
+    $panelName = 'Admin Login Panel';
+    if ($role === 'krishok') {
+        $panelName = 'Krishok Login Panel';
+    } elseif ($role === 'admin') {
+        $panelName = 'Admin Login Panel';
+    } elseif ($role === 'banker') {
+        $panelName = 'Banker Login Panel';
+    }
+@endphp
+    <section>
+        <div style="height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #f3f4f6;">
+            
+            <div class="d-flex shadow-lg rounded overflow-hidden" style="max-width: 850px; width: 100%; background: white; min-height: 500px;">
+                
+                <!-- Left Side -->
+                <div class="d-none d-md-flex flex-column justify-content-between" style="background-color: #006a4e; color: white; width: 45%; padding: 50px 40px;">
+                    <div>
+                        <h4 class="mb-1" style="font-weight: 300;">Welcome to</h4>
+                        <h1 class="mb-2" style="font-weight: 800; font-size: 40px; letter-spacing: 1px;">ALMS</h1>
+                        <div style="width: 40px; height: 3px; background-color: white; margin-bottom: 20px;"></div>
+                        <h6 style="color: #a7f3d0; font-size: 15px; font-weight: 500;">General Section, Dhaka</h6>
                     </div>
-                    <div class="bottom-div mx-auto text-center mb-5">
-                        <h5>Powered by:</h5>
-                        <img src="{{ asset('public/frontend/img/company-logo.png') }}" alt="adventure-soft.jpg">
-                    </div>
-                </div>
-                <div class="d-flex align-items-center" style="background: #e2eef7; padding: 5px 20px;">
-                    <div class="card-body p-3 text-black">
-                        <form  id="loginForm" method="post">
-                            @csrf
-                            <div class="text-center">
-
-                                <img height="80" width="80" src="{{ asset('frontend/img/govt-logo.png') }}"
-                                    alt="govt-logo.png">
-                                <h6 class="fw-normal my-1" style="letter-spacing: 1px; color:#12a14d">Agri Loan Monitoring System</h6>
-                                <h5 class="my-0" style="color: #253f99">Admin Login Panel</h5>
-                                <p class="mb-2"><strong class="text-success">{{ Session::get('success') }}</strong> <strong
-                                        class="text-danger">{{ Session::get('error') }}</strong></p>
-                            </div>
-
-                            <div class="form-outline mb-1">
-                                <label class="form-label font-weight-bold font-italic mb-0" for="email">User
-                                    ID</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><i class="fa fa-user"></i></div>
-                                    </div>
-                                    <input type="text" name="email" id="email" placeholder="User ID"
-                                        class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="form-outline mb-3">
-                                <label class="form-label font-weight-bold font-italic mb-0" for="password">Password</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend" style="cursor: pointer">
-                                        <div class="input-group-text password-show-hide pointer btn"><i class="fa fa-lock"></i></div>
-                                    </div>
-                                    <input type="password" name="password" id="password" placeholder="Password" class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class=" mb-2">
-                                <button class="btn btn-dark btn-block" type="submit">Login</button>
-                            </div>
-
-                            <p class="mb-1" style="color: #393f81;">
-                                <a class="small text-muted" style="color: #393f81;"
-                                    href="#">Forgot
-                                    password?</a>
-                            </p>
-                            <a href="#!" class="small text-muted">Terms of use.</a>
-                            <a href="#!" class="small text-muted">Privacy policy</a>
-                        </form>
+                    
+                    <div>
+                        <p style="font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 5px; color: #a7f3d0;">POWERED BY</p>
+                        <img src="{{ asset('public/frontend/img/company-logo.png') }}" alt="Adventure Soft" style="width: 140px; filter: brightness(0) invert(1);">
                     </div>
                 </div>
+
+                <!-- Right Side -->
+                <div class="d-flex flex-column justify-content-center" style="width: 55%; padding: 40px 60px;">
+                    <div class="text-center mb-4">
+                        <img height="65" width="65" src="{{ asset('frontend/img/govt-logo.png') }}" alt="govt-logo">
+                        <h6 style="color: #006a4e; font-weight: bold; margin-top: 15px; font-size: 15px;">Agri Loan Monitoring System</h6>
+                        <h5 style="color: #1e3a8a; font-weight: bold; font-size: 18px; margin-top: 5px;">{{ $panelName }}</h5>
+                        <p class="mb-0 mt-2"><strong class="text-success" style="font-size: 13px;">{{ Session::get('success') }}</strong> <strong class="text-danger" style="font-size: 13px;">{{ Session::get('error') }}</strong></p>
+                    </div>
+
+                    <form id="loginForm" method="post">
+                        @csrf
+                        <div class="form-group mb-3">
+                            <label style="font-size: 13px; font-weight: 600; color: #374151;">User ID</label>
+                            <div class="input-group">
+                                <input type="text" name="email" id="email" placeholder="User ID / Email" class="form-control" style="font-size: 14px; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px;" />
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label style="font-size: 13px; font-weight: 600; color: #374151;">Password</label>
+                            <div class="input-group">
+                                <input type="password" name="password" id="password" placeholder="Password" class="form-control" style="font-size: 14px; padding: 10px; border: 1px solid #d1d5db; border-right: none; border-radius: 4px 0 0 4px;" />
+                                <div class="input-group-append password-show-hide pointer" style="cursor: pointer;">
+                                    <span class="input-group-text" style="background: white; border: 1px solid #d1d5db; border-left: none; border-radius: 0 4px 4px 0; color: #6b7280;">
+                                        <i class="fa fa-eye-slash" id="eyeIcon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-block" type="submit" style="background-color: #006a4e; color: white; font-weight: bold; padding: 10px; border-radius: 4px;">Login</button>
+
+                        <div class="text-center mt-4" style="font-size: 13px; color: #6b7280;">
+                            <a href="#" style="color: #6b7280; text-decoration: none;">Forgot password?</a> &nbsp;|&nbsp; 
+                            <a href="#" style="color: #6b7280; text-decoration: none;">Privacy policy</a>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </section>

@@ -41,8 +41,11 @@
         </form>
     @endauth
 
-    <div class="font-inter">
+    <div class="font-inter overflow-x-hidden">
         @include('frontend.layouts.header')
+        
+        @yield('hero')
+        
         <!-- Main Content Section -->
         <main class="container mx-auto max-w-screen-xl p-4">
             @yield('content')
@@ -65,8 +68,9 @@
           type: "loop",
           perPage: 1,
           gap: "1rem",
-          autoplay: false,
-          pagination: false,
+          autoplay: true,
+          interval: 4000,
+          pagination: true,
         }).mount();
       });
     </script>
