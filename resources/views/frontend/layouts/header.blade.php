@@ -52,12 +52,12 @@
  <nav class="navbar md:block hidden bg-gray-100 shadow-md">
      <div class="container mx-auto max-w-screen-xl px-6">
          <!-- Navigation Links -->
-         <ul class="nav-links flex items-left justify-left gap-5 p-1">
-             <li><a href="{{ url('/') }}">হোম </a></li>
-             <li><a href="#">আমাদের সম্পর্কে</a></li>
-             <li><a href="#">নোটিশ</a></li>
-             <li><a href="#">অন্যান্য</a></li>
-             <li><a href="#">ছবির গ্যালারী</a></li>
+         <ul class="nav-links flex items-center justify-start gap-8 py-3">
+             <li><a href="{{ url('/') }}" class="font-semibold transition-colors">হোম </a></li>
+             <li><a href="#" class="font-semibold transition-colors">আমাদের সম্পর্কে</a></li>
+             <li><a href="#" class="font-semibold transition-colors">নোটিশ</a></li>
+             <li><a href="#" class="font-semibold transition-colors">অন্যান্য</a></li>
+             <li><a href="#" class="font-semibold transition-colors">ছবির গ্যালারী</a></li>
              <!--<li><a href="{{ url('/application') }}">আবেদন করুন</a></li>-->
          </ul>
      </div>

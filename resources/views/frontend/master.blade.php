@@ -29,7 +29,7 @@
     />
 
     {{-- E:\Herd\agriloan\public\frontend\style --}}
-    <link rel="stylesheet" href="{{asset('frontend/style/global.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/assets/style/global.css')}}" />
 
     @stack('style')
 
@@ -52,7 +52,7 @@
 
     <!-- Splide JS -->
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-    <script src=".../public/assets/js/navbar.js"></script>
+    <script src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ asset('public/plugins')}}/select2/js/select2.full.min.js"></script>
     <!-- Toastr -->
