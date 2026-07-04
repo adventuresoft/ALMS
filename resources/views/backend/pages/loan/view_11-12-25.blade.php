@@ -1,0 +1,274 @@
+@extends('backend.master', ['mainMenu' => 'Loan', 'subMenu' => 'AllLoanApply'])
+
+@section('title', 'Loan Application Details')
+
+@section('content')
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>কৃষকের প্রোফাইল</h1>
+    </div>
+</section>
+
+<section class="content">
+<div class="container-fluid">
+
+<div class="card card-primary">
+<div class="card-body">
+
+    {{-- ============================
+        ১. কৃষকের তথ্য
+    ============================== --}}
+    <table width="100%" border="1" cellspacing="0" cellpadding="6">
+        <tr>
+            <td width="70%">
+                <strong>কৃষকের নাম:</strong> {{ $app->user->name ?? '---' }} <br>
+                <strong>এনআইডি:</strong> {{ $app->user->nid ?? '---' }} <br>
+                <strong>মোবাইল:</strong> {{ $app->user->mobile ?? '---' }} <br>
+                <strong>System ID:</strong> {{ $app->user->system_id ?? '---' }}
+            </td>
+            <td width="30%" align="center">
+                <img src="{{ asset('default-user.png') }}" width="120">
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    {{-- ============================
+        ২. জমির তথ্য (STATIC LAYOUT)
+    ============================== --}}
+    <table width="100%" border="1" cellspacing="0" cellpadding="6">
+        <tr><th colspan="7" style="text-align:center">জমির তথ্য</th></tr>
+        <tr>
+            <th>ফেরত</th>
+            <th>উপজেলা</th>
+            <th>মৌজা</th>
+            <th>খতিয়ান</th>
+            <th>দাগ নং</th>
+            <th>এলাকা (একর)</th>
+            <th>মন্তব্য</th>
+        </tr>
+
+        {{-- EXAMPLE STATIC ROW, YOU CAN LOOP YOUR REAL DATA --}}
+        <tr>
+            <td>RS</td>
+            <td>ঢোকা</td>
+            <td>সোভার</td>
+            <td>১২৩০</td>
+            <td>২৩৫</td>
+            <td>১.০৯৮১</td>
+            <td>ই রোন ফল্লো</td>
+        </tr>
+    </table>
+
+    <br>
+
+    {{-- ============================
+        ৩. Cultivation তথ্য (STATIC)
+    ============================== --}}
+    <table width="100%" border="1" cellspacing="0" cellpadding="6">
+        <tr><th colspan="3" style="text-align:center">Cultivation (চাষাবাদ)</th></tr>
+        <tr>
+            <th>ফসল</th>
+            <th>এলাকা (একর)</th>
+            <th>মন্তব্য</th>
+        </tr>
+        <tr>
+            <td>ধান</td><td>৩.৮৯</td><td>---- </td>
+        </tr>
+    </table>
+
+    <br>
+
+    {{-- ============================
+        ৪. পূর্বের ঋণের তথ্য
+    ============================== --}}
+    <table width="100%" border="1" cellspacing="0" cellpadding="6">
+        <tr><th colspan="2" style="text-align:center">পূর্বের ঋণের তথ্য</th></tr>
+        <tr>
+            <td width="50%">ঋণের পরিমাণ:</td>
+            <td>{{ number_format($app->loan_amount,2) }}</td>
+        </tr>
+        <tr>
+            <td>আর্থিক বছর:</td>
+            <td>{{ financialYears($app->financial_year) }}</td>
+        </tr>
+    </table>
+
+    <br>
+
+    {{-- ============================
+        ৫. গ্যারান্টর তথ্য
+    ============================== --}}
+    <h4>Guarantor Information:</h4>
+    <p><strong>Name:</strong> {{ $app->g_name }}</p>
+    <p><strong>NID:</strong> {{ $app->g_nid }}</p>
+    <p><strong>Mobile:</strong> {{ $app->g_mobile }}</p>
+    <p><strong>Father:</strong> {{ $app->g_father }}</p>
+    <p><strong>Mother:</strong> {{ $app->g_mother }}</p>
+    <p><strong>Profession:</strong> {{ $app->g_profession }}</p>
+    <p><strong>Date of Birth:</strong> {{ $app->g_dob }}</p>
+    <p><strong>Relation:</strong> {{ $app->g_relation }}</p>
+    <p><strong>Address:</strong> {{ $app->g_address }}</p>
+
+    <hr>
+
+
+    <div class="text-center my-3">
+    <input type="button" id="proceedBtn" class="btn btn-primary btn-lg" value="Proceed">
+</div>
+<div id="approveForm" style="display:none;">
+    {{-- -------------------------------------
+        APPROVAL FORM SECTION (FINAL PART)
+    -------------------------------------- --}}
+    <form action="{{ route('loan.apply.approve', $app->id) }}" method="POST">
+        @csrf
+
+        {{-- Hidden KEY for financial year --}}
+        <input type="hidden" name="financial_year" value="{{ $app->financial_year }}">
+
+        <table width="100%" border="1" cellspacing="0" cellpadding="6">
+            <tr><th colspan="4" style="text-align:center">ঋণ অনুমোদন</th></tr>
+
+            <tr>
+                <td>মোডাল ধরণ:</td>
+                <td>
+                    <select name="loan_type" class="form-control" required>
+                        @foreach(loanTypes() as $key => $type)
+                            <option value="{{ $key }}">{{ $type }}</option>
+                        @endforeach
+                    </select>
+                </td>
+
+                <td>আর্থিক বছর:</td>
+                <td>{{ financialYears($app->financial_year) }}</td>
+            </tr>
+
+            <tr>
+
+             <td>মোট প্রদান:</td>
+                <td><input type="text" name="total_payable" class="form-control" value="{{ $app->loan_amount }}"></td>
+
+
+                <td>সুদ (%):</td>
+                <td><input type="text" name="interest_rate" class="form-control" id="interest_rate"></td>            
+                
+            </tr>
+            <tr>
+                <td>ফেরত প্রদান (Loan + শোধ)</td>
+                <td>  <input 
+        type="text" 
+        name="returned_amount" 
+        id="returned_amount" 
+        class="form-control" 
+        value="{{ $app->loan_amount }}"
+        readonly 
+        >
+    </td>
+            </tr>
+
+            <tr>
+                <td>ব্যাংক:</td>
+                <td>
+                    <select name="bank_id" id="bank_id" class="form-control">
+                        <option value="">-- নির্বাচন করুন --</option>
+                        @foreach($banks as $bank)
+                            <option value="{{ $bank->id }}">{{ $bank->bn_name }}</option>
+                        @endforeach
+                    </select>
+                </td>
+
+                <td>শাখা:</td>
+                <td>
+                    <select name="branch_id" id="branch_id" class="form-control">
+                        <option value="">-- নির্বাচন করুন --</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>প্রদান তারিখ:</td>
+                <td><input type="date" name="distribution_date" class="form-control" value="{{ now()->format('Y-m-d') }}"></td>
+
+                <td>দৈনিক মেয়াদ শেষ:</td>
+                <td><input type="date" name="ontime_payable_date" class="form-control" value="{{ now()->addMonths(6)->format('Y-m-d') }}"></td>
+            </tr>
+
+            <tr>
+                <td>মেয়াদোত্তীর্ণ:</td>
+                <td><input type="date" name="last_payable_date" class="form-control" value="{{ now()->addMonths(9)->format('Y-m-d') }}"></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+
+        <br>
+
+        <button class="btn btn-success btn-lg">Submit</button>
+
+    </form>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+@endsection
+@push('script')
+<script>
+$(document).ready(function() {
+
+$('#proceedBtn').on('click', function () {
+
+    let url = "{{ route('loan.apply.proceed', $app->id) }}";
+
+    // Disable button while request runs
+    $('#proceedBtn').prop('disabled', true).val('Processing...');
+
+    $.post(url, {_token: "{{ csrf_token() }}"})
+        .done(function (response) {
+
+            // SUCCESS → show the hidden form
+            $('#approveForm').slideDown();
+
+        })
+        .fail(function () {
+            alert('Could not proceed. Try again.');
+            $('#proceedBtn').prop('disabled', false).val('Proceed');
+        });
+
+});
+
+
+
+$(function(){
+
+    function calculateReturnedAmount() {
+        let loan = parseFloat({{ $app->loan_amount }});
+        let rate = parseFloat($('#interest_rate').val());
+
+        if (!isNaN(loan) && !isNaN(rate)) {
+            let interest = loan * (rate / 100);
+            let returned = loan + interest;
+            $('#returned_amount').val(returned.toFixed(2));
+        }
+    }
+
+    // Trigger on interest change
+    $('#interest_rate').on('input', function(){
+        calculateReturnedAmount();
+    });
+
+    // Optional: recalc on page load
+    calculateReturnedAmount();
+});
+
+
+});
+
+
+</script>
+@endpush
