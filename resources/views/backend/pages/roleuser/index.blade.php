@@ -22,6 +22,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+            @include('backend.pages.rbac._header')
 
             <div class="row">
                 <div class="col-md-5">
@@ -111,7 +112,8 @@
                         @if($roleUser->count()==0)
                         <div class="text-center btn-warning font-weight-bold pt-3 pb-3 h2">No Data Found</div>
                         @else
-                        <table class="table table-bordered table-striped">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
                             <thead class="text-center thead-dark">                  
                                 <tr>
                                     <th style="width: 15px">#</th>
@@ -147,6 +149,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        </div>
                         @endif
                     </div>
                     <div class="d-flex justify-content-center">            

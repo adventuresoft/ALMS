@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'User', 'subMenu' => 'User'])
+@extends('backend.master', ['mainMenu' => 'AccessManagment', 'subMenu' => 'user'])
 
 @push('style')
 <style>
@@ -50,6 +50,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
+        @include('backend.pages.rbac._header')
 
         {{-- Messages --}}
         @if(count($errors) > 0)
@@ -189,7 +190,8 @@
                         </div>
 
                         {{-- TABLE --}}
-                        <table id="farmer_table" class="table table-bordered table-striped">
+                        <div class="table-responsive">
+                            <table id="farmer_table" class="table table-bordered table-striped">
                             <thead class="bg-dark text-white">
                                 <tr>
                                     <th>SL</th>
@@ -249,6 +251,14 @@
                                                        data-toggle="tooltip">
                                                         <i class="fa fa-circle"></i>
                                                     </a>
+
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-info"
+                                                            title="Assign Role"
+                                                            data-toggle="tooltip"
+                                                            onclick="openAssignRoleModal({{ $farmer->user->id }}, '{{ addslashes($farmer->user->name ?? '') }}', {{ $farmer->user->role_id ?? 'null' }})">
+                                                        <i class="fas fa-user-shield"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -262,6 +272,7 @@
                                 @endif
                             </tbody>
                         </table>
+                        </div>
 
                         {{-- PAGINATION --}}
                         <div class="d-flex justify-content-between align-items-center mt-3">
@@ -282,11 +293,61 @@
         </div>
         <!-- /.row -->
     </div>
+
+    <!-- Assign Role Modal -->
+    <div class="modal fade" id="assignRoleModal" tabindex="-1" role="dialog" aria-labelledby="assignRoleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title font-weight-bold" id="assignRoleModalLabel"><i class="fas fa-user-shield text-info mr-2"></i>Assign Role to User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route('user.assignRole') }}">
+                    @csrf
+                    <input type="hidden" name="user_id" id="modal_assign_user_id" value="">
+                    <div class="modal-body p-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold text-dark">User Name</label>
+                            <input type="text" id="modal_assign_user_name" class="form-control bg-light" readonly>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="modal_assign_role_id" class="font-weight-bold text-dark">Select Role <span class="text-danger">*</span></label>
+                            <select name="role_id" id="modal_assign_role_id" class="form-control" required>
+                                <option value="">-- Select Role --</option>
+                                @if(isset($roles) && count($roles))
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info"><i class="fas fa-save mr-1"></i>Save Role</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </section>
 @endsection
 
 @push('script')
 <script>
+    function openAssignRoleModal(userId, userName, roleId) {
+        $('#modal_assign_user_id').val(userId);
+        $('#modal_assign_user_name').val(userName);
+        if (roleId && roleId !== null && roleId !== 'null') {
+            $('#modal_assign_role_id').val(roleId);
+        } else {
+            $('#modal_assign_role_id').val('');
+        }
+        $('#assignRoleModal').modal('show');
+    }
+
     $(document).ready(function() {
         // Keep DataTable for styling/responsive only (no built-in search/paging)
         $("#farmer_table").DataTable({

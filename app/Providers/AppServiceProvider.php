@@ -14,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if (file_exists(app_path('Helpers/Permissions.php'))) {
+            require_once app_path('Helpers/Permissions.php');
+        }
     }
 
     /**

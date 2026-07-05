@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'People', 'subMenu' => 'View'])
+@extends('backend.master', ['mainMenu' => 'AccessManagment', 'subMenu' => 'people'])
 @push('style')
     <style>
         #example1_wrapper .dataTables_filter {
@@ -32,6 +32,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+            @include('backend.pages.rbac._header')
 
             <!-- Main row -->
             <div class="row">
@@ -47,6 +48,7 @@
                         <!-- /.card-header -->
 
                         <div class="card-body">
+                            <div class="table-responsive">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -141,6 +143,7 @@
                                 </tbody>
 
                             </table>
+                            </div>
                         </div>
                         <!-- /.card-body -->
 

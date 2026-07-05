@@ -7,6 +7,7 @@ use App\Models\District;
 use App\Models\Farmer;
 use App\Models\Religion;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -98,9 +99,11 @@ class UserController extends Controller
 
         // ---- Pagination ----
         $farmers = $query->paginate($perPage)->appends($request->query());
+        $roles = Role::orderBy('name', 'asc')->get();
 
         $data = [
             'farmers'        => $farmers,
+            'roles'          => $roles,
             'page'           => 'user',
 
             // filters (for sticky form values)
@@ -365,5 +368,29 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Assign role to user from User Directory table.
+     */
+    public function assignRole(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+        $role = Role::findOrFail($request->role_id);
+
+        DB::table('model_has_roles')->where('model_id', $user->id)->delete();
+        $user->assignRole($role->name);
+
+        $user->update([
+            'role_id' => $request->role_id
+        ]);
+
+        session()->flash("success", "Role '" . $role->name . "' assigned successfully to " . ($user->name ?? 'User'));
+        return redirect()->back();
     }
 }

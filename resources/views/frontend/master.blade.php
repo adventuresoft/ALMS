@@ -33,6 +33,11 @@
 
     @stack('style')
 
+    <style>
+      body, html, .font-inter {
+        overflow-x: clip !important;
+      }
+    </style>
 </head>
 <body>
     @auth()
@@ -41,13 +46,13 @@
         </form>
     @endauth
 
-    <div class="font-inter overflow-x-hidden">
+    <div class="font-inter">
         @include('frontend.layouts.header')
         
         @yield('hero')
         
         <!-- Main Content Section -->
-        <main class="container mx-auto max-w-screen-xl p-4">
+        <main class="w-full max-w-[1920px] mx-auto pl-8 md:pl-16 lg:pl-24 xl:pl-32 pr-12 lg:pr-16 xl:pr-20 py-4">
             @yield('content')
         </main>
         @include('frontend.layouts.footer')

@@ -167,6 +167,7 @@ Route::controller(RoleController::class)->group(function () {
     Route::post('role','store')->name('role.store');
     Route::get('role/{id}/edit','edit')->name('role.edit');
     Route::patch('role/{id}','update')->name('role.update');
+    Route::delete('role/{id}','destroy')->name('role.destroy');
 });
 
 Route::resource('module', App\Http\Controllers\ModuleController::class);
@@ -255,6 +256,7 @@ Route::get('/autocomplete/roles', [RoleUserController::class, 'autocompleteRoles
         ->name('user.credentials.update');
 });    
     
+Route::post('/user/assign-role', [UserController::class, 'assignRole'])->name('user.assignRole');
 Route::resource('user',UserController::class);
  
 Route::resource('people', PeopleController::class);

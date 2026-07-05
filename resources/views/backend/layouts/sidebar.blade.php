@@ -1,8 +1,30 @@
+<style>
+  .nav-sidebar .nav-item {
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+  .nav-sidebar .nav-link {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    line-height: 1.2 !important;
+  }
+  .nav-sidebar .nav-treeview > .nav-item > .nav-link {
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+  }
+  .nav-sidebar .nav-treeview > .nav-item > .nav-link > .nav-icon {
+    font-size: 10px !important;
+  }
+  .nav-sidebar p {
+    margin-bottom: 0 !important;
+  }
+</style>
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ route('dashboard') }}" class="brand-link">
+    <a href="{{ route('home') }}" class="brand-link">
         <img src="{{ asset('public/backend') }}/img/AdminLTELogo.png" alt="AdminLTE Logo"
-            class="brand-image img-circle elevation-3" style="opacity: .8">
+            class="brand-image elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">ALMS</span>
     </a>
 
@@ -24,333 +46,19 @@
                     </a>
                 </li>
 
-                @can('basic-settings-read')
-                    {{-- Basic Settings --}}
-                    <li
-                        class="nav-item
-                            @if (
-                                $subMenu == 'CityCorporation' ||
-                                    $subMenu == 'CityCorporationWard' ||
-                                    $subMenu == 'FamilyCategory' ||
-                                    $subMenu == 'FamilySubcategory' ||
-                                    $subMenu == 'FamilyType' ||
-                                    $subMenu == 'Financialyear' ||
-                                    $subMenu == 'HouseType' ||
-                                    $subMenu == 'HouseCategory' ||
-                                    $subMenu == 'HouseOwnershipType' ||
-                                    $subMenu == 'LandType' ||
-                                    $subMenu == 'LandClass' ||
-                                    $subMenu == 'LandOwnershipType' ||
-                                    $subMenu == 'MarketType' ||
-                                    $subMenu == 'MarketCategory' ||
-                                    $subMenu == 'MarketOwnershipType' ||
-                                    $subMenu == 'OrganizationCategory' ||
-                                    $subMenu == 'OrganizationSubcategory' ||
-                                    $subMenu == 'OrganizationWorkArea' ||
-                                    $subMenu == 'OrganizationOwnershipType' ||
-                                    $subMenu == 'OrganizationType' ||
-                                    $subMenu == 'OrganizationSubtype' ||
-                                    $subMenu == 'Profession' ||
-                                    $subMenu == 'ProfessionCategory' ||
-                                    $subMenu == 'ProfessionSubcategory' ||
-                                    $subMenu == 'ProfessionType' ||
-                                    $subMenu == 'RoadCategory' ||
-                                    $subMenu == 'RoadType' ||
-                                    $subMenu == 'RoadOwner' ||
-                                    $subMenu == 'ResarvWard' ||
-                                    $subMenu == 'VehicleCategory' ||
-                                    $subMenu == 'VehicleSubcategory' ||
-                                    $subMenu == 'VehicleType' ||
-                                    $subMenu == 'UnionWard' ||
-                                    $subMenu == 'ReserveWard' ||
-                                    $subMenu == 'Village' ||
-                                    $subMenu == 'VillageArea' ||
-                                    $subMenu == 'Union' ||
-                                    $subMenu == 'Year') menu-open @endif
-                    ">
-                        <a href="#" class="nav-link {{ $mainMenu == 'Basic' ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tasks"></i>
-                            <p>
-                                Basic Settings
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                        @can('city-corporation-read')
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.city-corporation.index') }}"
-                                    class="nav-link {{ $subMenu == 'CityCorporation' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>City Corporation</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('city-corporation-ward-read')
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.city-corporation-ward.index') }}"
-                                    class="nav-link {{ $subMenu == 'CityCorporationWard' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>City Corporation Ward</p>
-                                </a>
-                            </li>
-                            @endcan
-                            
-                            @can('profession-read')
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.profession.index') }}"
-                                    class="nav-link {{ $subMenu == 'CityCorporationWard' ? 'active' : '' }} @if ($subMenu == 'Profession') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Profession</p>
-                                </a>
-                            </li>
-                            @endcan
-                            @can('profession-type-read')
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.profession-type.index') }}"
-                                    class="nav-link {{ $subMenu == 'ProfessionType' ? 'active' : '' }} ">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Profession Type</p>
-                                </a>
-                            </li>
-                            @endcan
-                            @can('profession-category-read')
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.profession-category.index') }}"
-                                    class="nav-link {{ $subMenu == 'ProfessionCategory' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Profession Category</p>
-                                </a>
-                            </li>
-                            @endcan
-                            @can('profession-subcategory-read')
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.profession-subcategory.index') }}"
-                                    class="nav-link {{ $subMenu == 'ProfessionSubcategory' ? 'active' : '' }} @">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Profession Subcategory</p>
-                                </a>
-                            </li>
-                            @endcan
-
-                            @can('union-read')
-                              <li class="nav-item">
-                                <a href="{{ route('basic-settings.union.index') }}"
-                                    class="nav-link {{ $subMenu == 'CityCorporationWard' ? 'active' : '' }} {{ $subMenu == 'Union' ? 'active' : '' }} ">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Union</p>
-                                </a>
-                            </li>
-                            @endcan
-
-
-                            @can('union-ward-read')
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.union-ward.index') }}"
-                                    class="nav-link {{ $subMenu == 'UnionWard' ? 'active' : '' }} ">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Union Ward</p>
-                                </a>
-                            </li>
-                            @endcan
-
-                            @can('village-read')
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.village.index') }}"
-                                    class="nav-link {{ $subMenu == 'Village' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Village</p>
-                                </a>
-                            </li>
-                            @endcan
-
-                            @can('village-area-read')
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.village-area.index') }}"
-                                    class="nav-link {{ $subMenu == 'VillageArea' ? 'active' : '' }} ">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Village Area</p>
-                                </a>
-                            </li>
-                            @endcan
-
-
-
-                        </ul>
-                    </li>
-                @endcan
 
             @can('access-management-read')
-                <li
-                    class="nav-item has-treeview {{ isset($mainMenu) && $mainMenu == 'AccessManagment' ? 'menu-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ isset($mainMenu) && $mainMenu == 'AccessManagment' ? 'active' : '' }}">
+                <li class="nav-item">
+                    <a href="{{ route('user.index') }}"
+                        class="nav-link {{ (isset($mainMenu) && in_array($mainMenu, ['AccessManagment', 'User', 'People'])) || in_array(Route::currentRouteName(), ['user.index', 'roleuser.index', 'role.index', 'permission.index', 'module.index', 'people.index']) ? 'active' : '' }}">
                         <!-- <i class="nav-icon fa-solid fa-unlock-keyhole"></i> -->
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>
                             Access Management
-                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-
-                        <!-- @can('role-read')
-                        <li class="nav-item ">
-                            <a href="{{ route('role.index') }}"
-                                class="nav-link {{ isset($subMenu) && $subMenu == 'role' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Roles</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                        @can('module-read')
-                        <li class="nav-item ">
-                            <a href="{{ route('module.index') }}"
-                                class="nav-link {{ isset($subMenu) && $subMenu == 'module' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Module</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                        @can('permission-read')
-                        <li class="nav-item ">
-                            <a href="{{ route('permission.index') }}"
-                                class="nav-link {{ isset($subMenu) && $subMenu == 'permission' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Permissions</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                        @can('role-user-read')
-                        <li class="nav-item ">
-                            <a href="{{ route('roleuser.index') }}"
-                                class="nav-link {{ isset($subMenu) && $subMenu == 'roleuser' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>User Roles</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                        @can('role-permission-read')
-                        <li class="nav-item ">
-                            <a href="{{ route('rolepermission.index') }}"
-                                class="nav-link {{ isset($subMenu) && $subMenu == 'rolepermission' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Role Permissions</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                        @can('user-read')
-                        <li class="nav-item ">
-                            <a href="{{ route('user.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'user' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>User</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                        @can('people-read')
-                        <li class="nav-item ">
-                            <a href="{{ route('people.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'people' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>People</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                        @can('user-permission-read')
-                        <li class="nav-item ">
-                            <a href="{{ route('userper.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'userper' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>User Permission</p>
-                            </a>
-                        </li>
-                        @endcan -->
-
-
-                          
-                        <li class="nav-item ">
-                            <a href="{{ route('role.index') }}"
-                                class="nav-link {{ isset($subMenu) && $subMenu == 'role' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Roles</p>
-                            </a>
-                        </li>
-                        
-
-                      
-                        <li class="nav-item ">
-                            <a href="{{ route('module.index') }}"
-                                class="nav-link {{ isset($subMenu) && $subMenu == 'module' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Module</p>
-                            </a>
-                        </li>
-                       
-
-                        <!--<li class="nav-item ">-->
-                        <!--    <a href="{{ route('permission.index') }}"-->
-                        <!--        class="nav-link {{ isset($subMenu) && $subMenu == 'permission' ? 'active' : '' }}">-->
-                        <!--        <i class="far fa-circle nav-icon"></i>-->
-                        <!--        <p>Permissions</p>-->
-                        <!--    </a>-->
-                        <!--</li>-->
-
-                        <li class="nav-item ">
-                            <a href="{{ route('roleuser.index') }}"
-                                class="nav-link {{ isset($subMenu) && $subMenu == 'roleuser' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>User Roles</p>
-                            </a>
-                        </li>
-                      
-                        <!--<li class="nav-item ">-->
-                        <!--    <a href="{{ route('rolepermission.index') }}"-->
-                        <!--        class="nav-link {{ isset($subMenu) && $subMenu == 'rolepermission' ? 'active' : '' }}">-->
-                                <!-- <i class="nav-icon fa-solid fa-rectangle-xmark"></i> -->
-                        <!--        <i class="far fa-circle nav-icon"></i>-->
-                        <!--        <p>Role Permissions</p>-->
-                        <!--    </a>-->
-                        <!--</li>-->
-                        
-                        <li class="nav-item ">
-                            <a href="{{ route('user.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'user' ? 'active' : '' }}">
-                                <!-- <i class="nav-icon fa-solid fa-users"></i> -->
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>User</p>
-                            </a>
-                        </li>
-                       
-                        <li class="nav-item ">
-                            <a href="{{ route('people.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'people' ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>People</p>
-                            </a>
-                        </li>
-                        
-                        
-                     
-                        <!--<li class="nav-item ">-->
-                        <!--    <a href="{{ route('userper.index') }}"-->
-                        <!--        class="nav-link {{ isset($page) && $page == 'userper' ? 'active' : '' }}">-->
-                                <!-- <i class="nav-icon fa-solid fa-users-viewfinder"></i> -->
-                        <!--        <i class="far fa-circle nav-icon"></i>-->
-                        <!--        <p>User Permission</p>-->
-                        <!--    </a>-->
-                        <!--</li>-->
-                      
-                        
-                    </ul>
                 </li>
-        @endcan
+            @endcan
                 
                         
                         @can('institute-settings-read')

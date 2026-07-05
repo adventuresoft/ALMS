@@ -11,8 +11,8 @@
     @stack('style')
 </head>
 
-<body class="login-img3-body">
-    <div class="container">
+<body class="login-img3-body" style="margin: 0 !important; padding: 0 !important; background-color: #f3f4f6 !important; width: 100%; overflow-x: hidden;">
+    <div style="width: 100%; min-height: 100vh; background-color: #f3f4f6 !important;">
         @yield('content')
     </div>
     

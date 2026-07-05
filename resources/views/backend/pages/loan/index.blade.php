@@ -48,8 +48,8 @@
                         <!-- /.card-header -->
 
                         <div class="card-body">
-
-                            <table id="farmer_table" class="table table-bordered table-striped">
+                            <div class="table-responsive">
+                                <table id="farmer_table" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>SL</th>
@@ -107,6 +107,7 @@
                                     @endif
                                 </tbody>
                             </table>
+                            </div>
                             {{ $loans->links() }}
 
                         </div>

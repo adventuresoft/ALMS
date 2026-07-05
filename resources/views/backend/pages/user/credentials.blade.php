@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'User', 'subMenu' => 'User'])
+@extends('backend.master', ['mainMenu' => 'AccessManagment', 'subMenu' => 'user'])
 
 @section('title', $title ?? 'Reset User Credentials')
 

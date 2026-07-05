@@ -10,24 +10,96 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function __construct()
     {
         // $this->middleware('auth:admin');
     }
 
-    public function index()
-    {
-        $roles = Role::paginate(10);
-
-        return view('backend.pages.role.index', compact('roles'))
-            ->with(['title' => 'Role', 'page' => 'role']);
+    private function guardSuperadmin() {
+        if (!is_superadmin() && (!auth()->check() || (auth()->user()->role_id != 6 && !view_permission('roles')))) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 
+    private function getGroupedPermissions() {
+        $permissions = Permission::all();
+
+        $sidebarMapping = [
+            'Dashboard' => ['dashboard', 'home', 'stats'],
+            'Access Management' => ['role', 'permission', 'user', 'module', 'roleuser', 'rolepermission', 'userpermission', 'userper', 'access', 'access-management', 'access_management'],
+            'Farmers & Borrowers' => ['farmer', 'borrower', 'loan', 'subsidy', 'cultivation', 'crop'],
+            'Basic Settings' => [
+                'division', 'district', 'thana', 'upazila', 'pourashava', 'city_corporation', 'city-corporation',
+                'union', 'union_ward', 'post_office', 'post-office', 'village', 'village_area', 'ward', 'mouza',
+                'bank', 'account_type', 'country', 'religion', 'profession', 'family', 'disability',
+                'basic-settings', 'basic_settings'
+            ],
+            'Institute Settings' => ['institute', 'institute_category', 'institute_type', 'organization', 'organization_people', 'organization-people'],
+            'People Info' => ['people', 'applicant_list', 'reg_people_list', 'search_people', 'freedom_fighter', 'parent_info'],
+            'Certificates & Documents' => [
+                'certificate', 'age_certificate', 'character_certificate', 'childless_certificate', 'citizen_certificate',
+                'disability_certificate', 'financial_instability_certificate', 'guardian_certificate',
+                'landless_certificate', 'married_certificate', 'name_certificate', 'nid_correction_certificate',
+                'orphan_certificate', 'permanent_citizen_certificate', 'remarried_certificate',
+                'residential_certificate', 'unmarried_certificate', 'voter_area_certificate',
+                'voter_list_certificate', 'yearly_income_certificate', 'trade_license', 'invoice', 'receipt'
+            ],
+            'Other Modules' => []
+        ];
+
+        $grouped = [];
+        foreach ($sidebarMapping as $category => $modules) {
+            $grouped[$category] = [];
+        }
+        $grouped['Other Modules'] = [];
+
+        foreach ($permissions as $permission) {
+            if (str_contains($permission->name, '.')) {
+                $parts = explode('.', $permission->name);
+                $moduleName = $parts[0];
+            } elseif (str_contains($permission->name, '-')) {
+                $parts = explode('-', $permission->name);
+                array_pop($parts);
+                $moduleName = implode('-', $parts);
+                if (empty($moduleName)) {
+                    $moduleName = $permission->name;
+                }
+            } else {
+                $moduleName = 'others';
+            }
+
+            $foundCategory = 'Other Modules';
+            foreach ($sidebarMapping as $category => $modules) {
+                if (in_array($moduleName, $modules)) {
+                    $foundCategory = $category;
+                    break;
+                }
+            }
+
+            if (!isset($grouped[$foundCategory][$moduleName])) {
+                $grouped[$foundCategory][$moduleName] = collect();
+            }
+            $grouped[$foundCategory][$moduleName]->push($permission);
+        }
+
+        foreach ($grouped as $key => $val) {
+            if (empty($val)) {
+                unset($grouped[$key]);
+            }
+        }
+
+        return collect($grouped);
+    }
+
+    public function index()
+    {
+        $this->guardSuperadmin();
+        $roles = Role::with('permissions')->paginate(10);
+        $sidebarGroups = $this->getGroupedPermissions();
+
+        return view('backend.pages.role.index', compact('roles', 'sidebarGroups'))
+            ->with(['title' => 'Role Management', 'page' => 'role']);
+    }
 
     public function permissions($id)
     {
@@ -37,111 +109,76 @@ class RoleController extends Controller
         return view('backend.pages.role.permissions', compact('role', 'modules'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-
     public function updatePermissions(Request $request, $id)
     {
         $role = Role::findOrFail($id);
-
-        // Get all selected permissions from form
         $permissions = $request->permissions ?? [];
-
-        // Sync permissions
         $role->syncPermissions($permissions);
         session()->flash("success", "Information saved Successfully");
         return redirect(route('role.index'));
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
+        $this->guardSuperadmin();
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:roles,name',
         ]);
-        Role::create(['name' => $request->name]);
-        session()->flash("success", "Information saved Successfully");
+        $role = Role::create(['name' => $request->name]);
+
+        if ($request->has('permissions')) {
+            $role->syncPermissions($request->permissions);
+        }
+
+        session()->flash("success", "Role Created with Permissions Successfully");
         return redirect(route('role.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function edit($id)
-    // {
-    //     $role = Role::find($id);
-    //     $roles = Role::paginate(10);
-    //     return view('backend.pages.role.index', compact('role', 'roles'))->with('title', 'Edit Role Type')->with('page', 'role');
-    // }
-
     public function edit($id)
     {
-        $role = Role::findOrFail($id);
-        $roles = Role::paginate(10);
+        $this->guardSuperadmin();
+        $role = Role::with('permissions')->findOrFail($id);
+        $roles = Role::with('permissions')->paginate(10);
+        $sidebarGroups = $this->getGroupedPermissions();
 
-        // Load modules + permissions for matrix
-        $modules = Module::orderBy('name')->get();
-        $rolePermissions = $role->permissions->pluck('name')->toArray();
-
-        return view('backend.pages.role.index', compact('role', 'roles', 'modules', 'rolePermissions'))
+        return view('backend.pages.role.index', compact('role', 'roles', 'sidebarGroups'))
             ->with('title', 'Edit Role')
             ->with('page', 'role');
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
+        $this->guardSuperadmin();
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:roles,name,' . $id,
         ]);
-        $role = Role::find($id);
+        $role = Role::findOrFail($id);
         $role->name = $request->name;
         $role->save();
-        session()->flash("success", "Information saved Successfully");
+
+        if ($request->has('permissions')) {
+            $role->syncPermissions($request->permissions);
+        } else {
+            $role->syncPermissions([]);
+        }
+
+        session()->flash("success", "Role Updated with Permissions Successfully");
         return redirect(route('role.index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $this->guardSuperadmin();
+        $role = Role::find($id);
+        if ($role) {
+            $role->delete();
+            session()->flash("success", "Role Deleted Successfully");
+        }
+        return redirect(route('role.index'));
     }
 }

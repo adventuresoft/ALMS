@@ -37,9 +37,232 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('public/plugins')}}/select2/css/select2.min.css">
   <link rel="stylesheet" href="{{ asset('public/plugins')}}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="{{ asset('public/assets/style/upms-theme.css') }}?v=1.6">
 
   <style>
+    :root {
+        --upms-green: #10d915;
+        --upms-deep-green: #046307;
+        --upms-sidebar: #ffffff;
+        --upms-sidebar-dark: #f8fafc;
+        --upms-text: #213243;
+        --upms-sidebar-border: #e6eef3;
+    }
+
+    .main-header.navbar-upms {
+        background: var(--upms-deep-green) !important;
+        border-bottom: 0 !important;
+        box-shadow: 0 4px 18px rgba(4, 99, 7, 0.18) !important;
+        min-height: 58px !important;
+    }
+
+    .main-header.navbar-upms .nav-link {
+        color: #ffffff !important;
+    }
+
+    .main-header.navbar-upms .nav-link:hover,
+    .main-header.navbar-upms .nav-link:focus {
+        background: rgba(255, 255, 255, 0.12) !important;
+        color: #ffffff !important;
+    }
+
+    .main-header.navbar-upms .navbar-nav > .nav-item > .nav-link {
+        border-radius: 6px;
+        margin: 0 3px;
+        font-weight: 600;
+    }
+
+    .main-sidebar {
+        background: #d6e0df !important;
+        border-right: 0 !important;
+        box-shadow: none !important;
+        position: fixed !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+    }
+
+    .wrapper {
+        background: #d6e0df !important;
+    }
+
+    .brand-link {
+        display: flex !important;
+        align-items: center !important;
+        min-height: 58px !important;
+        background: #ffffffff !important;
+        border-bottom: 0 !important;
+        border-right: 1px solid #7dd3fc !important;
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        box-shadow: none !important;
+    }
+
+    .brand-link .brand-text {
+        color: #046307 !important;
+        font-weight: 800 !important;
+        letter-spacing: .5px;
+    }
+
+    .brand-link .brand-image {
+        background: #ffffff;
+        border: 2px solid rgba(255, 255, 255, 0.75);
+        opacity: 1 !important;
+    }
+
+    /* Set sidebar width for desktop */
+    @media (min-width: 992px) {
+        body:not(.sidebar-collapse) .main-sidebar,
+        body.sidebar-mini.sidebar-collapse .main-sidebar:hover {
+            width: 250px !important;
+        }
+        body:not(.sidebar-collapse) .content-wrapper,
+        body:not(.sidebar-collapse) .main-footer,
+        body:not(.sidebar-collapse) .main-header {
+            margin-left: 250px !important;
+        }
+    }
+    .sidebar {
+        max-height: calc(100vh - 58px);
+        overflow-y: auto !important;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .sidebar::-webkit-scrollbar,
+    .main-sidebar::-webkit-scrollbar {
+        display: none !important;
+    }
+    .os-scrollbar {
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    .nav-sidebar {
+        padding-top: 8px;
+        padding-bottom: 20px;
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .nav-sidebar .nav-item > .nav-link {
+        color: rgba(33, 50, 67, 0.9) !important;
+        border-radius: 8px;
+        margin: 8px 0;
+        padding: 12px 16px;
+        transition: background-color .18s ease, color .18s ease, transform .18s ease;
+        background: transparent !important;
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    .nav-sidebar .nav-item > .nav-link p,
+    .nav-sidebar .nav-item > .nav-link i {
+        color: inherit !important;
+    }
+
+    .nav-sidebar .nav-link > p > .right,
+    .nav-sidebar .nav-link > p > i.right {
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+    }
+
+    .nav-sidebar .menu-open > .nav-link > p > .right,
+    .nav-sidebar .menu-open > .nav-link > p > i.right {
+        transform: translateY(-50%) rotate(-90deg) !important;
+    }
+
+    .nav-sidebar .nav-link:hover {
+        background-color: rgba(4, 99, 7, 0.06) !important;
+        color: var(--upms-deep-green) !important;
+        transform: translateX(1px);
+    }
+
+    .nav-sidebar > .nav-item.menu-open > .nav-link:not(.active) {
+        background: rgba(33, 50, 67, 0.04) !important;
+        color: var(--upms-text) !important;
+    }
+
+    .nav-sidebar .nav-treeview {
+        margin: 8px 12px 12px;
+        padding: 8px 0;
+        background: var(--upms-sidebar-dark);
+        border-radius: 10px;
+    }
+    .nav-sidebar .nav-treeview .nav-link {
+        padding: 10px 16px !important;
+    }
+
+    .nav-sidebar .nav-treeview > .nav-item > .nav-link,
+    .nav-sidebar .nav-treeview > .nav-item > .nav-link p,
+    .nav-sidebar .nav-treeview > .nav-item > .nav-link i {
+        color: var(--upms-text) !important;
+        font-weight: 600;
+    }
+
+    .nav-sidebar .nav-treeview > .nav-item > .nav-link:hover {
+        color: var(--upms-deep-green) !important;
+    }
+
+    .nav-sidebar .nav-treeview > .nav-item > .nav-link {
+        margin: 1px 6px;
+        color: rgba(33, 50, 67, 0.8) !important;
+        font-size: 14px;
+    }
+
+    .nav-sidebar .nav-treeview > .nav-item > .nav-link.active,
+    .nav-sidebar .nav-link.active,
+    .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+    .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+        background: transparent !important;
+        color: var(--upms-deep-green) !important;
+        border-left: 3px solid var(--upms-deep-green);
+        padding-left: calc(1rem - 3px) !important;
+    }
+
+    .nav-sidebar .nav-treeview > .nav-item > .nav-link.active i,
+    .nav-sidebar .nav-link.active i,
+    .nav-sidebar .nav-treeview > .nav-item > .nav-link.active p,
+    .nav-sidebar .nav-link.active p {
+        color: #071b08 !important;
+    }
+
+    .content-wrapper {
+        background: #eef2f7;
+        margin-top: 0 !important;
+        padding: 1rem !important;
+    }
+
+    .content-wrapper > .content {
+        margin-top: 0 !important;
+    }
+
+    .main-footer {
+        border-top: 1px solid #dbe5df;
+        color: #64748b;
+    }
+
+    .card.card-info > .card-header,
+    .card-info > .card-header {
+        background: #f3f4f6 !important;
+        border-bottom-color: #e6eef3 !important;
+        color: #6b7a86 !important;
+    }
+
+    .card.card-info > .card-header .card-title,
+    .card-info > .card-header .card-title {
+        color: #6b7a86 !important;
+    }
+
+    .card.card-info > .card-header .btn,
+    .card-info > .card-header .btn {
+        background: #1f2937 !important;
+        border-color: #1f2937 !important;
+        color: #ffffff !important;
+    }
+
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         color: #444;
         line-height: 17px !important;
@@ -47,9 +270,88 @@
     .select2 {
 width:100%!important;
 }
-    .table-action{
-      display: flex;
-      gap: 8px;
+    .table-action, .btn-pill-group {
+      display: inline-flex !important;
+      gap: 4px !important;
+      align-items: center !important;
+      flex-wrap: nowrap !important;
+    }
+    /* Universal Table Responsiveness & Layout Fixes */
+    .table-responsive {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        margin-bottom: 1rem;
+    }
+    table.table {
+        width: 100% !important;
+        max-width: none !important;
+        margin-bottom: 0 !important;
+    }
+    .table td, .table th {
+        vertical-align: middle !important;
+    }
+    .dataTables_wrapper {
+        width: 100% !important;
+        overflow-x: auto !important;
+    }
+
+    /* 8-column table content responsiveness from 1024px to 1920px (prevents horizontal and vertical scrolling) */
+    @media (min-width: 1024px) and (max-width: 1920px) {
+        .table-responsive {
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+        }
+        table.table {
+            width: 100% !important;
+            table-layout: auto !important;
+        }
+        .table td, .table th {
+            padding: 0.45rem 0.55rem !important;
+            font-size: 0.86rem !important;
+            line-height: 1.35 !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            vertical-align: middle !important;
+        }
+        /* Ensure serial and action buttons stay compact without breaking row height */
+        .table td:first-child,
+        .table th:first-child,
+        .table td:last-child,
+        .table th:last-child {
+            white-space: nowrap !important;
+            width: 1% !important;
+        }
+        .table td:last-child .btn,
+        .table td:last-child a.btn,
+        .table-action .btn,
+        .btn-pill-group .btn {
+            padding: 0.2rem 0.45rem !important;
+            font-size: 0.75rem !important;
+        }
+    }
+
+    /* Responsive sidebar and content wrapper fixes for screens below 1024px */
+    @media (max-width: 1023.98px) {
+        .content-wrapper {
+            width: 100% !important;
+            min-width: 100% !important;
+            overflow-x: hidden !important;
+        }
+        .card-body {
+            padding: 0.75rem !important;
+        }
+        .table td, .table th {
+            padding: 0.45rem 0.55rem !important;
+            font-size: 0.85rem !important;
+            white-space: nowrap !important;
+        }
+        .btn-sm {
+            padding: 0.2rem 0.45rem !important;
+            font-size: 0.75rem !important;
+        }
     }
   </style>
   @stack('style')
@@ -159,6 +461,16 @@ $(document).ready(function() {
     $(".datepicker").datepicker({
         dateFormat: "dd-mm-yy" // dd-mm-yyyy
     });
+
+    // Automatically make any remaining tables responsive across the entire portal
+    $('table.table').each(function() {
+        if (!$(this).parent().hasClass('table-responsive') && !$(this).parent().hasClass('dataTables_scrollBody')) {
+            $(this).wrap('<div class="table-responsive" style="width: 100%; overflow-x: auto;"></div>');
+        }
+    });
+
+    // Ensure DataTables wrappers never break layout boundaries
+    $('.dataTables_wrapper').css('overflow-x', 'auto');
 });
 </script>
 

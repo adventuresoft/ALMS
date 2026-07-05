@@ -20,6 +20,7 @@
         </section>
 
         <div class="container-fluid">
+            @include('backend.pages.rbac._header')
 
             <div class="row">
                 <div class="col-md-4">
