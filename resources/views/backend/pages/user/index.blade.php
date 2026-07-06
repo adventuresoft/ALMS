@@ -79,10 +79,13 @@
                                 <h3 class="card-title mb-0">User List</h3>
                             </div>
                             <div class="text-right">
-                                <a href="{{ route('user.create') }}" class="btn btn-dark">
-                                    <i class="fas fa-plus"></i> Add New User
+                                <a href="{{ route('farmer.create') }}" class="btn btn-dark">
+                                    <i class="fas fa-plus"></i> Add New Farmer
                                 </a>
-                                <a href="{{ route('farmer-show-all') }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('user.create') }}" class="btn btn-primary ml-2">
+                                    <i class="fas fa-user-plus"></i> Register Authorized Operator
+                                </a>
+                                <a href="{{ route('farmer-show-all') }}" class="btn btn-sm btn-secondary ml-2">
                                     <i class="fa fa-print"></i> Print
                                 </a>
                             </div>
@@ -204,33 +207,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($farmers && count($farmers))
-                                    @foreach ($farmers as $key => $farmer)
+                                @if ($users && count($users))
+                                    @foreach ($users as $key => $user)
                                         <tr>
-                                            <td>{{ $farmers->firstItem() + $key }}</td>
+                                            <td>{{ $users->firstItem() + $key }}</td>
                                             <td>
-                                                {{ $farmer->user->system_id ?? '' }}
-                                                <br>{{ $farmer->user->name ?? '' }}
+                                                {{ $user->system_id ?? '' }}
+                                                <br>{{ $user->name ?? '' }}
                                             </td>
                                             <td>
                                                 @php
-                                                    $mobile = $farmer->user->mobile ? ('<a href="tel:'.$farmer->user->mobile.'">'.$farmer->user->mobile.'</a>') : '';
-                                                    $email  = $farmer->user->email ? ('<br><a href="mailto:'.$farmer->user->email.'">'.$farmer->user->email.'</a>') : '';
+                                                    $mobile = $user->mobile ? ('<a href="tel:'.$user->mobile.'">'.$user->mobile.'</a>') : '';
+                                                    $email  = $user->email ? ('<br><a href="mailto:'.$user->email.'">'.$user->email.'</a>') : '';
                                                 @endphp
                                                 {!! $mobile !!}
                                                 {!! $email !!}
                                             </td>
                                             <td>
-                                                <span class="badge badge-info"> <i class="fas fa-user"></i> {{ $farmer->user->role->name ?? '' }}</span>
-                                                <br>
-                                                <span class="badge badge-secondary"> <i class="fas fa-venus-mars"></i> {{ $genderOptions[$farmer->gender] ?? '' }}</span>
+                                                <span class="badge badge-info"> <i class="fas fa-user"></i> {{ $user->role->name ?? '' }}</span>
+                                                @if($user->farmer)
+                                                    <br>
+                                                    <span class="badge badge-secondary"> <i class="fas fa-venus-mars"></i> {{ $genderOptions[$user->farmer->gender] ?? '' }}</span>
+                                                @endif
                                             </td>
                                             <td>
-                                                @php $img = $farmer->user->image ?? null; @endphp
+                                                @php $img = $user->image ?? null; @endphp
                                                 <img height="50" src="{{ $img ? asset($img) : asset('backend/dist/img/avatar.png') }}" alt="avatar">
                                             </td>
                                             <td>
-                                                @if(($farmer->user->status ?? 0) == 1)
+                                                @if(($user->status ?? 0) == 1)
                                                     <span class="badge badge-success">Active</span>
                                                 @else
                                                     <span class="badge badge-danger">Inactive</span>
@@ -238,14 +243,14 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-pill-group d-inline-flex">
-                                                    <a href="{{ route('user.credentials.edit', $farmer->user->id) }}"
+                                                    <a href="{{ route('user.credentials.edit', $user->id) }}"
                                                        class="btn btn-sm btn-secondary"
                                                        title="Reset Email & Password"
                                                        data-toggle="tooltip">
                                                         <i class="fa fa-key"></i>
                                                     </a>
 
-                                                    <a href="{{ route('farmers.changeStatus', $farmer->user->id) }}"
+                                                    <a href="{{ route('farmers.changeStatus', $user->id) }}"
                                                        class="btn btn-sm btn-success"
                                                        title="Change Status"
                                                        data-toggle="tooltip">
@@ -256,7 +261,7 @@
                                                             class="btn btn-sm btn-info"
                                                             title="Assign Role"
                                                             data-toggle="tooltip"
-                                                            onclick="openAssignRoleModal({{ $farmer->user->id }}, '{{ addslashes($farmer->user->name ?? '') }}', {{ $farmer->user->role_id ?? 'null' }})">
+                                                            onclick="openAssignRoleModal({{ $user->id }}, '{{ addslashes($user->name ?? '') }}', {{ $user->role_id ?? 'null' }})">
                                                         <i class="fas fa-user-shield"></i>
                                                     </button>
                                                 </div>
@@ -277,12 +282,12 @@
                         {{-- PAGINATION --}}
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <div class="text-muted">
-                                @if($farmers && $farmers->total() > 0)
-                                    Showing {{ $farmers->firstItem() }} to {{ $farmers->lastItem() }} of {{ $farmers->total() }} entries
+                                @if($users && $users->total() > 0)
+                                    Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} entries
                                 @endif
                             </div>
                             <div>
-                                {{ $farmers->links() }}
+                                {{ $users->links() }}
                             </div>
                         </div>
 
