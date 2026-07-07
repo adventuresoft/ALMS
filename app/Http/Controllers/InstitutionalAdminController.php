@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 class InstitutionalAdminController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:institutional-admin-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:institutional-admin-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:institutional-admin-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:institutional-admin-delete', ['only' => ['destroy']]);
+    }
+
 
     public function generateUserName($name)
     {

@@ -17,6 +17,10 @@ class CitizenCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:citizen-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:citizen-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:citizen-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:citizen-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     

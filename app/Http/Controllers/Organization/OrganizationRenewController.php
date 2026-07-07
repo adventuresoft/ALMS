@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class OrganizationRenewController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:renew-fees-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:renew-fees-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:renew-fees-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:renew-fees-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

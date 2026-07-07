@@ -373,18 +373,22 @@
                                     <td class="text-center">
                                         <div class="btn-group shadow-sm">
                                             @if(edit_permission('roles') || is_superadmin() || (auth()->check() && auth()->user()->role_id == 6))
-                                            <a href="{{ route('role.edit', $r->id) }}" class="btn btn-sm btn-light border" title="Modify Matrix Architecture">
+                                            @can('role-update')
+<a href="{{ route('role.edit', $r->id) }}" class="btn btn-sm btn-light border" title="Modify Matrix Architecture">
                                                 <i class="fas fa-edit text-primary"></i>
                                             </a>
+@endcan
                                             @endif
                                             @if(delete_permission('roles') || is_superadmin())
-                                            <form action="{{ route('role.destroy', $r->id) }}" method="POST" class="d-inline">
+                                            @can('role-delete')
+<form action="{{ route('role.destroy', $r->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-sm btn-light border btn-delete-confirm" title="Decommission Role">
                                                     <i class="fas fa-trash text-danger"></i>
                                                 </button>
                                             </form>
+@endcan
                                             @endif
                                         </div>
                                     </td>

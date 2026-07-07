@@ -10,6 +10,13 @@ use Spatie\Permission\Models\Permission;
 
 class ModuleController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:module-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:module-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:module-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:module-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $modules = Module::orderBy('id', 'desc')->paginate(20);

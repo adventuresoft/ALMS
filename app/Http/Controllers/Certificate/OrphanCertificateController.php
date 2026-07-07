@@ -17,6 +17,10 @@ class OrphanCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:orphan-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:orphan-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:orphan-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:orphan-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     

@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\Validator;
 
 class FarmerController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:farmer-general-list-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:farmer-general-list-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:farmer-general-list-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:farmer-general-list-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

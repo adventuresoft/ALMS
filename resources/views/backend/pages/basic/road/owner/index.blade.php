@@ -66,16 +66,22 @@
                                       <td>{{date('d M, Y', strtotime($item->updated_at))}}</td>
                                       <td>
                                         <div class="table-action">
-                                            <a class="btn btn-sm btn-primary"  title="Edit" data-toggle="tooltip" href="{{route('basic-settings.road-owner.edit', $item->id)}}"><i class="fa fa-edit"></i></a>
-                                            <a class="btn btn-sm btn-info"  title="Show" data-toggle="tooltip" href="{{route('basic-settings.road-owner.edit', $item->id)}}"><i class="fa fa-trash"></i></a>
+                                            @can('road-owner-update')
+<a class="btn btn-sm btn-primary"  title="Edit" data-toggle="tooltip" href="{{route('basic-settings.road-owner.edit', $item->id)}}"><i class="fa fa-edit"></i></a>
+@endcan
+                                            @can('road-owner-update')
+<a class="btn btn-sm btn-info"  title="Show" data-toggle="tooltip" href="{{route('basic-settings.road-owner.edit', $item->id)}}"><i class="fa fa-trash"></i></a>
+@endcan
 
-                                            <form class="deleteOwner" method="post">
+                                            @can('road-owner-delete')
+<form class="deleteOwner" method="post">
                                               @csrf
                                               @method('DELETE')
                                               <input type="hidden" class="id" name="id" value="{{$item->id}}">
                                               <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.road-owner.destroy', $item->id)}}">
                                               <button type="submit" class="btn btn-sm btn-danger" title="Delete" data-toggle="tooltip"><i class="fa fa-trash"></i></button>
                                             </form>
+@endcan
                                         </div>
                                       </td>
                                     </tr>

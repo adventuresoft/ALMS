@@ -16,6 +16,10 @@ class DisabilityCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:disability-certificate-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:disability-certificate-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:disability-certificate-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:disability-certificate-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
 

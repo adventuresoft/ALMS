@@ -14,6 +14,10 @@ class RoadOwnerController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:road-owner-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:road-owner-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:road-owner-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:road-owner-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

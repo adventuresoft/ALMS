@@ -67,16 +67,20 @@
                                       <td>{{date('d M, Y', strtotime($item->updated_at))}}</td>
                                       <td>
                                         <div class="table-action">
-                                            <a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('basic-settings.land-class.edit', $item->id)}}"><i class="fa fa-edit"></i></a>
+                                            @can('land-class-update')
+<a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('basic-settings.land-class.edit', $item->id)}}"><i class="fa fa-edit"></i></a>
+@endcan
                                             <a class="btn btn-sm btn-info" title="Show" data-toggle="tooltip" href="{{route('basic-settings.land-class.show', $item->id)}}"><i class="fa fa-eye"></i></a>
 
-                                            <form class="deleteClass" method="post">
+                                            @can('land-class-delete')
+<form class="deleteClass" method="post">
                                               @csrf
                                               @method('DELETE')
                                               <input type="hidden" class="id" name="id" value="{{$item->id}}">
                                               <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.land-class.destroy', $item->id)}}">
                                               <button type="submit" title="Delete" data-toggle="tooltip" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                             </form>
+@endcan
                                         </div>
                                       </td>
                                     </tr>

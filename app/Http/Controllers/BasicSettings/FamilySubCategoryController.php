@@ -15,6 +15,10 @@ class FamilySubCategoryController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:family-subcategory-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:family-subcategory-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:family-subcategory-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:family-subcategory-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

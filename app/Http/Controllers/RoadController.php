@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Validator;
 
 class RoadController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:road-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:road-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:road-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:road-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

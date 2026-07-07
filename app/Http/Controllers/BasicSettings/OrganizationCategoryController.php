@@ -16,6 +16,10 @@ class OrganizationCategoryController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:organization-category-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:organization-category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:organization-category-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:organization-category-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

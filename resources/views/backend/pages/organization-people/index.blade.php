@@ -151,10 +151,12 @@
                                                     </td>
 
                                                     <td>
-                                                        <a href="{{ route('organization-people.edit',$item->id ) }}"
+                                                        @can('organization-people-update')
+<a href="{{ route('organization-people.edit',$item->id ) }}"
                                                             class="badge badge-primary">
                                                             <i class="fa fa-edit"></i> Edit
                                                         </a>
+@endcan
 
                                                         <a href="#" class="badge badge-danger"
                                                             onclick="if(confirm('Are you sure to delete?')){

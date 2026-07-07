@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class TaxYearController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:tax-year-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:tax-year-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:tax-year-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:tax-year-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

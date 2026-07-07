@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Validator;
 
 class ApprovalFarmerController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:approval-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:approval-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:approval-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:approval-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

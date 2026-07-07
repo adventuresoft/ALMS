@@ -12,6 +12,13 @@ use Illuminate\Support\Str;
 
 class OrganizationTypeController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:organization-type-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:organization-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:organization-type-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:organization-type-delete', ['only' => ['destroy']]);
+    }
+
 
     public function options($id)
     {

@@ -22,6 +22,13 @@ use Illuminate\Support\Str;
 
 class InstituteController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:institute-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:institute-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:institute-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:institute-delete', ['only' => ['destroy']]);
+    }
+
 
     public function generateUserName($name)
     {

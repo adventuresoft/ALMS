@@ -16,6 +16,10 @@ class DeathCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:death-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:death-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:death-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:death-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     /**

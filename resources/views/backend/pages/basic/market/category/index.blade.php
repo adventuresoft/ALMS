@@ -64,14 +64,18 @@
                                     <td>{{date('d M, Y', strtotime($item->updated_at))}}</td>
                                     <td>
                                       <div style="display: inline-block">
-                                          <a class="btn btn-primary" href="{{route('basic-settings.market-category.edit', $item->id)}}">Edit</a>
-                                          <form class="deleteCategory" method="post">
+                                          @can('market-category-update')
+<a class="btn btn-primary" href="{{route('basic-settings.market-category.edit', $item->id)}}">Edit</a>
+@endcan
+                                          @can('market-category-delete')
+<form class="deleteCategory" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" class="id" name="id" value="{{$item->id}}">
                                             <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.market-category.destroy', $item->id)}}">
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                           </form>
+@endcan
                                       </div>
                                     </td>
                                   </tr>

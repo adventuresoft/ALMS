@@ -68,16 +68,20 @@
                                       <td>{{$area->subcategory->en_name ?? ''}}</td>
                                       <td>
                                         <div class="table-action">
-                                          <a class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit" href="{{route('basic-settings.organization-work-area.edit', $area->id)}}"><i class="fa fa-edit"></i></a>
+                                          @can('organization-work-area-update')
+<a class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit" href="{{route('basic-settings.organization-work-area.edit', $area->id)}}"><i class="fa fa-edit"></i></a>
+@endcan
                                           <a class="btn btn-sm btn-info" data-toggle="tooltip" title="Show" href="{{route('basic-settings.organization-work-area.show', $area->id)}}"><i class="fa fa-eye"></i></a>
 
-                                          <form class="deleteSubCategory" method="post">
+                                          @can('organization-work-area-delete')
+<form class="deleteSubCategory" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" class="id" name="id" value="{{$area->id}}">
                                             <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.organization-work-area.destroy', $area->id)}}">
                                             <button type="submit" data-toggle="tooltip" title="Delete" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                           </form>
+@endcan
                                       </div>
                                       </td>
                                   </tr>

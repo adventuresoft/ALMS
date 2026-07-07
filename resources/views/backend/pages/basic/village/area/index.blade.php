@@ -74,16 +74,20 @@
 
                                       <td>
                                         <div class="table-action">
-                                            <a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('basic-settings.village-area.edit', $area->id)}}"><i class="fa fa-edit"></i></a>
+                                            @can('village-area-update')
+<a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('basic-settings.village-area.edit', $area->id)}}"><i class="fa fa-edit"></i></a>
+@endcan
                                             <a class="btn btn-sm btn-info" title="Show" data-toggle="tooltip" href="{{route('basic-settings.village-area.show', $area->id)}}"><i class="fa fa-eye"></i></a>
 
-                                            <form class="deleteArea" method="post">
+                                            @can('village-area-delete')
+<form class="deleteArea" method="post">
                                               @csrf
                                               @method('DELETE')
                                               <input type="hidden" class="id" name="id" value="{{$area->id}}">
                                               <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.village-area.destroy', $area->id)}}">
                                               <button type="submit" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                             </form>
+@endcan
                                         </div>
                                       </td>
                                     </tr>

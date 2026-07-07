@@ -60,7 +60,9 @@
                                     <td>{{$item->email}}</td>                                          
                                     <td>{{$item->status==1?"Approved":"Pending"}}</td>
                                      <td>
-                                        <a href="{{route('user.edit',$item->id)}}" class="btn btn-success ml-2"> <i class="fas fa-edit"></i></a>
+                                        @can('user-update')
+<a href="{{route('user.edit',$item->id)}}" class="btn btn-success ml-2"> <i class="fas fa-edit"></i></a>
+@endcan
                                         
                                         <a href="{{route('user.show',$item->id)}}" class="btn btn-primary ml-2"> <i class="fas fa-eye"></i></a>
                                     </td>

@@ -122,18 +122,22 @@
                                         <td>{{$value->Permission->name}}</td>
                                         <td>       
 
-                                        <a href="{{route('userper.edit',['model_id'=>$value->model_id,'permission_id'=>$value->permission_id])}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
+                                        @can('userper-update')
+<a href="{{route('userper.edit',['model_id'=>$value->model_id,'permission_id'=>$value->permission_id])}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
+@endcan
 
                                             <a href="#" class="badge badge-danger" 
                                             onclick="if (confirm('You are sure to Delete This Permission?')){event.preventDefault();document.getElementById('delete-form{{$key}}').submit();}else{event.stopPropagation(); event.preventDefault();};">
                                             <i class="fa fa-trash"></i> Delete </a>
 
-                                            <form id="delete-form{{$key}}" action="{{ route('userper.destroy', $value->permission_id) }}" method="POST" style="display: none;">
+                                            @can('userper-delete')
+<form id="delete-form{{$key}}" action="{{ route('userper.destroy', $value->permission_id) }}" method="POST" style="display: none;">
                                                 <input type="hidden" name="model_id" value="{{$value->model_id}}">
                                                 <input type="hidden" name="permission_id" value="{{$value->permission_id}}">
                                                 {{ method_field('POST') }}                                                
                                                 @csrf
                                             </form>
+@endcan
                                         </td>
                                     </tr>
                                     @endforeach

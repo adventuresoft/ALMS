@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Validator;
 
 class BankBranchController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:bank-branch-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:bank-branch-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:bank-branch-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:bank-branch-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -118,17 +118,21 @@
                                         <td>{{$value->Role->name}}</td>
                                         <td>{{$value->Permission->name}}</td>
                                         <td>
-                                        <a href="{{route('rolepermission.edit',['role_id'=>$value->role_id,'permission_id'=>$value->permission_id])}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
+                                        @can('rolepermission-update')
+<a href="{{route('rolepermission.edit',['role_id'=>$value->role_id,'permission_id'=>$value->permission_id])}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
+@endcan
 
                                             <a href="#" class="badge badge-danger" 
                                             onclick="if (confirm('You are sure to Delete This Permission?')){event.preventDefault();document.getElementById('delete-form{{$key}}').submit();}else{event.stopPropagation(); event.preventDefault();};">
                                             <i class="fa fa-trash"></i> Delete </a>
-                                            <form id="delete-form{{$key}}" action="{{ route('rolepermission.destroy') }}" method="POST" style="display: none;">
+                                            @can('rolepermission-delete')
+<form id="delete-form{{$key}}" action="{{ route('rolepermission.destroy') }}" method="POST" style="display: none;">
                                                 <input type="hidden" name="role_id" value="{{$value->role_id}}">
                                                 <input type="hidden" name="permission_id" value="{{$value->permission_id}}">
                                                 {{ method_field('POST') }}                                                
                                                 @csrf
                                             </form>
+@endcan
                                         </td>
                                     </tr>
                                     @endforeach

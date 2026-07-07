@@ -15,6 +15,10 @@ class OrganizationSubCategoryController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:organization-subcategory-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:organization-subcategory-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:organization-subcategory-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:organization-subcategory-delete', ['only' => ['destroy']]);
         $this->middleware('admin')->except('options');
     }
 

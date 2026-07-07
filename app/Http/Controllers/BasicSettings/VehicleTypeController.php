@@ -11,6 +11,10 @@ class VehicleTypeController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:vehicle-type-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:vehicle-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:vehicle-type-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:vehicle-type-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

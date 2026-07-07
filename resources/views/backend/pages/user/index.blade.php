@@ -243,12 +243,14 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-pill-group d-inline-flex">
-                                                    <a href="{{ route('user.credentials.edit', $user->id) }}"
+                                                    @can('credentials-update')
+<a href="{{ route('user.credentials.edit', $user->id) }}"
                                                        class="btn btn-sm btn-secondary"
                                                        title="Reset Email & Password"
                                                        data-toggle="tooltip">
                                                         <i class="fa fa-key"></i>
                                                     </a>
+@endcan
 
                                                     <a href="{{ route('farmers.changeStatus', $user->id) }}"
                                                        class="btn btn-sm btn-success"

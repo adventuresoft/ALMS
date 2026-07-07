@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class CityCorporationWardController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:city-corporation-ward-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:city-corporation-ward-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:city-corporation-ward-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:city-corporation-ward-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -109,20 +109,28 @@
                                                 <td style="width: 10%">
                                                     <div class="table-action">
                                                         <!--<a href="{{ route('farmer.show', $farmer->user->id) }}" title="View" data-toggle="tooltip" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>-->
-                                                        <a href="{{ route('user.credentials.edit', $farmer->user->id) }}" title="Reset Email & Password"
+                                                        @can('credentials-update')
+<a href="{{ route('user.credentials.edit', $farmer->user->id) }}" title="Reset Email & Password"
                data-toggle="tooltip" class="btn btn-sm btn-secondary">
                 <i class="fa fa-key"></i>
             </a>
+@endcan
             
             <a href="{{ route('farmers.changeStatus', $farmer->user->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-success"><i class="fa fa-circle"></i></a>
                                                         @if ( create_permission() )
                                                             <!--<a href="{{ route('farmer.permission', $farmer->user->id) }}" title="Permission" data-toggle="tooltip" class="btn btn-sm btn-warning"><i class="fa fa-certificate"></i></a>-->
-                                                            <!--<a href="{{ route('farmer.edit', $farmer->user->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>-->
-                                                            <!--<form class="deleteFarmer" action="{{route('farmer.destroy', $farmer->id)}}" method="post">-->
+                                                            <!--@can('farmer-update')
+<a href="{{ route('farmer.edit', $farmer->user->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+@endcan-->
+                                                            <!--@can('farmer-delete')
+@can('farmer-delete')
+<form class="deleteFarmer" action="{{route('farmer.destroy', $farmer->id)}}" method="post">-->
                                                             <!--    @csrf-->
                                                             <!--    @method('Delete')-->
                                                             <!--    <button type="submit" disabled class="btn btn-sm btn-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>-->
-                                                            <!--</form>-->
+                                                            <!--</form>
+@endcan
+@endcan-->
                                                         @endif
                                                     </div>
                                                 </td>

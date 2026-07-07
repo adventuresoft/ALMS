@@ -180,13 +180,48 @@
 
                                         <div class="form-group col-md-6 mb-3">
                                             <label for="assigned_area">Assigned Area <span class="text-danger">*</span></label>
-                                            <select name="assigned_area" id="assigned_area" required class="form-control">
+                                            <select name="assigned_area" id="assigned_area" required class="form-control select2">
                                                 <option value="">-- Select Area --</option>
-                                                @if(isset($areas) && count($areas))
-                                                    @foreach($areas as $area)
-                                                        <option value="{{ $area->id }}">{{ $area->en_name }} ({{ $area->bn_name }})</option>
+                                                <option value="All">All System Areas (Full Access)</option>
+                                                <optgroup label="Districts">
+                                                    @foreach($districts as $d)
+                                                        <option value="District:{{ $d->id }}">{{ $d->name }}</option>
                                                     @endforeach
-                                                @endif
+                                                </optgroup>
+                                                <optgroup label="Thanas">
+                                                    @foreach($thanas as $t)
+                                                        <option value="Thana:{{ $t->id }}">{{ $t->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                                <optgroup label="Unions">
+                                                    @foreach($unions as $union)
+                                                        <option value="Union:{{ $union->id }}">{{ $union->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                                <optgroup label="Pourashavas">
+                                                    @foreach($pourashavas as $p)
+                                                        <option value="Pourashava:{{ $p->id }}">{{ $p->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                                <optgroup label="City Corporations">
+                                                    @foreach($city_corps as $c)
+                                                        <option value="City Corp:{{ $c->id }}">{{ $c->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                                <optgroup label="Village Areas">
+                                                    @if(isset($areas) && count($areas))
+                                                        @foreach($areas as $area)
+                                                            @php
+                                                                $locationText = [];
+                                                                if($area->village) $locationText[] = $area->village->en_name;
+                                                                if($area->union) $locationText[] = $area->union->name;
+                                                                if($area->thana) $locationText[] = $area->thana->name;
+                                                                if($area->district) $locationText[] = $area->district->name;
+                                                            @endphp
+                                                            <option value="VillageArea:{{ $area->id }}">{{ $area->en_name }} - {{ $area->bn_name }} ({{ implode(', ', $locationText) }})</option>
+                                                        @endforeach
+                                                    @endif
+                                                </optgroup>
                                             </select>
                                             <small class="error assigned_area-error text-danger mt-1 d-block"></small>
                                         </div>
@@ -307,6 +342,13 @@
                 }
             });
         });
+        if($(".select2").length) {
+            $(".select2").select2({
+                placeholder: "-- Select Area --",
+                allowClear: true,
+                width: '100%'
+            });
+        }
     });
 </script>
 @endpush

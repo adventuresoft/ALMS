@@ -71,16 +71,20 @@
                                       
                                       <td style="width:10%">
                                         <div class="table-action">
-                                          <a class="btn btn-sm btn-primary" title="Edit" data-toogle="tooltip" href="{{route('basic-settings.profession-subcategory.edit', $subcategory->id)}}"><i class="fa fa-edit"></i></a>
+                                          @can('profession-subcategory-update')
+<a class="btn btn-sm btn-primary" title="Edit" data-toogle="tooltip" href="{{route('basic-settings.profession-subcategory.edit', $subcategory->id)}}"><i class="fa fa-edit"></i></a>
+@endcan
                                           <a class="btn btn-sm btn-info" title="Show" data-toogle="tooltip" href="{{route('basic-settings.profession-subcategory.show', $subcategory->id)}}"><i class="fa fa-eye"></i></a>
 
-                                          <form class="deleteSubCategory" method="post">
+                                          @can('profession-subcategory-delete')
+<form class="deleteSubCategory" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" class="id" name="id" value="{{$subcategory->id}}">
                                             <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.profession-subcategory.destroy', $subcategory->id)}}">
                                             <button type="submit" title="Delete" data-toogle="tooltip" class="btn  btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                           </form>
+@endcan
                                         </div>
                                       </td>
                                   </tr>

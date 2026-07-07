@@ -63,16 +63,20 @@
                                       <td>{{date('d M, Y', strtotime($ward->created_at))}}</td>
                                       <td>
                                         <div style="display: flex; gap:8px">
-                                            <a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('basic-settings.city-corporation-ward.edit', $ward->id)}}"><i class="fa fa-edit"></i></a>
+                                            @can('city-corporation-ward-update')
+<a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('basic-settings.city-corporation-ward.edit', $ward->id)}}"><i class="fa fa-edit"></i></a>
+@endcan
                                             <a class="btn btn-sm btn-info" title="Show" data-toggle="tooltip" href="{{route('basic-settings.city-corporation-ward.show', $ward->id)}}"><i class="fa fa-eye"></i></a>
 
-                                            <form class="deleteWard" method="post">
+                                            @can('city-corporation-ward-delete')
+<form class="deleteWard" method="post">
                                               @csrf
                                               @method('DELETE')
                                               <input type="hidden" class="id" name="id" value="{{$ward->id}}">
                                               <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.city-corporation-ward.destroy', $ward->id)}}">
                                               <button type="submit" title="Delete" data-toggle="tooltip" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                             </form>
+@endcan
 
                                         </div>
                                       </td>

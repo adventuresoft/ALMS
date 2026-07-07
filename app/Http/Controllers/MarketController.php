@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class MarketController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:market-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:market-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:market-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:market-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

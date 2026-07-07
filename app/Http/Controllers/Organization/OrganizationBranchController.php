@@ -22,6 +22,13 @@ use Illuminate\Support\Facades\Validator;
 
 class OrganizationBranchController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:organization-branch-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:organization-branch-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:organization-branch-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:organization-branch-delete', ['only' => ['destroy']]);
+    }
+
 
    
     

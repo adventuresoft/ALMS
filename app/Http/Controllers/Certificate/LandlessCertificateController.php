@@ -16,6 +16,10 @@ class LandlessCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:landless-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:landless-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:landless-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:landless-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     

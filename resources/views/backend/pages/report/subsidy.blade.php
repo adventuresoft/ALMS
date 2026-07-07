@@ -123,16 +123,18 @@
                                                 <td style="width: 10%">
                                                     <div class="table-action">
                                                         {{-- <a href="{{ route('loan-info.show', $loan->id) }}" title="View" data-toggle="tooltip" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a> --}}
-                                                        @if ( create_permission() )
-                                                            {{-- <a href="{{ route('loan-payment.show', $loan->id) }}" title="Payment" data-toggle="tooltip" class="btn btn-sm btn-success"><i class="fa fa-money-bill"></i></a> --}}
-                                                            <a href="{{ route('loan-info.edit', $loan->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
-                                                            @if ($loan->status == 'pending')
-                                                                <form class="deleteFarmer" action="{{route('loan-info.destroy', $loan->id)}}" method="post">
-                                                                    @csrf
-                                                                    @method('Delete')
-                                                                    <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>
-                                                                </form>
-                                                            @endif
+                                                        {{-- <a href="{{ route('loan-payment.show', $loan->id) }}" title="Payment" data-toggle="tooltip" class="btn btn-sm btn-success"><i class="fa fa-money-bill"></i></a> --}}
+                                                        @can('subsidy-view-update')
+                                                        <a href="{{ route('subsidy.edit', $loan->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                                        @endcan
+                                                        @if ($loan->status == 'pending')
+                                                            @can('subsidy-view-delete')
+                                                            <form class="deleteFarmer" action="{{route('subsidy.destroy', $loan->id)}}" method="post" style="display:inline-block;">
+                                                                @csrf
+                                                                @method('Delete')
+                                                                <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>
+                                                            </form>
+                                                            @endcan
                                                         @endif
                                                     </div>
                                                 </td>

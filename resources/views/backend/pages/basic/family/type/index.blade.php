@@ -67,16 +67,20 @@
                                       <td>{{date('d M, Y', strtotime($item->updated_at))}}</td>
                                       <td>
                                         <div class="table-action">
-                                            <a class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit" href="{{route('basic-settings.family-type.edit', $item->id)}}"><i class="fa fa-edit"></i></a>
+                                            @can('family-type-update')
+<a class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit" href="{{route('basic-settings.family-type.edit', $item->id)}}"><i class="fa fa-edit"></i></a>
+@endcan
                                             <a class="btn btn-sm btn-info" data-toggle="tooltip" title="Show" href="{{route('basic-settings.family-type.show', $item->id)}}"><i class="fa fa-eye"></i></a>
 
-                                            <form class="deleteType" method="post">
+                                            @can('family-type-delete')
+<form class="deleteType" method="post">
                                               @csrf
                                               @method('DELETE')
                                               <input type="hidden" class="id" name="id" value="{{$item->id}}">
                                               <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.family-type.destroy', $item->id)}}">
                                               <button type="submit" data-toggle="tooltip" title="Delete" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                             </form>
+@endcan
                                         </div>
                                       </td>
                                     </tr>

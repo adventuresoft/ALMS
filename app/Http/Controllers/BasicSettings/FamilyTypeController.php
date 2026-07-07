@@ -13,6 +13,10 @@ class FamilyTypeController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:family-type-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:family-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:family-type-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:family-type-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

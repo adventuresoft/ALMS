@@ -17,6 +17,10 @@ class NidCorrectionCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:nid-correction-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:nid-correction-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:nid-correction-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:nid-correction-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
    

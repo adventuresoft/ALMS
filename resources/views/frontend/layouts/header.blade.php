@@ -47,7 +47,7 @@
   }
   /* Override Bootstrap 3 CSS conflicts for Navbar on pages like Application/Krishok Nibondhon */
   @media (min-width: 768px) {
-    nav.navbar, nav.alms-navbar {
+    nav.alms-navbar {
       display: block !important;
       margin-bottom: 0 !important;
       min-height: auto !important;
@@ -57,7 +57,7 @@
     }
   }
   @media (max-width: 767.98px) {
-    nav.navbar.hidden, nav.alms-navbar.hidden {
+    nav.alms-navbar.hidden {
       display: none !important;
     }
   }

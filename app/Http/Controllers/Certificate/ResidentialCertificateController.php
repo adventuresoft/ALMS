@@ -17,6 +17,10 @@ class ResidentialCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:residential-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:residential-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:residential-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:residential-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     

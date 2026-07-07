@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Validator;
 
 class BankController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:bank-list-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:bank-list-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:bank-list-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:bank-list-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

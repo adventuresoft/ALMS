@@ -19,6 +19,10 @@ class VillageController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:village-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:village-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:village-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:village-delete', ['only' => ['destroy']]);
         $this->middleware('admin')->except('villagesByUnion');
     }
     /**

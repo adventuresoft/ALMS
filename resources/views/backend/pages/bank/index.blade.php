@@ -62,18 +62,19 @@
                                                 <td>{{ $bank->bn_name }}</td>
                                                 <td style="width: 10%">
                                                     <div class="table-action">
-                                                        <a href="{{ route('bank.edit', $bank->id) }}" title="Edit"
+                                                        @can('bank-list-update')
+<a href="{{ route('bank.edit', $bank->id) }}" title="Edit"
                                                             data-toggle="tooltip" class="btn btn-sm btn-primary"><i
                                                                 class="fa fa-edit"></i></a>
+@endcan
 
-                                                        <form class="deleteBank"
-                                                            action="{{ route('bank.destroy', $bank->id) }}" method="post">
+                                                        @can('bank-list-delete')
+                                                        <form class="deleteBank" action="{{ route('bank.destroy', $bank->id) }}" method="post" style="display:inline-block;">
                                                             @csrf
                                                             @method('Delete')
-                                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                                data-toggle="tooltip" title="Delete"><i
-                                                                    class="fa fa-trash"></i></button>
+                                                            <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>
                                                         </form>
+                                                        @endcan
                                                     </div>
                                                 </td>
                                             </tr>

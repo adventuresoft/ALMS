@@ -17,6 +17,10 @@ class UnmarriedCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:unmarried-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:unmarried-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:unmarried-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:unmarried-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     

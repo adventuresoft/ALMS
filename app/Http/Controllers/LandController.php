@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class LandController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:land-view-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:land-view-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:land-view-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:land-view-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

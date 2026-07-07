@@ -14,6 +14,10 @@ class LandClassController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:land-class-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:land-class-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:land-class-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:land-class-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

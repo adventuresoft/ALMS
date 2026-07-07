@@ -13,6 +13,10 @@ class UnionWardController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:union-ward-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:union-ward-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:union-ward-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:union-ward-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

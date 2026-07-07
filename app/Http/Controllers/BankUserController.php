@@ -12,7 +12,11 @@ class BankUserController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:admin');
+        $this->middleware('permission:bank-employee-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:bank-employee-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:bank-employee-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:bank-employee-delete', ['only' => ['destroy', 'soft']]);
+        $this->middleware('admin');
     }
 
     /**

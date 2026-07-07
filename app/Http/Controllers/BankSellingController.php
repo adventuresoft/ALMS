@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 class BankSellingController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:bank-selling-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:bank-selling-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:bank-selling-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:bank-selling-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

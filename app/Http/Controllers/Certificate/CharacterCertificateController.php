@@ -16,6 +16,10 @@ class CharacterCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:character-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:character-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:character-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:character-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
 

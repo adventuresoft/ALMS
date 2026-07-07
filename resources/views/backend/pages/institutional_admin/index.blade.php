@@ -68,16 +68,20 @@
                                           </td>
                                           <td style="width: 10%">
                                             <div class="table-action">
-                                              <a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('institutional-admin.edit', $admin->id)}}"><i class="fa fa-edit"></i></a>
+                                              @can('institutional-admin-update')
+<a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('institutional-admin.edit', $admin->id)}}"><i class="fa fa-edit"></i></a>
+@endcan
                                               <a class="btn btn-sm btn-info" title="Show" data-toggle="tooltip" href="{{route('institutional-admin.show', $admin->id)}}"><i class="fa fa-eye"></i></a>
 
-                                              <form class="deleteInstitute" method="post">
+                                              @can('institutional-admin-delete')
+<form class="deleteInstitute" method="post">
                                                   @csrf
                                                   @method('DELETE')
                                                   <input type="hidden" class="id" name="id" value="{{$admin->id}}">
                                                   <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('institutional-admin.destroy', $admin->id)}}">
                                                   <button type="submit" title="Delete" data-toggle="tooltip" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                               </form>
+@endcan
                                             </div>
                                           </td>
                                       </tr>

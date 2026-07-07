@@ -76,13 +76,17 @@
                                         <td>
                                           <div class="d-flex">
                                            
-                                                <a href="{{ route('organization.edit', $organization->id) }}" title="Edit" class="btn btn-primary mx-2"><i class="fa fa-edit"></i></a>
-                                                <form class="deleteHouse" method="post">
+                                                @can('organization-update')
+<a href="{{ route('organization.edit', $organization->id) }}" title="Edit" class="btn btn-primary mx-2"><i class="fa fa-edit"></i></a>
+@endcan
+                                                @can('organization-delete')
+<form class="deleteHouse" method="post">
                                                   @csrf
                                                   @method('Delete')
                                                   <input type="hidden" class="deleteUrl" name="delete_url" value="{{route('organization.destroy', $organization->id)}}">
                                                   <button type="submit" class="btn btn-danger mx-2" title="Delete"><i class="fa fa-trash"></i></button>
                                                 </form>
+@endcan
                                           
                                         </div>
                                         </td>

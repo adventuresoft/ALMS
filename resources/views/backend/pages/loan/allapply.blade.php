@@ -52,11 +52,13 @@
                     <td>{{ ucfirst($app->status) }}</td>
 
                     <td>
+                        @can('loan-all-loan-apply-read')
                         @if($difference >10 )
                         <a href="{{ route('loan.apply.view', $app->id) }}" class="btn btn-info btn-sm">
                             <i class="fa fa-eye"></i> View
                         </a>
                         @endif
+                        @endcan
                     </td>
 
                 </tr>

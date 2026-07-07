@@ -17,6 +17,10 @@ class YearlyIncomeCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:income-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:income-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:income-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:income-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
    

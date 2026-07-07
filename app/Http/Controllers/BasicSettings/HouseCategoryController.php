@@ -14,6 +14,10 @@ class HouseCategoryController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:house-category-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:house-category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:house-category-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:house-category-delete', ['only' => ['destroy']]);
         $this->middleware('admin')->except('getCategoryOptions');
     }
     /**

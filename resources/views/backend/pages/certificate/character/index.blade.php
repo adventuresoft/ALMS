@@ -67,10 +67,16 @@
                                                 <td>
                                                     <a href="{{route('character.show', $certificate->id)}}" target="_blank" class="btn btn-primary"><i class="fa fa-file-pdf"></i> EN</a>
                                                      <a target="_blank" href="{{route('character.bn_certificate', $certificate->id)}}" class="btn btn-info"><i class="fa fa-file-pdf"></i> BN</a>
-                                                    {{-- <a href="{{route('people.edit', $people->user_id)}}" class="btn btn-primary">Edit</a> --}}
-                                                    {{-- <form action="{{route('people.destroy', $people->id)}}" method="post">
+                                                    {{-- @can('people-update')
+<a href="{{route('people.edit', $people->user_id)}}" class="btn btn-primary">Edit</a>
+@endcan --}}
+                                                    {{-- @can('people-delete')
+@can('people-delete')
+<form action="{{route('people.destroy', $people->id)}}" method="post">
                                                         <button type="submit" class="btn btn-danger">Delete</button>
-                                                    </form> --}}
+                                                    </form>
+@endcan
+@endcan --}}
                                                 </td>
                                             </tr>
                                         @endforeach

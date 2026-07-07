@@ -44,6 +44,10 @@ class PeopleController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:people-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:people-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:people-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:people-delete', ['only' => ['destroy']]);
         // $this->middleware('unionAdmin')->except('index', 'show', 'searchUser', 'searchLoanUser', 'searchPaymentUser');
     }
 

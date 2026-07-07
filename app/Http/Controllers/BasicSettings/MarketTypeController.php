@@ -13,6 +13,10 @@ class MarketTypeController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:market-type-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:market-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:market-type-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:market-type-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

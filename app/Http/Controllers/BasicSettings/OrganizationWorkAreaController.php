@@ -14,6 +14,13 @@ use Illuminate\Support\Str;
 
 class OrganizationWorkAreaController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:organization-work-area-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:organization-work-area-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:organization-work-area-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:organization-work-area-delete', ['only' => ['destroy']]);
+    }
+
     public function options($id)
     {
         $areas = OrganizationWorkArea::where('organization_subcategory_id', $id)->get();

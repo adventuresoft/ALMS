@@ -16,6 +16,10 @@ class ProfessionSubCategoryController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:profession-subcategory-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:profession-subcategory-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:profession-subcategory-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:profession-subcategory-delete', ['only' => ['destroy']]);
         $this->middleware('admin')->except('professionSubcategoryOptions');
     }
 

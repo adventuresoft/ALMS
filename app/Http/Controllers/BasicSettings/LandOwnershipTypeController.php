@@ -13,6 +13,10 @@ class LandOwnershipTypeController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:land-ownership-type-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:land-ownership-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:land-ownership-type-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:land-ownership-type-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

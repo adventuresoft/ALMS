@@ -19,6 +19,10 @@ class VillageAreaController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:village-area-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:village-area-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:village-area-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:village-area-delete', ['only' => ['destroy']]);
         $this->middleware('admin')->except('areasByVillage');
     }
 

@@ -118,7 +118,9 @@
                                                 <td>{{ $loop->iteration + ($farmers->currentPage() - 1) * $farmers->perPage() }}</td>
                                                 <td>
                                                     {{ $farmer->user->name ?? '' }}
-                                                    <br><a href="{{ route('farmer.edit', $farmer->user->id) }}">{{ $farmer->user->system_id ?? '' }}</a>  
+                                                    <br>@can('farmer-update')
+<a href="{{ route('farmer.edit', $farmer->user->id) }}">{{ $farmer->user->system_id ?? '' }}</a>
+@endcan  
                                                 </td>
                                                 <td>
                                                     @php
@@ -146,20 +148,28 @@
                                                 <td style="width: 10%">
                                                     <div class="table-action">
 
-                                                        @if ( create_permission() )
-                                                            <form class="deleteFarmer" action="{{route('farmer.destroy', $farmer->id)}}" method="post">
-                                                                @csrf
-                                                                @method('Delete')
-                                                                    @if($loanstaus==1)
+                                                        <form class="deleteFarmer" action="{{route('farmer.destroy', $farmer->id)}}" method="post" style="display:inline-block;">
+                                                            @csrf
+                                                            @method('Delete')
+                                                            
+                                                            @can('loan-all-loan-apply-create')
+                                                                @if($loanstaus==1)
                                                                 <a href="{{ route('loan.apply') }}" title="Apply" data-toggle="tooltip" class="btn btn-sm btn-primary"> <i class="fas fa-clipboard"></i> </a>
                                                                 @endif
-                                                                
-                                                                <a href="{{ route('farmer.show', $farmer->user->id) }}" title="View" data-toggle="tooltip" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
+                                                            @endcan
+                                                            
+                                                            @can('farmer-approve-list-read')
+                                                            <a href="{{ route('farmer.show', $farmer->user->id) }}" title="View" data-toggle="tooltip" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
+                                                            @endcan
 
-                                                                <a href="{{ route('farmer.edit', $farmer->user->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
-                                                                <button type="submit" disabled class="btn btn-sm btn-danger mt-1" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>
-                                                            </form>
-                                                        @endif
+                                                            @can('farmer-approve-list-update')
+                                                            <a href="{{ route('farmer.edit', $farmer->user->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                                            @endcan
+                                                            
+                                                            @can('farmer-approve-list-delete')
+                                                            <button type="button" class="btn btn-sm btn-danger mt-1" data-toggle="tooltip" title="Delete" onclick="if(confirm('Are you sure?')) this.form.submit();"><i class="fa fa-trash"></i></button>
+                                                            @endcan
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

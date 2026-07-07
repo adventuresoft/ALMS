@@ -13,6 +13,10 @@ class MarketOwnershipTypeController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:market-ownership-type-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:market-ownership-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:market-ownership-type-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:market-ownership-type-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

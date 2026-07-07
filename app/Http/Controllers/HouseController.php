@@ -21,6 +21,10 @@ class HouseController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:house-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:house-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:house-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:house-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except( 'options', 'index', 'show');
     }
 

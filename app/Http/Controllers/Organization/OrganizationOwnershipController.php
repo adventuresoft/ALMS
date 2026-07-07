@@ -12,6 +12,10 @@ class OrganizationOwnershipController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:organization-ownership-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:organization-ownership-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:organization-ownership-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:organization-ownership-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
 

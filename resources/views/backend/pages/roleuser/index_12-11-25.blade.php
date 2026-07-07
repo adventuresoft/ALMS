@@ -124,7 +124,9 @@
                                     <td>{{$value->Role->name}}</td>
                                     <td>{{$value->User->name}}</td>
                                     <td>
-                                        <a href="{{route('roleuser.edit',['role_id'=>$value->role_id,'user_id'=>$value->model_id])}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
+                                        @can('roleuser-update')
+<a href="{{route('roleuser.edit',['role_id'=>$value->role_id,'user_id'=>$value->model_id])}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
+@endcan
 
                                         <a href="#" class="badge badge-danger" 
                                         onclick="if (confirm('You are sure to Delete This User Role?')){event.preventDefault();document.getElementById('delete-form{{$unique}}').submit();}else{event.stopPropagation(); event.preventDefault();};">

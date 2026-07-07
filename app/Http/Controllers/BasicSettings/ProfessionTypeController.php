@@ -15,6 +15,10 @@ class ProfessionTypeController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:profession-type-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:profession-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:profession-type-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:profession-type-delete', ['only' => ['destroy']]);
         $this->middleware('admin')->except('professionTypeOptions');
     }
 

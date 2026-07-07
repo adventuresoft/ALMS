@@ -14,6 +14,13 @@ use Auth;
 
 class LoanInfoController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:loan-all-loans-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:loan-all-loans-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:loan-all-loans-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:loan-all-loans-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

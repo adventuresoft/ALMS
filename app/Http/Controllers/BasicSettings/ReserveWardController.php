@@ -13,6 +13,10 @@ class ReserveWardController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:reserve-ward-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:reserve-ward-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:reserve-ward-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:reserve-ward-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

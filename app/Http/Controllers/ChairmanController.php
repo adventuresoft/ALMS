@@ -39,6 +39,13 @@ use Illuminate\Support\Str;
 
 class ChairmanController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:chairman-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:chairman-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:chairman-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:chairman-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

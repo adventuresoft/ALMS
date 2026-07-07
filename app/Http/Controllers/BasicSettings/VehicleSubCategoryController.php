@@ -11,6 +11,10 @@ class VehicleSubCategoryController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:vehicle-subcategory-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:vehicle-subcategory-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:vehicle-subcategory-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:vehicle-subcategory-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

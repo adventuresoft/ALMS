@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class DivorceController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:divorce-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:divorce-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:divorce-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:divorce-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

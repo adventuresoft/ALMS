@@ -70,12 +70,14 @@
 
                                               <td style="width:10%">
                                                   <div class="table-action">
-                                                      <a class="btn btn-sm btn-primary"
+                                                      @can('profession-category-update')
+<a class="btn btn-sm btn-primary"
                                                           title="Edit"
                                                           data-toggle="tooltip"
                                                           href="{{ route('basic-settings.profession-category.edit', $category->id) }}">
                                                           <i class="fa fa-edit"></i>
                                                         </a>
+@endcan
 
                                                         <a class="btn btn-sm btn-info"
                                                           title="Show"
@@ -83,7 +85,8 @@
                                                           href="{{ route('basic-settings.profession-category.show', $category->id) }}">
                                                           <i class="fa fa-eye"></i>
                                                         </a>
-                                                      <form class="deleteSubCategory" method="post">
+                                                      @can('profession-category-delete')
+<form class="deleteSubCategory" method="post">
                                                           @csrf
                                                           @method('DELETE')
                                                           <input type="hidden" class="id" name="id"
@@ -92,6 +95,7 @@
                                                               value="{{ route('basic-settings.profession-category.destroy', $category->id) }}">
                                                           <button type="submit" class="btn btn-sm btn-danger" title="Delete" data-toggle="tooltip" ><i class="fa fa-trash"></i></button>
                                                       </form>
+@endcan
                                                   </div>
                                               </td>
                                           </tr>

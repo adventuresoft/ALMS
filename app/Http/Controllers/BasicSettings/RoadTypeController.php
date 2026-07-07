@@ -14,6 +14,10 @@ class RoadTypeController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:road-type-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:road-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:road-type-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:road-type-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

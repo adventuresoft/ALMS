@@ -160,11 +160,14 @@
                                                     </td>
 
                                                     <td>
+                                                        @can('bank-employee-update')
                                                         <a href="{{ route('bankuser.edit', ['bank_id' => $item->bank_id, 'user_id' => $item->people_id]) }}"
                                                             class="badge badge-primary">
                                                             <i class="fa fa-edit"></i> Edit
                                                         </a>
+                                                        @endcan
 
+                                                        @can('bank-employee-delete')
                                                         <a href="#" class="badge badge-danger"
                                                             onclick="if(confirm('Are you sure to delete?')){
                                                         event.preventDefault();
@@ -182,6 +185,7 @@
                                                             <input type="hidden" name="bank_id"
                                                                 value="{{ $item->bank_id }}">
                                                         </form>
+                                                        @endcan
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class InstituteCategoryController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:institute-category-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:institute-category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:institute-category-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:institute-category-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

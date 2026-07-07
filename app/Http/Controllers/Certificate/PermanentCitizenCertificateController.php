@@ -17,6 +17,10 @@ class PermanentCitizenCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:permanent-citizen-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:permanent-citizen-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:permanent-citizen-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:permanent-citizen-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     

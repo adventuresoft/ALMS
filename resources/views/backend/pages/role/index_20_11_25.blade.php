@@ -92,7 +92,9 @@
                                         <td>{{$key+1}}</td>
                                         <td>{{$value->name}}</td>
                                         <td>
-                                            <a href="{{route('role.edit',$value->id)}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
+                                            @can('role-update')
+<a href="{{route('role.edit',$value->id)}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
+@endcan
                                         </td>
                                     </tr>
                                     @endforeach

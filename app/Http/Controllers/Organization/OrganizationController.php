@@ -21,6 +21,13 @@ use Illuminate\Support\Facades\Validator;
 
 class OrganizationController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:organization-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:organization-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:organization-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:organization-delete', ['only' => ['destroy']]);
+    }
+
 
     public function getOrganizationBySystemId($system_id)
     {

@@ -72,13 +72,17 @@
                                       <td>
                                         <div class="d-flex">
                                           @if ( basic_settings_permissions() )
-                                              <a href="{{ route('organizationA.registration-fees.edit', $fee->id) }}" title="Edit" class="btn btn-primary mx-2"><i class="fa fa-edit"></i></a>
-                                              <form class="deleteOrganzationFee" method="post">
+                                              @can('registration-fees-update')
+<a href="{{ route('organizationA.registration-fees.edit', $fee->id) }}" title="Edit" class="btn btn-primary mx-2"><i class="fa fa-edit"></i></a>
+@endcan
+                                              @can('registration-fees-delete')
+<form class="deleteOrganzationFee" method="post">
                                                 @csrf
                                                 @method('Delete')
                                                 <input type="hidden" class="deleteUrl" name="delete_url" value="{{route('organizationA.registration-fees.destroy', $fee->id)}}">
                                                 <button type="submit" class="btn btn-danger mx-2" title="Delete"><i class="fa fa-trash"></i></button>
                                               </form>
+@endcan
                                           @endif
                                       </div>
                                       </td>

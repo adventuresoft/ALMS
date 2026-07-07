@@ -11,6 +11,10 @@ class VehicleCategoryController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:vehicle-category-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:vehicle-category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:vehicle-category-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:vehicle-category-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

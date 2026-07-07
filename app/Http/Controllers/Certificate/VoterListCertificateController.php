@@ -17,6 +17,10 @@ class VoterListCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:voter-list-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:voter-list-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:voter-list-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:voter-list-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     

@@ -13,6 +13,10 @@ class HouseOwnerTypeController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:house-ownership-type-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:house-ownership-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:house-ownership-type-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:house-ownership-type-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

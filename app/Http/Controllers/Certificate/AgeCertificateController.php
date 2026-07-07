@@ -15,6 +15,10 @@ class AgeCertificateController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:age-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:age-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:age-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:age-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
    

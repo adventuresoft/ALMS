@@ -16,6 +16,10 @@ class GuardianCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:guardian-income-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:guardian-income-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:guardian-income-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:guardian-income-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
    

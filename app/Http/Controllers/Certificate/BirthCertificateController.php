@@ -10,6 +10,10 @@ class BirthCertificateController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:birth-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:birth-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:birth-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:birth-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     /**

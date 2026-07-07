@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class SubsidyController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:subsidy-view-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:subsidy-view-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:subsidy-view-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:subsidy-view-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

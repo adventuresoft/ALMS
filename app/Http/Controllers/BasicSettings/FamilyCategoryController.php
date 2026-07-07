@@ -13,6 +13,10 @@ class FamilyCategoryController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:family-category-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:family-category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:family-category-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:family-category-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

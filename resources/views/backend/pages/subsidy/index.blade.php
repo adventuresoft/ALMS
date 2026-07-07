@@ -84,7 +84,9 @@
                                             @if($subside and isset($subside->user->system_id) )
                                                 <tr>
                                                     <td> {{$loop->iteration}}</td>
-                                                    <td>{{ $subside->user->name ?? '' }}<br><a href="{{ route('subsidy.edit', $subside->id) }}">{{ $subside->user->system_id ?? '' }}</a></td>
+                                                    <td>{{ $subside->user->name ?? '' }}<br>@can('subsidy-view-update')
+<a href="{{ route('subsidy.edit', $subside->id) }}">{{ $subside->user->system_id ?? '' }}</a>
+@endcan</td>
                                                     <td>
                                                         @php
                                                             $mobile = $subside->user->mobile ? (''.$subside->user->mobile.'') : '';
@@ -100,16 +102,18 @@
                                                     <td >
                                                         <div class="">
                                                             {{-- <a href="{{ route('loan-info.show', $subside->id) }}" title="View" data-toggle="tooltip" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a> --}}
-                                                            @if ( create_permission() )
-                                                                {{-- <a href="{{ route('loan-payment.show', $subside->id) }}" title="Payment" data-toggle="tooltip" class="btn btn-sm btn-success"><i class="fa fa-money-bill"></i></a> --}}
-                                                                <a href="{{ route('subsidy.edit', $subside->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary mt-1"><i class="fa fa-edit"></i></a>
-                                                                @if ($subside->status == 'pending')
-                                                                    <form class="deleteFarmer" action="{{route('subsidy.destroy', $subside->id)}}" method="post">
-                                                                        @csrf
-                                                                        @method('Delete')
-                                                                        <button type="submit" class="btn btn-sm btn-danger mt-1" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>
-                                                                    </form>
-                                                                @endif
+                                                            {{-- <a href="{{ route('loan-payment.show', $subside->id) }}" title="Payment" data-toggle="tooltip" class="btn btn-sm btn-success"><i class="fa fa-money-bill"></i></a> --}}
+                                                            @can('subsidy-view-update')
+                                                            <a href="{{ route('subsidy.edit', $subside->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary mt-1"><i class="fa fa-edit"></i></a>
+                                                            @endcan
+                                                            @if ($subside->status == 'pending')
+                                                                @can('subsidy-view-delete')
+                                                                <form class="deleteFarmer" action="{{route('subsidy.destroy', $subside->id)}}" method="post" style="display:inline-block;">
+                                                                    @csrf
+                                                                    @method('Delete')
+                                                                    <button type="submit" class="btn btn-sm btn-danger mt-1" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>
+                                                                </form>
+                                                                @endcan
                                                             @endif
                                                         </div>
                                                     </td>

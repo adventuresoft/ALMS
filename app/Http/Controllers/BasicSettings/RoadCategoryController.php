@@ -14,6 +14,10 @@ class RoadCategoryController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:road-category-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:road-category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:road-category-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:road-category-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

@@ -21,6 +21,13 @@ use SebastianBergmann\Type\FalseType;
 
 class OrganizationFeeController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:registration-fees-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:registration-fees-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:registration-fees-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:registration-fees-delete', ['only' => ['destroy']]);
+    }
+
 
     public function registrationFees(Request $request)
     {

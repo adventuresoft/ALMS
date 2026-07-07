@@ -23,9 +23,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('home') }}" class="brand-link">
-        <img src="{{ asset('public/backend') }}/img/AdminLTELogo.png" alt="AdminLTE Logo"
-            class="brand-image elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">ALMS</span>
+        <img src="{{ asset('frontend/img/company-logo.png') }}" alt="Adventure Soft Logo"
+            class="brand-image img-circle elevation-3" style="opacity: .9; background: white; padding: 2px; width: 33px; height: 33px; object-fit: contain;">
+        <span class="brand-text font-weight-light"><b>ALMS</b></span>
     </a>
 
     <!-- Sidebar -->
@@ -38,6 +38,7 @@
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
 
                 {{-- Dashboard --}}
+                @can('dashboard-read')
                 <li class="nav-item menu-open">
                     <a href="{{ route('dashboard') }}"
                         class="nav-link  @if ($subMenu == 'dashboard') active @endif">
@@ -45,6 +46,7 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+                @endcan
 
 
             @can('access-management-read')
@@ -60,73 +62,9 @@
                 </li>
             @endcan
                 
-                        
-                        @can('institute-settings-read')
-                        <li
-                            class="nav-item
-                        @if (
-                            $subMenu == 'InstituteCreate' ||
-                                $subMenu == 'InstituteType' ||
-                                $subMenu == 'InstituteCategory' ||
-                                $subMenu == 'InstituteList') menu-open @endif">
-                            <a href="#" class="nav-link @if ($mainMenu == 'Institute') active @endif ">
-                                <i class="nav-icon fas fa-university"></i>
-                                <p>
-                                    Institute Settings
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('institute.create') }}"
-                                        class="nav-link @if ($subMenu == 'InstituteCreate') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Create</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('institute.index') }}"
-                                        class="nav-link @if ($subMenu == 'InstituteList') active @endif ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>View</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        @endcan
-                   
 
-                        @can('institutional-admins-read')
-                        <li class="nav-item @if ($subMenu == 'AdminCreate' || $subMenu == 'AdminList' || $subMenu == 'AdminShow') menu-open @endif">
-                            <a href="#" class="nav-link @if ($mainMenu == 'Admin') active @endif">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Institutional Admins
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
 
-                                <li class="nav-item">
-                                    <a href="{{ route('institutional-admin.create') }}"
-                                        class="nav-link  @if ($subMenu == 'AdminCreate') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Create</p>
-                                    </a>
-                                </li>
 
-                                <li class="nav-item">
-                                    <a href="{{ route('institutional-admin.index') }}"
-                                        class="nav-link  @if ($subMenu == 'AdminList') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>List</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        @endcan
-                 
 
                 {{-- Farmer Info --}}
                 @can('farmer-info-read')
@@ -139,7 +77,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                       
+                            @can('farmer-create-read')
                             <li class="nav-item">
                                 <a href="{{ route('farmer.create') }}"
                                     class="nav-link @if ($subMenu == 'FarmerCreate') active @endif">
@@ -147,7 +85,9 @@
                                     <p>Create</p>
                                 </a>
                             </li>
+                            @endcan
                        
+                            @can('farmer-general-list-read')
                             <li class="nav-item">
                                 <a href="{{ route('farmer.index') }}"
                                     class="nav-link @if ($subMenu == 'FarmerView') active @endif">
@@ -155,7 +95,9 @@
                                     <p>General Farmer List</p>
                                 </a>
                             </li>
+                            @endcan
                       
+                            @can('farmer-approve-list-read')
                             <li class="nav-item">
                                 <a href="{{ route('approved-farmer.index') }}"
                                     class="nav-link @if ($subMenu == 'ApprovedFarmer') active @endif">
@@ -163,130 +105,13 @@
                                     <p>Approve Farmer List</p>
                                 </a>
                             </li>
-                      
+                            @endcan
                     </ul>
                 </li>
                 @endcan
 
-                {{-- Certificate --}}
-               
-                @can('certificate-read')
-                    <li class="nav-item  @if ($mainMenu == 'Certificate') menu-open @endif ">
-                        <a href="#" class="nav-link @if ($mainMenu == 'Certificate') active @endif">
-                            <i class="nav-icon fas fa-certificate"></i>
-                            <p>
-                                Certificate
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            @can('citizen-read')
-                            <li class="nav-item">
-                                <a href="{{ route('citizen.index') }}"
-                                    class="nav-link @if ($subMenu == 'Citizen') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Citizen</p>
-                                </a>
-                            </li>
-                            @endcan
-
-                            @can('character-read')
-                            <li class="nav-item">
-                                <a href="{{ route('character.index') }}"
-                                    class="nav-link  @if ($subMenu == 'Character') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Character</p>
-                                </a>
-                            </li>
-                            @endcan
 
 
-                        </ul>
-                    </li>
-                @endcan
-
-               
-                @can('department-settings-read')
-                <li
-                    class="nav-item
-                    @if (
-                        $subMenu == 'OrganizationCreate' ||
-                            $subMenu == 'OrganizationList' ||
-                            $subMenu == 'OrganizationBranchList' ||
-                            $subMenu == 'organization_people' ||
-                            $subMenu == 'OrganizationShow' ||
-                            $subMenu == 'RegistrationFees' ||
-                            $subMenu == 'RenewFees' ||
-                            $subMenu == 'TradeLicense' ||
-                            $subMenu == 'GetTradeLicense') menu-open @endif
-                    ">
-                    <a href="#" class="nav-link @if ($mainMenu == 'Organization') active @endif ">
-                        <i class="nav-icon fas fa-briefcase"></i>
-                        <p>
-                            Organization Settings
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-
-
-                        <li class="nav-item">
-                                <a href="{{ route('organization.index') }}"
-                                    class="nav-link @if ($subMenu == 'OrganizationList') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Organization List</p>
-                                </a>
-                            </li>
-                      
-                             <li class="nav-item">
-                                <a href="{{ route('organization-branch.index') }}"
-                                    class="nav-link @if ($subMenu == 'OrganizationBranchList') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Organization Branch</p>
-                                </a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a href="{{ route('organization-people.index') }}"
-                                    class="nav-link @if ($subMenu == 'organization_people') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Organization People</p>
-                                </a>
-                            </li>
-                            @can('fees-read')
-                            <li class="nav-item">
-                                <a href="{{ route('organizationA.registration-fees.index') }}"
-                                    class="nav-link @if ($subMenu == 'RegistrationFees') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Fees</p>
-                                </a>
-                            </li>
-                            @endcan
-                            @can('generate-license-read')
-                       
-                            <li class="nav-item">
-                                <a href="{{ route('organizationA.trade-license.index') }}"
-                                    class="nav-link @if ($subMenu == 'TradeLicense') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Generate License </p>
-                                </a>
-                            </li>
-                            @endcan
-                            @can('trade-license-read')
-                      
-                            <li class="nav-item">
-                                <a href="{{ route('organizationA.trade-license.getTradeLicense') }}"
-                                    class="nav-link @if ($subMenu == 'GetTradeLicense') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Trade License</p>
-                                </a>
-                            </li>
-                            @endcan
-                       
-
-                    </ul>
-                </li>
-                @endcan
 
               @php 
           //var_dump (auth()->user()->roles->pluck('name'));
@@ -308,16 +133,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                            @can('loan-generate-create')
-                            <li class="nav-item">
-                                <a href="{{ route('loan-info.create') }}"
-                                    class="nav-link  @if ($subMenu == 'LoanGenerate') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Loan Generate</p>
-                                </a>
-                            </li>
-                            @endcan
-                       
+                            @can('loan-all-loans-read')
                             <li class="nav-item">
                                 <a href="{{ route('loan-info.index') }}"
                                     class="nav-link @if ($subMenu == 'LoanList') active @endif">
@@ -325,16 +141,9 @@
                                     <p>All Loans</p>
                                 </a>
                             </li>
-                            @can('loan-payment-create')
-                            <li class="nav-item">
-                                <a href="{{ route('loan-payment.create') }}"
-                                    class="nav-link  @if ($subMenu == 'LoanPayment') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Loan Payment</p>
-                                </a>
-                            </li>
                             @endcan
                             
+                            @can('loan-all-loan-apply-read')
                              <li class="nav-item">
                                 <a href="{{ route('loan.apply.all') }}"
                                     class="nav-link  @if ($subMenu == 'LoanApply') active @endif">
@@ -342,13 +151,13 @@
                                     <p>All Loan Apply</p>
                                 </a>
                             </li>
-
+                            @endcan
                     </ul>
                 </li>
                 @endcan
 
                 {{-- Subsidy --}}
-                @can('subsidy-read')
+                @can('subsidy-info-read')
                 <li class="nav-item
                     @if ($subMenu == 'SubsidyCreate' || $subMenu == 'SubsidyList') menu-open @endif ">
                     <a href="#" class="nav-link @if ($mainMenu == 'Subsidy') active @endif">
@@ -360,6 +169,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                        
+                            @can('subsidy-create-read')
                             <li class="nav-item">
                                 <a href="{{ route('subsidy.create') }}"
                                     class="nav-link  @if ($subMenu == 'SubsidyCreate') active @endif">
@@ -367,7 +177,9 @@
                                     <p>Subsidy Create</p>
                                 </a>
                             </li>
+                            @endcan
                        
+                            @can('subsidy-view-read')
                             <li class="nav-item">
                                 <a href="{{ route('subsidy.index') }}"
                                     class="nav-link @if ($subMenu == 'SubsidyList') active @endif">
@@ -375,6 +187,7 @@
                                     <p>View</p>
                                 </a>
                             </li>
+                            @endcan
                       
                     </ul>
                 </li>
@@ -393,6 +206,7 @@
                     <ul class="nav nav-treeview">
 
                        
+                            @can('bank-create-read')
                             <li class="nav-item">
                                 <a href="{{ route('bank.create') }}"
                                     class="nav-link @if ($subMenu == 'BankCreate') active @endif">
@@ -400,7 +214,9 @@
                                     <p>Create</p>
                                 </a>
                             </li>
+                            @endcan
                       
+                            @can('bank-list-read')
                             <li class="nav-item">
                                 <a href="{{ route('bank.index') }}"
                                     class="nav-link @if ($subMenu == 'BankList') active @endif">
@@ -408,7 +224,9 @@
                                     <p>List</p>
                                 </a>
                             </li>
+                            @endcan
                        
+                            @can('bank-selling-read')
                             <li class="nav-item">
                                 <a href="{{ route('bank-selling.index') }}"
                                     class="nav-link @if ($subMenu == 'BankSelling') active @endif">
@@ -416,52 +234,23 @@
                                     <p>Selling</p>
                                 </a>
                             </li>
+                            @endcan
                         
-                        <li class="nav-item">
+                            @can('bank-employee-read')
+                            <li class="nav-item">
                                 <a href="{{ route('bankuser.index') }}"
                                     class="nav-link @if ($subMenu == 'bankuser') active @endif">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Bank Employee</p>
                                 </a>
                             </li>
+                            @endcan
                         
                     </ul>
                 </li>
                 @endcan
 
-                @can('bank-branchs-read')
-                <li class="nav-item @if ($subMenu == 'BankBranchCreate' || $subMenu == 'BankBranchList') menu-open @endif">
-                    <a href="#" class="nav-link  @if ($mainMenu == 'BankBranch') active @endif ">
-                        <i class="nav-icon fas fa-code-branch"></i>
-                        <p>
-                            Bank Branches
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-
-                            <li class="nav-item">
-                                <a href="{{ route('bank-branch.create') }}"
-                                    class="nav-link @if ($subMenu == 'BankBranchCreate') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Create</p>
-                                </a>
-                            </li>
-                   
-
-
-                       
-                            <li class="nav-item">
-                                <a href="{{ route('bank-branch.index') }}"
-                                    class="nav-link @if ($subMenu == 'BankBranchList') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>List</p>
-                                </a>
-                            </li>
-                        
-                    </ul>
-                </li>
-                @endcan
+                {{-- Bank Branches removed --}}
 
 
 
@@ -481,6 +270,7 @@
                         <ul class="nav nav-treeview">
 
                           
+                                @can('land-create-read')
                                 <li class="nav-item">
                                     <a href="{{ route('land.create') }}"
                                         class="nav-link @if ($subMenu == 'LandCreate') active @endif">
@@ -488,7 +278,9 @@
                                         <p>Create</p>
                                     </a>
                                 </li>
+                                @endcan
                          
+                                @can('land-view-read')
                                 <li class="nav-item">
                                     <a href="{{ route('land.index') }}"
                                         class="nav-link @if ($subMenu == 'LandList') active @endif">
@@ -496,6 +288,7 @@
                                         <p>View</p>
                                     </a>
                                 </li>
+                                @endcan
                           
 
                         </ul>
@@ -519,7 +312,8 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @if (create_permission())
+                        
+                            @can('reports-general-read')
                             <li class="nav-item">
                                 <a href="{{ route('report.general-report') }}"
                                     class="nav-link @if ($subMenu == 'GeneralReport') active @endif">
@@ -527,6 +321,8 @@
                                     <p>General</p>
                                 </a>
                             </li>
+                            @endcan
+                            @can('reports-loan-read')
                             <li class="nav-item">
                                 <a href="{{ route('report.loan-report') }}"
                                     class="nav-link @if ($subMenu == 'LoanReport') active @endif">
@@ -534,6 +330,8 @@
                                     <p>Loan</p>
                                 </a>
                             </li>
+                            @endcan
+                            @can('reports-payment-read')
                             <li class="nav-item">
                                 <a href="{{ route('report.payment-report') }}"
                                     class="nav-link @if ($subMenu == 'PaymentReport') active @endif">
@@ -541,6 +339,8 @@
                                     <p>Payment</p>
                                 </a>
                             </li>
+                            @endcan
+                            @can('reports-due-read')
                             <li class="nav-item">
                                 <a href="{{ route('report.due-report') }}"
                                     class="nav-link @if ($subMenu == 'DueReport') active @endif">
@@ -548,6 +348,8 @@
                                     <p>Due</p>
                                 </a>
                             </li>
+                            @endcan
+                            @can('reports-subsidy-read')
                             <li class="nav-item">
                                 <a href="{{ route('report.subsidy-report') }}"
                                     class="nav-link @if ($subMenu == 'SubsidyReport') active @endif">
@@ -555,7 +357,8 @@
                                     <p>Subsidy</p>
                                 </a>
                             </li>
-                        @endif
+                            @endcan
+                        
                     </ul>
                 </li>
                 @endcan

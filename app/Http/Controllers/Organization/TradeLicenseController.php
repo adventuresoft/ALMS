@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\Auth;
 
 class TradeLicenseController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:trade-license-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:trade-license-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:trade-license-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:trade-license-delete', ['only' => ['destroy']]);
+    }
+
     public function confirmedLicense($id)
     {
         $data['license'] = TradeLicense::find($id);

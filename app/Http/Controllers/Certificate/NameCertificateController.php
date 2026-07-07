@@ -16,6 +16,10 @@ class NameCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:name-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:name-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:name-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:name-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
 

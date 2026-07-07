@@ -17,6 +17,10 @@ class VoterAreaCertificateController extends Controller
    
     public function __construct()
     {
+        $this->middleware('permission:voter-area-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:voter-area-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:voter-area-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:voter-area-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
     /**

@@ -16,6 +16,10 @@ class FinancialInstabilityCertificateController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:financial-instability-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:financial-instability-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:financial-instability-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:financial-instability-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
 

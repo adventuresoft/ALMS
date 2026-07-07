@@ -81,10 +81,13 @@
                                             <td>{{ $row->name }}</td>
                                             <td>{{ $row->slug }}</td>
                                             <td>
-                                                <a href="{{ route('module.edit', $row->id) }}"
+                                                @can('module-update')
+<a href="{{ route('module.edit', $row->id) }}"
                                                     class="badge badge-primary"><i class="fa fa-edit"></i> Edit</a>
+@endcan
 
-                                                <form action="{{ route('module.destroy', $row->id) }}" method="POST"
+                                                @can('module-delete')
+<form action="{{ route('module.destroy', $row->id) }}" method="POST"
                                                     class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
@@ -93,6 +96,7 @@
                                                         <i class="fa fa-trash"></i> Delete
                                                     </button>
                                                 </form>
+@endcan
                                             </td>
                                         </tr>
                                     @endforeach

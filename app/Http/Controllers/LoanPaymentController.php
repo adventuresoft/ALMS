@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Auth;
 
 class LoanPaymentController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:loan-payment-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:loan-payment-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:loan-payment-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:loan-payment-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

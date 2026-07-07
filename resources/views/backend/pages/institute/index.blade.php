@@ -74,16 +74,20 @@
                                           <td>{{date("d M, Y", strtotime($institute->activation_time))}}</td>
                                           <td style="width: 10%">
                                             <div class="table-action">
-                                                <a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('institute.edit', $institute->id)}}"><i class="fa fa-edit"></i></a>
+                                                @can('institute-update')
+<a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('institute.edit', $institute->id)}}"><i class="fa fa-edit"></i></a>
+@endcan
                                                 <a class="btn btn-sm btn-info" title="Show" data-toggle="tooltip" href="{{route('institute.show', $institute->id)}}"><i class="fa fa-eye"></i></a>
 
-                                                <form class="deleteInstitute" method="post">
+                                                @can('institute-delete')
+<form class="deleteInstitute" method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <input type="hidden" class="id" name="id" value="{{$institute->id}}">
                                                     <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('institute.destroy', $institute->id)}}">
                                                     <button type="submit" title="Delete" data-toggle="tooltip" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                                 </form>
+@endcan
                                             </div>
                                           </td>
                                       </tr>

@@ -64,14 +64,18 @@
                                     <td>{{date('d M, Y', strtotime($item->updated_at))}}</td>
                                     <td>
                                       <div style="display: inline-block">
-                                          <a class="btn btn-primary" href="{{route('basic-settings.house-class.edit', $item->id)}}">Edit</a>
-                                          <form class="deleteClass" method="post">
+                                          @can('house-class-update')
+<a class="btn btn-primary" href="{{route('basic-settings.house-class.edit', $item->id)}}">Edit</a>
+@endcan
+                                          @can('house-class-delete')
+<form class="deleteClass" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" class="id" name="id" value="{{$item->id}}">
                                             <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.house-class.destroy', $item->id)}}">
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                           </form>
+@endcan
                                       </div>
                                     </td>
                                   </tr>

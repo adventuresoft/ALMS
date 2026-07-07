@@ -106,7 +106,9 @@
                                                 <td>{{ $loop->iteration + ($farmers->currentPage() - 1) * $farmers->perPage() }}</td>
                                                 <td>
                                                     {{ $farmer->user->name ?? '' }}
-                                                    <br><a href="{{ route('farmer.edit', $farmer->user->id) }}">{{ $farmer->user->system_id ?? '' }}</a>
+                                                    <br>@can('farmer-general-list-update')
+<a href="{{ route('farmer.edit', $farmer->user->id) }}">{{ $farmer->user->system_id ?? '' }}</a>
+@endcan
                                                 </td>
                                                 <td>
                                                     @php
@@ -133,17 +135,26 @@
                                                     
                                                 </td>
                                                 <td style="width:100px!important">
+                                                        @can('farmer-general-list-read')
                                                         <a href="{{ route('farmer.show', $farmer->user->id) }}" title="View" data-toggle="tooltip" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
+                                                        @endcan
 
-                                                        @if ( create_permission() )
-                                                            <a href="{{ route('farmer.permission', $farmer->user->id) }}" title="Permission" data-toggle="tooltip" class="btn btn-sm btn-warning"><i class="fa fa-certificate"></i></a>
-                                                            <form class="deleteFarmer" action="{{route('farmer.destroy', $farmer->id)}}" method="post">
-                                                                @csrf
-                                                                @method('Delete')
-                                                                <a href="{{ route('farmer.edit', $farmer->user->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary mt-1"><i class="fa fa-edit"></i></a>
-                                                                <button type="submit" disabled class="btn btn-sm btn-danger mt-1" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>
-                                                            </form>
-                                                        @endif
+                                                        @can('farmer-general-list-update')
+                                                        <a href="{{ route('farmer.permission', $farmer->user->id) }}" title="Permission" data-toggle="tooltip" class="btn btn-sm btn-warning"><i class="fa fa-certificate"></i></a>
+                                                        @endcan
+                                                        
+                                                        <form class="deleteFarmer" action="{{route('farmer.destroy', $farmer->id)}}" method="post" style="display:inline-block;">
+                                                            @csrf
+                                                            @method('Delete')
+                                                            
+                                                            @can('farmer-general-list-update')
+                                                            <a href="{{ route('farmer.edit', $farmer->user->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary mt-1"><i class="fa fa-edit"></i></a>
+                                                            @endcan
+                                                            
+                                                            @can('farmer-general-list-delete')
+                                                            <button type="button" class="btn btn-sm btn-danger mt-1" data-toggle="tooltip" title="Delete" onclick="if(confirm('Are you sure?')) this.form.submit();"><i class="fa fa-trash"></i></button>
+                                                            @endcan
+                                                        </form>
                                                 </td>
                                             </tr>
                                         @endforeach

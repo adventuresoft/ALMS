@@ -12,6 +12,10 @@ class  OrganizationPeopleController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:organizationpeople-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:organizationpeople-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:organizationpeople-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:organizationpeople-delete', ['only' => ['destroy']]);
         // $this->middleware('auth:admin');
     }
 

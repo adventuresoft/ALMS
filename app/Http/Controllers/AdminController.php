@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:admin-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:admin-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         return view('');

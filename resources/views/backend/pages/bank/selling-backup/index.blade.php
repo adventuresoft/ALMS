@@ -66,11 +66,15 @@
                                                 <td>{{ $selling->amount }}</td>
                                                 <td style="width: 10%">
                                                     <div class="table-action">
-                                                        <a href="{{ route('bank-selling.edit', $selling->id) }}" title="Edit"
+                                                        @can('bank-selling-update')
+<a href="{{ route('bank-selling.edit', $selling->id) }}" title="Edit"
                                                             data-toggle="tooltip" class="btn btn-sm btn-primary"><i
                                                                 class="fa fa-edit"></i></a>
+@endcan
 
-                                                        <form class="deleteBankSelling"
+                                                        @can('bank-selling-delete')
+@can('bank-selling-delete')
+<form class="deleteBankSelling"
                                                             action="{{ route('bank-selling.destroy', $selling->id) }}" method="post">
                                                             @csrf
                                                             @method('Delete')
@@ -78,6 +82,8 @@
                                                                 data-toggle="tooltip" title="Delete"><i
                                                                     class="fa fa-trash"></i></button>
                                                         </form>
+@endcan
+@endcan
                                                     </div>
                                                 </td>
                                             </tr>

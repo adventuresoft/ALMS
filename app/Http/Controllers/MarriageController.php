@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class MarriageController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:marriage-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:marriage-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:marriage-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:marriage-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

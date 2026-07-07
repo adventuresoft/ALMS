@@ -15,6 +15,10 @@ class ChildlessCertificateController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:childless-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:childless-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:childless-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:childless-delete', ['only' => ['destroy']]);
         $this->middleware('unionAdmin')->except('index', 'show');
     }
    

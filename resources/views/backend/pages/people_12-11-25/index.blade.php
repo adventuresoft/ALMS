@@ -116,7 +116,9 @@
 
                                                 <div class="table-action">
                                                  
-                                                        <a href="{{ route('people.edit', $user->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                                        @can('people-update')
+<a href="{{ route('people.edit', $user->id) }}" title="Edit" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+@endcan
                                                         <a href="{{ route('people.show', $user->id) }}" title="Show" data-toggle="tooltip" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
 
                                                         <form class="deletePeople" method="post">

@@ -65,14 +65,18 @@
                                     <td>{{date('d M, Y', strtotime($item->updated_at))}}</td>
                                     <td>
                                       <div style="display: inline-block">
-                                          <a class="btn btn-primary" href="{{route('basic-settings.organization-subtype.edit', $item->id)}}">Edit</a>
-                                          <form class="deleteType" method="post">
+                                          @can('organization-subtype-update')
+<a class="btn btn-primary" href="{{route('basic-settings.organization-subtype.edit', $item->id)}}">Edit</a>
+@endcan
+                                          @can('organization-subtype-delete')
+<form class="deleteType" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" class="id" name="id" value="{{$item->id}}">
                                             <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.organization-subtype.destroy', $item->id)}}">
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                           </form>
+@endcan
                                       </div>
                                     </td>
                                   </tr>

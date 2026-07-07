@@ -19,6 +19,13 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:user-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         // ---- Filters (GET) ----
@@ -131,10 +138,19 @@ class UserController extends Controller
         $institute = Auth::user()->institute;
         $areas = collect();
         if ($institute && $institute->union_id) {
-            $areas = VillageArea::where('union_id', $institute->union_id)->orderBy('en_name', 'asc')->get();
+            $areas = VillageArea::with(['district', 'thana', 'union', 'village'])
+                                ->where('union_id', $institute->union_id)
+                                ->orderBy('en_name', 'asc')->get();
         } else {
-            $areas = VillageArea::orderBy('en_name', 'asc')->get();
+            $areas = VillageArea::with(['district', 'thana', 'union', 'village'])
+                                ->orderBy('en_name', 'asc')->get();
         }
+
+        $districts = \App\Models\District::orderBy('name', 'asc')->get();
+        $thanas = \App\Models\Thana::orderBy('name', 'asc')->get();
+        $unions = \App\Models\Union::orderBy('name', 'asc')->get();
+        $pourashavas = \App\Models\Pourashava::orderBy('name', 'asc')->get();
+        $city_corps = \App\Models\CityCorporation::orderBy('name', 'asc')->get();
 
         // Fetch assignable roles
         $roleQuery = Role::query();
@@ -145,6 +161,11 @@ class UserController extends Controller
 
         $data = [
             'areas' => $areas,
+            'districts' => $districts,
+            'thanas' => $thanas,
+            'unions' => $unions,
+            'pourashavas' => $pourashavas,
+            'city_corps' => $city_corps,
             'roles' => $roles,
         ];
 
@@ -163,7 +184,7 @@ class UserController extends Controller
             'name'          => 'required|max:190',
             'email'         => 'required|max:190|email|unique:users,email',
             'mobile'        => 'required|max:190|unique:users,mobile',
-            'assigned_area' => 'required|exists:village_areas,id',
+            'assigned_area' => 'required',
             'password'      => 'required|min:6|confirmed',
             'role_id'       => 'required|exists:roles,id',
             'status'        => 'required|in:0,1',
@@ -195,33 +216,77 @@ class UserController extends Controller
                 $user->assignRole($role->name);
 
                 // Save Area basis in AddressInfo
-                $area = VillageArea::find($request->assigned_area);
-                if ($area) {
-                    $address = new AddressInfo();
-                    $address->user_id = $user->id;
-                    
-                    // Present Address
-                    $address->present_division_id = $area->division_id;
-                    $address->present_district_id = $area->district_id;
-                    $address->present_thana_id = $area->thana_id;
-                    $address->present_union_id = $area->union_id;
-                    $address->present_village_id = $area->village_id;
-                    $address->present_village_area_id = $area->id;
-                    $address->present_area = $area->en_name;
-                    $address->present_area_bn = $area->bn_name;
+                $areaStr = $request->assigned_area;
+                $address = new AddressInfo();
+                $address->user_id = $user->id;
 
-                    // Permanent Address (match present area as default)
-                    $address->permanent_division_id = $area->division_id;
-                    $address->permanent_district_id = $area->district_id;
-                    $address->permanent_thana_id = $area->thana_id;
-                    $address->permanent_union_id = $area->union_id;
-                    $address->permanent_village_id = $area->village_id;
-                    $address->permanent_village_area_id = $area->id;
-                    $address->permanent_area = $area->en_name;
-                    $address->permanent_area_bn = $area->bn_name;
+                if ($areaStr !== 'All') {
+                    $parts = explode(':', $areaStr);
+                    if (count($parts) == 2) {
+                        $type = $parts[0];
+                        $id = $parts[1];
 
-                    $address->save();
+                        if ($type === 'District') {
+                            $district = \App\Models\District::find($id);
+                            if ($district) {
+                                $address->present_division_id = $district->division_id;
+                                $address->present_district_id = $district->id;
+                                $address->present_area = $district->name;
+                            }
+                        } elseif ($type === 'Thana') {
+                            $thana = \App\Models\Thana::find($id);
+                            if ($thana) {
+                                $address->present_district_id = $thana->district_id;
+                                $address->present_thana_id = $thana->id;
+                                $address->present_area = $thana->name;
+                            }
+                        } elseif ($type === 'Union') {
+                            $union = \App\Models\Union::find($id);
+                            if ($union) {
+                                $address->present_thana_id = $union->thana_id;
+                                if ($union->thana) {
+                                    $address->present_district_id = $union->thana->district_id;
+                                }
+                                $address->present_union_id = $union->id;
+                                $address->present_area = $union->name;
+                            }
+                        } elseif ($type === 'Pourashava') {
+                            $pourashava = \App\Models\Pourashava::find($id);
+                            if ($pourashava) {
+                                $address->present_area = $pourashava->name;
+                            }
+                        } elseif ($type === 'City Corp') {
+                            $city_corp = \App\Models\CityCorporation::find($id);
+                            if ($city_corp) {
+                                $address->present_district_id = $city_corp->district_id;
+                                $address->present_area = $city_corp->name;
+                            }
+                        } elseif ($type === 'VillageArea') {
+                            $area = VillageArea::find($id);
+                            if ($area) {
+                                $address->present_division_id = $area->division_id;
+                                $address->present_district_id = $area->district_id;
+                                $address->present_thana_id = $area->thana_id;
+                                $address->present_union_id = $area->union_id;
+                                $address->present_village_id = $area->village_id;
+                                $address->present_village_area_id = $area->id;
+                                $address->present_area = $area->en_name;
+                                $address->present_area_bn = $area->bn_name;
+                            }
+                        }
+                    }
                 }
+
+                // Copy present address to permanent address
+                $address->permanent_division_id = $address->present_division_id;
+                $address->permanent_district_id = $address->present_district_id;
+                $address->permanent_thana_id = $address->present_thana_id;
+                $address->permanent_union_id = $address->present_union_id;
+                $address->permanent_village_id = $address->present_village_id;
+                $address->permanent_village_area_id = $address->present_village_area_id;
+                $address->permanent_area = $address->present_area;
+                $address->permanent_area_bn = $address->present_area_bn;
+                $address->save();
 
                 $data['status'] = true;
                 $data['message'] = "Authorized Operator registered successfully.";

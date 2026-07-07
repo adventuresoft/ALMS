@@ -27,11 +27,31 @@ class RoleController extends Controller
         $sidebarMapping = [
             'Dashboard' => ['dashboard', 'home', 'stats'],
             'Access Management' => ['role', 'permission', 'user', 'module', 'roleuser', 'rolepermission', 'userpermission', 'userper', 'access', 'access-management', 'access_management'],
-            'Farmers & Borrowers' => ['farmer', 'borrower', 'loan', 'subsidy', 'cultivation', 'crop'],
+            'Farmers & Borrowers' => [
+                'farmer', 'farmer-info', 'farmer-create', 'farmer-general-list', 'farmer-approve-list'
+            ],
+            'Loan Information' => [
+                'loan', 'loan-info', 'loan-all-loans'
+            ],
+            'Apply For Loan' => [
+                'loan-apply', 'loan-all-loan-apply'
+            ],
+            'Subsidy Info' => [
+                'subsidy', 'subsidy-info', 'subsidy-create', 'subsidy-view'
+            ],
+            'Bank Info' => [
+                'bank', 'bank-info', 'bank-create', 'bank-list', 'bank-selling', 'bank-employee'
+            ],
+            'Land Info' => [
+                'land', 'land-info', 'land-create', 'land-view'
+            ],
+            'Reports' => [
+                'report', 'reports', 'reports-general', 'reports-loan', 'reports-payment', 'reports-due', 'reports-subsidy'
+            ],
             'Basic Settings' => [
                 'division', 'district', 'thana', 'upazila', 'pourashava', 'city_corporation', 'city-corporation',
                 'union', 'union_ward', 'post_office', 'post-office', 'village', 'village_area', 'ward', 'mouza',
-                'bank', 'account_type', 'country', 'religion', 'profession', 'family', 'disability',
+                'account_type', 'country', 'religion', 'profession', 'family', 'disability',
                 'basic-settings', 'basic_settings'
             ],
             'Institute Settings' => ['institute', 'institute_category', 'institute_type', 'organization', 'organization_people', 'organization-people'],

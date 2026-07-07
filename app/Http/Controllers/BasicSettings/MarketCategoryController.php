@@ -14,6 +14,10 @@ class MarketCategoryController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:market-category-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:market-category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:market-category-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:market-category-delete', ['only' => ['destroy']]);
         $this->middleware('admin');
     }
     /**

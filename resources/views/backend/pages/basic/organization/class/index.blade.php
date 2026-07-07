@@ -70,14 +70,18 @@
                                     </td>
                                     <td>
                                       <div style="display: inline-block">
-                                        <a class="btn btn-primary" href="{{route('basic-settings.organization-class.edit', $class->id)}}">Edit</a>
-                                        <form class="deleteClass" method="post">
+                                        @can('organization-class-update')
+<a class="btn btn-primary" href="{{route('basic-settings.organization-class.edit', $class->id)}}">Edit</a>
+@endcan
+                                        @can('organization-class-delete')
+<form class="deleteClass" method="post">
                                           @csrf
                                           @method('DELETE')
                                           <input type="hidden" class="id" name="id" value="{{$class->id}}">
                                           <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('basic-settings.organization-class.destroy', $class->id)}}">
                                           <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
+@endcan
                                     </div>
                                     </td>
                                 </tr>
