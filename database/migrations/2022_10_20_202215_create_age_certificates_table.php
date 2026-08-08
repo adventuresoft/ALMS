@@ -13,6 +13,7 @@ class CreateAgeCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('age_certificates')) {
         Schema::create('age_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

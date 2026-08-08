@@ -13,6 +13,7 @@ class CreateDisabilityCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('disability_certificates')) {
         Schema::create('disability_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

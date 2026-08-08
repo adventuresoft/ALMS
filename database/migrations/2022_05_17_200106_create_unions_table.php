@@ -13,6 +13,7 @@ class CreateUnionsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('unions')) {
         Schema::create('unions', function (Blueprint $table) {
             $table->id();
             $table->string('name');

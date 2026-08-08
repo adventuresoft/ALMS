@@ -13,6 +13,7 @@ class CreateDivisionsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('divisions')) {
         Schema::create('divisions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('country_id');

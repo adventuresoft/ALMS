@@ -13,6 +13,7 @@ class CreateVehicleTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('vehicle_types')) {
         Schema::create('vehicle_types', function (Blueprint $table) {
             $table->id();
             $table->string('en_name');

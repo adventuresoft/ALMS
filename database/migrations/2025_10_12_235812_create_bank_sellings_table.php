@@ -13,6 +13,7 @@ class CreateBankSellingsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('bank_sellings')) {
         Schema::create('bank_sellings', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('financial_year')->nullable();

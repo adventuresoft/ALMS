@@ -13,6 +13,7 @@ class CreateVoterAreaCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('voter_area_certificates')) {
         Schema::create('voter_area_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

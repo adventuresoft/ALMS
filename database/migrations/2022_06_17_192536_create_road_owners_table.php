@@ -13,6 +13,7 @@ class CreateRoadOwnersTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('road_owners')) {
         Schema::create('road_owners', function (Blueprint $table) {
             $table->id();
             $table->string('en_name');

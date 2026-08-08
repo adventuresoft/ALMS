@@ -13,6 +13,7 @@ class CreateBankBranchesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('bank_branches')) {
         Schema::create('bank_branches', function (Blueprint $table) {
             $table->id();
             $table->foreignId('bank_id')->constrained('banks')->onDelete('cascade');

@@ -13,6 +13,7 @@ class CreateAccountTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('account_types')) {
         Schema::create('account_types', function (Blueprint $table) {
             $table->id();
             $table->string('en_name');

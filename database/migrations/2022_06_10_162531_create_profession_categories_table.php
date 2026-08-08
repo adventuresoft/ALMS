@@ -13,6 +13,7 @@ class CreateProfessionCategoriesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('profession_categories')) {
         Schema::create('profession_categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('profession_type_id')->constrained('profession_types')->onDelete('cascade');

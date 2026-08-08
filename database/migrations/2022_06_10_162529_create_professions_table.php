@@ -13,6 +13,7 @@ class CreateProfessionsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('professions')) {
         Schema::create('professions', function (Blueprint $table) {
             $table->id();
             $table->string('en_name');

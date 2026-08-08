@@ -13,6 +13,7 @@ class CreateOrganizationOwenershipTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('organization_owenership_types')) {
         Schema::create('organization_owenership_types', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

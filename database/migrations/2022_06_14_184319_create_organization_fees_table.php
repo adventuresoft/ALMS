@@ -13,6 +13,7 @@ class CreateOrganizationFeesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('organization_fees')) {
         Schema::create('organization_fees', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('tax_year_id')->nullable();

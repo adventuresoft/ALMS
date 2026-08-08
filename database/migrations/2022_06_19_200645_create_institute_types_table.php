@@ -13,6 +13,7 @@ class CreateInstituteTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('institute_types')) {
         Schema::create('institute_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');

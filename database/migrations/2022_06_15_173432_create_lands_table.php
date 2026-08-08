@@ -13,6 +13,7 @@ class CreateLandsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('lands')) {
         Schema::create('lands', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

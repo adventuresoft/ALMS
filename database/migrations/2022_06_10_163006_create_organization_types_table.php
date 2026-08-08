@@ -13,6 +13,7 @@ class CreateOrganizationTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('organization_types')) {
         Schema::create('organization_types', function (Blueprint $table) {
             $table->id();
             $table->string('en_name')->unique();

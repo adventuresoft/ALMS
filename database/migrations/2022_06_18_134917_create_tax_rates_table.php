@@ -13,6 +13,7 @@ class CreateTaxRatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('tax_rates')) {
         Schema::create('tax_rates', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

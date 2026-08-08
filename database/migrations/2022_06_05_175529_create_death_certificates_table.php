@@ -13,6 +13,7 @@ class CreateDeathCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('death_certificates')) {
         Schema::create('death_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

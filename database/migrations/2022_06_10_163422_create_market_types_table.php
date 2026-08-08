@@ -13,6 +13,7 @@ class CreateMarketTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('market_types')) {
         Schema::create('market_types', function (Blueprint $table) {
             $table->id();
             $table->string('en_name');

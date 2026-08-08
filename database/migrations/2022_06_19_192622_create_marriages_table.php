@@ -13,6 +13,7 @@ class CreateMarriagesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('marriages')) {
         Schema::create('marriages', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

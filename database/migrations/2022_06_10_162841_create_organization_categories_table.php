@@ -13,6 +13,7 @@ class CreateOrganizationCategoriesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('organization_categories')) {
         Schema::create('organization_categories', function (Blueprint $table) {
             $table->id();
             $table->string('en_name');

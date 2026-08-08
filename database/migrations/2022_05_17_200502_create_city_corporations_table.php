@@ -13,6 +13,7 @@ class CreateCityCorporationsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('city_corporations')) {
         Schema::create('city_corporations', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('district_id')->unsigned();

@@ -13,6 +13,7 @@ class CreateTaxYearsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('tax_years')) {
         Schema::create('tax_years', function (Blueprint $table) {
             $table->id();
             $table->string('name');

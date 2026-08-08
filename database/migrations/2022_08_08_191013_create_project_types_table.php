@@ -13,6 +13,7 @@ class CreateProjectTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('project_types')) {
         Schema::create('project_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');

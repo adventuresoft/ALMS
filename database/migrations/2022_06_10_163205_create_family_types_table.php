@@ -13,6 +13,7 @@ class CreateFamilyTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('family_types')) {
         Schema::create('family_types', function (Blueprint $table) {
             $table->id();
             $table->string('en_name');

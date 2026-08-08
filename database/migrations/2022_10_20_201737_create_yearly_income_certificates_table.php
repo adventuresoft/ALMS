@@ -13,6 +13,7 @@ class CreateYearlyIncomeCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('yearly_income_certificates')) {
         Schema::create('yearly_income_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

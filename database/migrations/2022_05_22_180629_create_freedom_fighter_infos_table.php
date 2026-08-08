@@ -13,6 +13,7 @@ class CreateFreedomFighterInfosTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('freedom_fighter_infos')) {
         Schema::create('freedom_fighter_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

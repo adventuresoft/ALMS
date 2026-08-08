@@ -13,6 +13,7 @@ class CreateParentInfosTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('parent_infos')) {
         Schema::create('parent_infos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

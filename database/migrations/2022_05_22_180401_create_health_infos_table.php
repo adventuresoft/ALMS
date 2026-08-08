@@ -13,6 +13,7 @@ class CreateHealthInfosTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('health_infos')) {
         Schema::create('health_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

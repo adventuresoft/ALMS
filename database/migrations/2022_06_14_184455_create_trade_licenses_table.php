@@ -13,6 +13,7 @@ class CreateTradeLicensesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('trade_licenses')) {
         Schema::create('trade_licenses', function (Blueprint $table) {
             $table->id();
             $table->string('system_id');

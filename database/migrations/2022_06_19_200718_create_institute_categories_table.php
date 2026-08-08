@@ -13,6 +13,7 @@ class CreateInstituteCategoriesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('institute_categories')) {
         Schema::create('institute_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');

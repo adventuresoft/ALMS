@@ -13,6 +13,7 @@ class CreateLandClassesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('land_classes')) {
         Schema::create('land_classes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('land_type_id')->constrained('land_types')->onDelete('cascade');

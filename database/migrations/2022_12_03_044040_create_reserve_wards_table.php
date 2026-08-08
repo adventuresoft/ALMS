@@ -13,6 +13,7 @@ class CreateReserveWardsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('reserve_wards')) {
         Schema::create('reserve_wards', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('en_ward_no');

@@ -13,6 +13,7 @@ class CreateLoginActivitiesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('login_activities')) {
         Schema::create('login_activities', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned()->index();

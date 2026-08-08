@@ -13,6 +13,7 @@ class CreateOrganizationWorkAreasTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('organization_work_areas')) {
         Schema::create('organization_work_areas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('organization_category_id')->constrained('organization_categories')->onDelete('cascade');

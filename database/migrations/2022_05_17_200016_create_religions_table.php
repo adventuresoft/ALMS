@@ -13,6 +13,7 @@ class CreateReligionsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('religions')) {
         Schema::create('religions', function (Blueprint $table) {
             $table->id();
             $table->string('name');

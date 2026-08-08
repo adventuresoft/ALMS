@@ -13,6 +13,7 @@ class CreateWardsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('wards')) {
         Schema::create('wards', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

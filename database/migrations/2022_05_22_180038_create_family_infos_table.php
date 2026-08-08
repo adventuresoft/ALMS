@@ -13,6 +13,7 @@ class CreateFamilyInfosTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('family_infos')) {
         Schema::create('family_infos', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');

@@ -13,6 +13,7 @@ class CreateProfessionalInfosTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('professional_infos')) {
         Schema::create('professional_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

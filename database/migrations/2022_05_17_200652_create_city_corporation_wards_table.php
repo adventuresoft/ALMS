@@ -13,6 +13,7 @@ class CreateCityCorporationWardsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('city_corporation_wards')) {
         Schema::create('city_corporation_wards', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('en_ward_no');

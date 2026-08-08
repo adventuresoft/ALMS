@@ -13,6 +13,7 @@ class CreateOrphanCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('orphan_certificates')) {
         Schema::create('orphan_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

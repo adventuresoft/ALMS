@@ -13,6 +13,7 @@ class CreateChildlessCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('childless_certificates')) {
         Schema::create('childless_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

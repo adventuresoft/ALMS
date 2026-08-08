@@ -13,6 +13,7 @@ class CreateFarmerClassificationsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('farmer_classifications')) {
         Schema::create('farmer_classifications', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

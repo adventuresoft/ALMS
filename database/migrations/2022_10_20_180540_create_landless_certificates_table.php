@@ -13,6 +13,7 @@ class CreateLandlessCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('landless_certificates')) {
         Schema::create('landless_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

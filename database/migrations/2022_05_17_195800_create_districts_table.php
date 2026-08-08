@@ -13,6 +13,7 @@ class CreateDistrictsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('districts')) {
         Schema::create('districts', function (Blueprint $table) {
             $table->id();
             $table->string('name');

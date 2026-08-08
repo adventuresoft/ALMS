@@ -13,6 +13,7 @@ class CreateTaxesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('taxes')) {
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
             $table->string('system_id');

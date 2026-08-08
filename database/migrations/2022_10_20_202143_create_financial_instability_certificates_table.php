@@ -13,6 +13,7 @@ class CreateFinancialInstabilityCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('financial_instability_certificates')) {
         Schema::create('financial_instability_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

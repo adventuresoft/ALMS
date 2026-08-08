@@ -13,6 +13,7 @@ class CreateHouseClassesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('house_classes')) {
         Schema::create('house_classes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('house_category_id')->constrained('house_categories')->onDelete('cascade');

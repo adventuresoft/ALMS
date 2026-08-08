@@ -13,6 +13,7 @@ class CreateCropsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('crops')) {
         Schema::create('crops', function (Blueprint $table) {
             $table->id();
             $table->string('name');

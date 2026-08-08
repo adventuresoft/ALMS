@@ -13,6 +13,7 @@ class CreateAddressInfosTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('address_infos')) {
         Schema::create('address_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

@@ -13,6 +13,7 @@ class CreateOrganizationOwnershipTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('organization_ownership_types')) {
         Schema::create('organization_ownership_types', function (Blueprint $table) {
             $table->id();
             $table->string('en_name');

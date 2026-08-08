@@ -13,6 +13,7 @@ class CreateHousesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('houses')) {
         Schema::create('houses', function (Blueprint $table) {
             $table->id();
             

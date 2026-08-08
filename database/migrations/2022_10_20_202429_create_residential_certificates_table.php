@@ -13,6 +13,7 @@ class CreateResidentialCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('residential_certificates')) {
         Schema::create('residential_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

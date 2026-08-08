@@ -13,6 +13,7 @@ class CreatePourashavasTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('pourashavas')) {
         Schema::create('pourashavas', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('district_id')->unsigned();

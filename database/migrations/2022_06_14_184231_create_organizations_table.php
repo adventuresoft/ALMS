@@ -13,6 +13,7 @@ class CreateOrganizationsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('organizations')) {
         Schema::create('organizations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('institute_id')->constrained('institutes')->onDelete('cascade');

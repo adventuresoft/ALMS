@@ -13,6 +13,7 @@ class CreateSubsidyTypesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('subsidy_types')) {
         Schema::create('subsidy_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');

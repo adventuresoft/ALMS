@@ -13,6 +13,7 @@ class CreateCharacterCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('character_certificates')) {
         Schema::create('character_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

@@ -13,6 +13,7 @@ class CreateNameCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('name_certificates')) {
         Schema::create('name_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

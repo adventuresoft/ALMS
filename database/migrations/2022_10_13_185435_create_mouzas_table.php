@@ -13,6 +13,7 @@ class CreateMouzasTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('mouzas')) {
         Schema::create('mouzas', function (Blueprint $table) {
             $table->id();
             $table->string('name');

@@ -13,6 +13,7 @@ class CreateMarketsTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('markets')) {
         Schema::create('markets', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

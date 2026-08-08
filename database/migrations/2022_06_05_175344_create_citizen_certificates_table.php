@@ -13,6 +13,7 @@ class CreateCitizenCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('citizen_certificates')) {
         Schema::create('citizen_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

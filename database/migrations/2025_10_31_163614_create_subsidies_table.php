@@ -13,6 +13,7 @@ class CreateSubsidiesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('subsidies')) {
         Schema::create('subsidies', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

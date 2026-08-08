@@ -13,6 +13,7 @@ class CreateRoadCategoriesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('road_categories')) {
         Schema::create('road_categories', function (Blueprint $table) {
             $table->id();
             $table->string('en_name');

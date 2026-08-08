@@ -13,6 +13,7 @@ class CreateNidCorrectionCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('nid_correction_certificates')) {
         Schema::create('nid_correction_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

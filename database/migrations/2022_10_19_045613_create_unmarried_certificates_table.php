@@ -13,6 +13,7 @@ class CreateUnmarriedCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('unmarried_certificates')) {
         Schema::create('unmarried_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

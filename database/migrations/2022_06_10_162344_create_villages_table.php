@@ -13,6 +13,7 @@ class CreateVillagesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('villages')) {
         Schema::create('villages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('division_id')->constrained('divisions')->onDelete('cascade');

@@ -13,6 +13,7 @@ class CreateClassificationInfosTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('classification_infos')) {
         Schema::create('classification_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

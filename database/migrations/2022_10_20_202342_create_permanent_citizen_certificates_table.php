@@ -13,6 +13,7 @@ class CreatePermanentCitizenCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('permanent_citizen_certificates')) {
         Schema::create('permanent_citizen_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

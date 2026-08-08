@@ -13,6 +13,7 @@ class CreateLoanInfosTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('loan_infos')) {
         Schema::create('loan_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

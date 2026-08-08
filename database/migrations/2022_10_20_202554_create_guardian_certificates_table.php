@@ -13,6 +13,7 @@ class CreateGuardianCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('guardian_certificates')) {
         Schema::create('guardian_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();

@@ -13,6 +13,7 @@ class CreateRemarriedCertificatesTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('remarried_certificates')) {
         Schema::create('remarried_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('system_id')->unique();
