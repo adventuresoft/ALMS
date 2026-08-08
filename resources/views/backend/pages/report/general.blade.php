@@ -1,85 +1,110 @@
-@extends('backend.master', ['mainMenu' => 'Report', 'subMenu' => 'GeneralReport'])
+@extends('backend.master', ['mainMenu' => 'report', 'subMenu' => 'GeneralReport'])
+@section('title', 'General Report')
 @push('style')
     <style>
-        #farmer_table_wrapper .dataTables_filter {
-            float: right;
+        .report-container {
+            max-width: 900px;
+            background: #fff;
+            padding: 35px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin: 20px auto;
         }
 
-        #farmer_table_wrapper .dataTables_paginate {
-            float: right;
+        .report-pill {
+            background-color: #f1f3f4;
+            border-radius: 8px;
+            padding: 10px 18px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #e0e0e0;
         }
-    </style>
-@endpush
-@push('style')
-    <style>
+        .report-pill .label {
+            min-width: 180px;
+            font-weight: bold;
+            color: #5f6368;
+        }
+        .report-pill .value {
+            font-weight: bold;
+            color: #0e6a38;
+            font-size: 16px;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .section-header-green {
+            background-color: #0e6a38;
+            color: white;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 4px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .report-table {
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .report-table th {
+            background-color: #f5f5f5;
+            color: #333;
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+        }
+        .report-table td {
+            padding: 10px;
+            vertical-align: middle;
+            border: 1px solid #dee2e6;
+        }
+
         /* Print settings */
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 20mm;
+                margin: 15mm;
             }
-            .top-bar{
-                display: none;
-            }
-
-            .navbar {
-                display: none;
-            }
-
-            #printPageButton {
-                display: none;
-            }
-
-            .bg-success {
-                background: #28a745 !important;
-                color: #fff;
-            }
-
-            footer {
-                display: none;
-            }
-
-            .content-wrapper,
-            .container,
-            .card,
-            .card-footer {
-                background: #ffffff
-            }
-
-            .border-dark {
-                border: 1px solid #343a40 !important;
-            }
-
-            /* body {
-                font-family: "Siyam Rupali", Arial, sans-serif;
-                font-size: 12px;
-            } */
-            .no-print {
+            .no-print, #printPageButton, .navbar, footer, .top-bar, .breadcrumb, .content-header {
                 display: none !important;
             }
-            .bold{
-                font-weight: 600 !important;
-                font-size: 16px !important;
-                line-height: 1.2 px;
+            .content-wrapper, .container, .card, .card-footer {
+                background: #ffffff !important;
+                border: none !important;
             }
-            td{
-                padding: 3px !important;
+            .report-container {
+                max-width: 100% !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }
-            .col-md-8{
-                width: 66%;
-                float: left;
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
-            .col-md-4{
-                width: 33%;
-                float: right;
+            .section-header-green {
+                background-color: #0e6a38 !important;
+                color: #fff !important;
+            }
+            .report-pill {
+                background-color: #f1f3f4 !important;
+                border: 1px solid #e0e0e0 !important;
             }
         }
     </style>
 @endpush
-@section('title', 'Loan View')
+
 @section('content')
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header no-print">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-4">
@@ -102,82 +127,141 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-
-            <!-- Main row -->
             <div class="row">
                 <div class="col-md-12">
-                    <!-- Horizontal Form -->
                     <div class="card">
-                        <div class="card-header ">
-                            <div class="text-center">
-                                <h4 class="bold">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h4>
-                                <h4 class="bold">সাধারণ শাখা</h4>
-                                <h4 class="bold">জেলা প্রশাসকের কার্যালয়,</h4>
-                                <h4 class="bold">ঢাকা।</h4>
-                                <h4 class="text-success bold">সাধারণ রিপোর্ট</h4>
+                        <div class="card-body">
+                            <div class="report-container mx-auto">
+                                
+                                <!-- Header -->
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-md-2 col-2 text-right">
+                                        <img height="90" width="90" class="mx-auto d-block"
+                                             src="{{ asset('backend/img/certificate/DC_Office Dhaka_Logo.png') }}" 
+                                             alt="DC Office Dhaka Logo" 
+                                             style="object-fit: contain;">
+                                    </div>
+                                    
+                                    <div class="col-md-8 col-8 text-center">
+                                        <h6 class="bold mb-1" style="color: #000; font-family: 'Nikosh', 'Arial', sans-serif; font-weight: bold; font-size: 15px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h6>
+                                        <h6 class="bold mb-1" style="color: #000; font-family: 'Nikosh', 'Arial', sans-serif; font-weight: bold; font-size: 15px;">সাধারণ শাখা</h6>
+                                        <h6 class="bold mb-1" style="color: #000; font-family: 'Nikosh', 'Arial', sans-serif; font-weight: bold; font-size: 15px;">জেলা প্রশাসকের কার্যালয়,</h6>
+                                        <h6 class="bold mb-0" style="color: #000; font-family: 'Nikosh', 'Arial', sans-serif; font-weight: bold; font-size: 15px;">ঢাকা।</h6>
+                                    </div>
+                                    
+                                    <div class="col-md-2 col-2 text-left">
+                                        <img height="90" width="90" class="mx-auto d-block"
+                                             src="{{ asset('backend/img/certificate/govt-bd-logo.png') }}" 
+                                             alt="Govt Logo" 
+                                             style="object-fit: contain;">
+                                    </div>
+                                </div>
+                                
+                                <!-- Divider -->
+                                <div style="border-top: 3px solid #0e6a38; margin-bottom: 15px;"></div>
+                                
+                                <!-- Title -->
+                                <div class="text-center mb-4">
+                                    <h3 class="bold mb-1" style="color: #0e6a38; font-family: 'Nikosh', 'Arial', sans-serif; font-size: 26px; font-weight: bold;">সাধারণ রিপোর্ট</h3>
+                                    <h5 style="color: #555; font-family: 'Arial', sans-serif; font-weight: normal; margin-top: -2px;">General Report</h5>
+                                </div>
+
+                                <!-- Summary Table matching Profile format -->
+                                <div class="section-header-green">
+                                    কৃষক ও ঋণ সংক্রান্ত সারসংক্ষেপ / Farmer & Loan Statistics
+                                </div>
+
+                                <table class="table report-table table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>ক্যাটেগরি / Category</th>
+                                            <th>মোট (Total)</th>
+                                            <th>পুরুষ (Male)</th>
+                                            <th>নারী (Female)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-left font-weight-bold">কৃষকের সংখ্যা / Farmers Count</td>
+                                            <td class="font-weight-bold text-success">{{ bnValue($total_farmers) }}</td>
+                                            <td>{{ bnValue($male_farmers) }}</td>
+                                            <td>{{ bnValue($female_farmers) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left font-weight-bold">লোনপ্রাপ্ত কৃষকের সংখ্যা / Loan Received Farmers</td>
+                                            <td class="font-weight-bold text-success">{{ bnValue($total_loan_received_users) }}</td>
+                                            <td>{{ bnValue($total_loan_received_male_users) }}</td>
+                                            <td>{{ bnValue($total_loan_received_female_users) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- Bank & Financial Information Section -->
+                                <div class="section-header-green">
+                                    ব্যাংক ও ঋণের তথ্য / Bank & Financial Information
+                                </div>
+
+                                <div class="report-pill mb-3">
+                                    <span class="label">মোট ব্যাংকের সংখ্যা / Total Banks Count :</span>
+                                    <span class="value">{{ bnValue($total_banks) }}</span>
+                                </div>
+
+                                <table class="table report-table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">বিবরণ / Description</th>
+                                            <th class="text-right">পরিমাণ (Amount)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-left font-weight-bold">মোট বিতরণযোগ্য ঋণের পরিমাণ / Total Distributable Loan Amount</td>
+                                            <td class="text-right font-weight-bold" style="color: #0e6a38;">{{ bnValue(currencyFormat($total_distributable_loan_amount)) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left font-weight-bold">মোট বিতরণকৃত ঋণের পরিমাণ / Total Distributed Loan Amount</td>
+                                            <td class="text-right font-weight-bold" style="color: #0e6a38;">{{ bnValue(currencyFormat($total_distributed_loan_amount)) }}</td>
+                                        </tr>
+                                        <tr style="background-color: #fcfcfc;">
+                                            <td class="text-left font-weight-bold text-success" style="font-size: 15px;">বাকি বিতরণযোগ্য ঋণের পরিমাণ / Remaining Distributable Loan Amount</td>
+                                            <td class="text-right font-weight-bold text-success" style="font-size: 16px;">{{ bnValue(currencyFormat($remaining_distributable_loan_amount)) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- Subsidy Information Section -->
+                                <div class="section-header-green">
+                                    প্রণোদনার তথ্য / Subsidy Information
+                                </div>
+
+                                <table class="table report-table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">বিবরণ / Description</th>
+                                            <th class="text-right">পরিমাণ (Amount)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-left font-weight-bold">পুরুষ কৃষকের প্রণোদনার পরিমাণ / Male Farmers Subsidy</td>
+                                            <td class="text-right font-weight-bold" style="color: #0e6a38;">{{ bnValue(currencyFormat($total_subsidy_received_male_users)) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left font-weight-bold">নারী কৃষকের প্রণোদনার পরিমাণ / Female Farmers Subsidy</td>
+                                            <td class="text-right font-weight-bold" style="color: #0e6a38;">{{ bnValue(currencyFormat($total_subsidy_received_female_users)) }}</td>
+                                        </tr>
+                                        <tr style="background-color: #fcfcfc;">
+                                            <td class="text-left font-weight-bold text-success" style="font-size: 15px;">মোট প্রণোদনার পরিমাণ / Total Subsidy Amount</td>
+                                            <td class="text-right font-weight-bold text-success" style="font-size: 16px;">{{ bnValue(currencyFormat($total_subsidy_amount)) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
-
-                        <!-- /.card-header -->
-
-                        <div class="card-body table-responsive">
-                            <table id="farmer_table" class="table table-bordered table-striped">
-                                <tr>
-                                    <td>মোট কৃষকের সংখ্যা</td>
-                                    <td>মোট নারী কৃষকের সংখ্যা</td>
-                                    <td>মোট পুরুষ কৃষকের সংখ্যা</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ bnValue($total_farmers) }}</td>
-                                    <td>{{ bnValue($male_farmers) }}</td>
-                                    <td>{{ bnValue($female_farmers) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>মোট লোনপ্রাপ্ত কৃষকের সংখ্যা</td>
-                                    <td>মোট লোনপ্রাপ্ত নারী কৃষকের সংখ্যা</td>
-                                    <td>মোট লোনপ্রাপ্ত পুরুষ কৃষকের সংখ্যা</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ bnValue($total_loan_received_users) }}</td>
-                                    <td>{{ bnValue($total_loan_received_female_users) }}</td>
-                                    <td>{{ bnValue($total_loan_received_male_users) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>মোট ব্যাংকের সংখ্যা</td>
-                                    <td>মোট শাখার সংখ্যা</td>
-                                    <td>মোট লোনের পরিমাণ</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ bnValue($total_banks) }}</td>
-                                    <td>{{ bnValue($total_branches) }}</td>
-                                    <td>{{ bnValue(currencyFormat($total_loan_amount)) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>নারী কৃষকের প্রণোদনার পরিমাণ</td>
-                                    <td>পুরুষ কৃষকের প্রণোদনার পরিমাণ</td>
-                                    <td>মোট প্রণোদনার পরিমাণ</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ bnValue(currencyFormat($total_subsidy_received_female_users)) }}</td>
-                                    <td>{{ bnValue(currencyFormat($total_subsidy_received_male_users)) }}</td>
-                                    <td>{{ bnValue(currencyFormat($total_subsidy_amount)) }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
-
                     </div>
-                    <!-- /.card -->
                 </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
-
 @endsection
-@push('script')
-<script>
-
-</script>
-@endpush
