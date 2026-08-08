@@ -13,6 +13,8 @@ use App\Models\LandInfo;
 use App\Models\People;
 use App\Models\People\AddressInfo;
 use App\Models\People\FamilyInfo;
+use App\Models\BasicSettings\Bank;
+use App\Models\LoanInfo;
 use App\Models\Road;
 use App\Models\UnionWard;
 use App\Models\User;
@@ -33,6 +35,7 @@ class ApplicationController extends Controller
         $data['wards'] = UnionWard::get();
         $data['roads'] = Road::latest()->get();
         $data['crops'] = Crop::where('status', true)->latest()->get();
+        $data['banks'] = Bank::orderBy('en_name', 'asc')->get();
         return view('frontend.pages.application.create', $data);
     }
 
@@ -198,6 +201,27 @@ class ApplicationController extends Controller
                     $land->dag_no = $dag_nos[$landKey] ?? '';
                     $land->khatiyan_no = $khatiyan_no[$landKey] ?? '';
                     $land->save();
+                }
+            }
+
+            $loan_banks = $request->bank;
+            $loan_branches = $request->branch;
+            $loan_types = $request->loan_type;
+            $loan_amounts = $request->amount;
+            $financial_years = $request->financial_year;
+
+            if (!empty($loan_banks)) {
+                foreach ($loan_banks as $loanKey => $loan_bank) {
+                    if (!empty($loan_bank)) {
+                        $loan_info = new LoanInfo();
+                        $loan_info->user_id = $user->id;
+                        $loan_info->bank_id = $loan_bank;
+                        $loan_info->branch_name = $loan_branches[$loanKey] ?? '';
+                        $loan_info->loan_type = $loan_types[$loanKey] ?? '';
+                        $loan_info->amount = (float) str_replace(',', '', $loan_amounts[$loanKey] ?? 0);
+                        $loan_info->financial_year = $financial_years[$loanKey] ?? '';
+                        $loan_info->save();
+                    }
                 }
             }
 

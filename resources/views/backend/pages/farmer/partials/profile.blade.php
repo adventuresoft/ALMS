@@ -111,8 +111,8 @@
         <div class="row align-items-center mb-3">
             <div class="col-md-2 col-2 text-right">
                 <img height="90" width="90" class="mx-auto d-block"
-                     src="{{ asset('backend/img/certificate/union.png') }}" 
-                     alt="Union Parishad Logo" 
+                     src="{{ asset('backend/img/certificate/DC_Office Dhaka_Logo.png') }}" 
+                     alt="DC Office Dhaka Logo" 
                      style="object-fit: contain;">
             </div>
             
@@ -143,8 +143,20 @@
         <!-- Photo and Pill fields -->
         <div class="row align-items-stretch mb-4">
             <div class="col-md-4 text-center d-flex align-items-center justify-content-center">
+                @php
+                    if (!empty($user->image)) {
+                        $farmerPhotoUrl = asset($user->image);
+                    } else {
+                        $gender = $user->farmer->gender ?? 1;
+                        if ($gender == 2) {
+                            $farmerPhotoUrl = asset('backend/img/certificate/Female.jpg');
+                        } else {
+                            $farmerPhotoUrl = asset('backend/img/certificate/Male.jpg');
+                        }
+                    }
+                @endphp
                 <div style="border: 2px solid #0e6a38; border-radius: 8px; padding: 6px; background-color: #fff; width: 100%; max-width: 180px; aspect-ratio: 1/1.2; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                    <img src="{{ asset($user->image ? $user->image : 'public/assets/images/person-avatar.png') }}" 
+                    <img src="{{ $farmerPhotoUrl }}" 
                          alt="Farmer Photo" 
                          style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
                 </div>
@@ -445,7 +457,6 @@
                             <th>ফসল / Crop Name</th>
                             <th>জমির মালিকানা / Land Ownership</th>
                             <th>জমির পরিমাণ / Land Quantity</th>
-                            <th>ঠিকানা / Location Address</th>
                             <th>বিবরণ / Description</th>
                         </tr>
                     </thead>
@@ -456,12 +467,11 @@
                                 <td>{{ $cultivation->crop }}</td>
                                 <td>{{ $cultivation->land_owner === 'own' ? 'নিজের / Own' : 'লীজ / Leased' }}</td>
                                 <td>{{ $cultivation->quantity }}</td>
-                                <td>{{ $cultivation->address ?: '--' }}</td>
                                 <td>{{ $cultivation->description ?: '--' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center text-muted">কোন তথ্য পাওয়া যায়নি! / No records found!</td>
+                                <td colspan="5" class="text-center text-muted">কোন তথ্য পাওয়া যায়নি! / No records found!</td>
                             </tr>
                         @endforelse
                     </tbody>

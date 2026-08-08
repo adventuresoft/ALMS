@@ -84,6 +84,14 @@
                                                         @include('frontend.pages.application.partials.land')
                                                     </section>
                                                 </div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">Initial Loan Info</h4>
+                                                    </div>
+                                                    <section id="loan" class="">
+                                                        @include('frontend.pages.application.partials.loan')
+                                                    </section>
+                                                </div>
                                             </div>
 
                                             <div class="text-center">

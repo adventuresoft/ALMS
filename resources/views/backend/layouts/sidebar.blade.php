@@ -469,46 +469,7 @@
 
 
 
-                @can('land-info-read')
-                    {{-- Land Info --}}
-                    <li
-                        class="nav-item
-                        @if ($subMenu == 'LandCreate' || $subMenu == 'LandList') menu-open @endif
-                        ">
-                        <a href="#" class="nav-link @if ($mainMenu == 'Land') active @endif">
-                            <i class="nav-icon fas fa-bacon"></i>
-                            <p>
-                                Land Info
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-
-                          
-                                @can('land-create-read')
-                                <li class="nav-item">
-                                    <a href="{{ route('land.create') }}"
-                                        class="nav-link @if ($subMenu == 'LandCreate') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Create</p>
-                                    </a>
-                                </li>
-                                @endcan
-                         
-                                @can('land-view-read')
-                                <li class="nav-item">
-                                    <a href="{{ route('land.index') }}"
-                                        class="nav-link @if ($subMenu == 'LandList') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>View</p>
-                                    </a>
-                                </li>
-                                @endcan
-                          
-
-                        </ul>
-                    </li>
-                @endcan
+                {{-- Land Info removed --}}
 
                 @can('reports-read')
                 <li class="nav-item
