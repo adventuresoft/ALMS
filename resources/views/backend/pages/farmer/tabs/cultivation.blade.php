@@ -62,16 +62,23 @@
                                                 name="is_agriculture_card" class="agri-radio">
                                             Yes
                                         </label>
+
+                                        <input type="text"
+                                            id="agriculture_card_number"
+                                            placeholder="Agriculture Card Number"
+                                            name="agriculture_card_number"
+                                            value="{{ $user->farmer->agriculture_card_number ?? '' }}"
+                                            class="form-control"
+                                            style="width: 250px; margin-left: 10px; display: none;">
                                     </div>
                                 </div>
                                  <div id="cultivation-section">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Item</th>
-                                            <th>Land Owner</th>
+                                            <th style="min-width: 200px;">Cultivation Type</th>
+                                            <th style="min-width: 180px;">Ownership Type</th>
                                             <th>Quantity</th>
-                                            <th>Address</th>
                                             <th>Description</th>
                                             <th><button type="button" class="btn btn-sm btn-success add-new-cultivation"><i class="fa fa-plus-circle"></i></button></th>
                                         </tr>
@@ -90,14 +97,10 @@
                             <div class="card-footer">
                                 <div class="form-group row">
                                     <div class="col-sm-3">
-                                        <a href="{{ route('farmer.address', $user->id) }}"
-                                            class="btn btn-danger btn-block">Address</a>
-                                    </div>
-                                    <div class="col-sm-3">
                                         <button type="submit" class="btn btn-success btn-block">Save</button>
                                     </div>
                                     <div class="col-sm-3">
-                                        <a href="{{ route('farmer.land', $user->id) }}" class="btn btn-primary btn-block ">Land Info</a>
+                                        <a href="{{ route('farmer.land', $user->id) }}" class="btn btn-primary btn-block">Land Info</a>
                                     </div>
                                 </div>
                             </div>
@@ -177,21 +180,26 @@
         
         $(document).ready(function () {
 
-    function toggleCultivation() {
+    function toggleAgriCard(clearValue) {
         let value = $('input[name="is_agriculture_card"]:checked').val();
         if (value == "1") {
             $('#cultivation-section').show();
+            $('#agriculture_card_number').show();
         } else {
             $('#cultivation-section').hide();
+            $('#agriculture_card_number').hide();
+            if (clearValue) {
+                $('#agriculture_card_number').val('');
+            }
         }
     }
 
-    // On load (for edit or create)
-    toggleCultivation();
+    // On load — run immediately to set correct initial state
+    toggleAgriCard(false);
 
-    // On change
-    $(document).on('change', '.agri-radio', function () {
-        toggleCultivation();
+    // On user change
+    $(document).on('change', 'input[name="is_agriculture_card"]', function () {
+        toggleAgriCard(true);
     });
 
 });

@@ -367,20 +367,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="info-label">Village :</td>
-                            <td class="info-value">{{ $user->addressInfo->permanentVillage->en_name ?? ($user->addressInfo->permanentVillage->name ?? '--') }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Ward :</td>
-                            <td class="info-value">{{ $user->addressInfo->permanentWard->en_ward_no ?? '--' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Road :</td>
-                            <td class="info-value">{{ $user->addressInfo->permanentRoad->name ?? ($user->addressInfo->permanent_road ?? '--') }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">House :</td>
-                            <td class="info-value">{{ $user->addressInfo->permanentHouse->house ?? ($user->addressInfo->permanent_house ?? '--') }}</td>
+                            <td class="info-label">Address :</td>
+                            <td class="info-value">{{ $user->addressInfo->permanent_area ?? '--' }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -414,20 +402,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="info-label">Village :</td>
-                            <td class="info-value">{{ $user->addressInfo->presentVillage->en_name ?? ($user->addressInfo->presentVillage->name ?? '--') }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Ward :</td>
-                            <td class="info-value">{{ $user->addressInfo->presentWard->en_ward_no ?? '--' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Road :</td>
-                            <td class="info-value">{{ $user->addressInfo->presentRoad->name ?? ($user->addressInfo->present_road ?? '--') }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">House :</td>
-                            <td class="info-value">{{ $user->addressInfo->presentHouse->house ?? ($user->addressInfo->present_house ?? '--') }}</td>
+                            <td class="info-label">Address :</td>
+                            <td class="info-value">{{ $user->addressInfo->present_area ?? '--' }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -552,7 +528,7 @@
                             @if (count($user->loanInfos))
                                 @foreach ($user->loanInfos as $loanInfo)
                                     <tr>
-                                        <td>{{ $loanInfo->bank->bn_name ?? '' }}, {{ $loanInfo->branch->bn_name ?? '' }}</td>
+                                        <td>{{ $loanInfo->bank->bn_name ?? '' }}, {{ $loanInfo->branch_name ?? '' }}</td>
                                         <td>{{ bnValue(financialYears($loanInfo->financial_year)) }} </td>
                                         <td>{{ bnValue(currencyFormat($loanInfo->amount)) }}</td>
                                         <td>{{ loanStatuses($loanInfo->status) }}</td>

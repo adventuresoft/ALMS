@@ -63,9 +63,9 @@ class ClassificationInfoController extends Controller
                     $loan_info = new LoanInfo();
                     $loan_info->user_id = $request->user_id;
                     $loan_info->bank_id = $bank;
-                    $loan_info->branch_id = $branches[$key] ?? "" ;
+                    $loan_info->branch_name = $branches[$key] ?? "";
                     $loan_info->loan_type = $loan_types[$key] ?? "";
-                    $loan_info->amount = $amounts[$key] ?? 0;
+                    $loan_info->amount = (float) str_replace(',', '', $amounts[$key] ?? 0);
                     $loan_info->financial_year = $financial_years[$key] ?? '';
                     $loan_info->save();
                 }

@@ -62,6 +62,18 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="fatherLiveStatus" class="col-sm-2 col-form-label">Father's Live Status</label>
+                                    <div class="col-sm-10">
+                                        <select name="father_live_status" class="form-control" id="fatherLiveStatus">
+                                            @foreach (family_constant_option('live_status') as $key => $status)
+                                                <option value="{{$key}}" {{$user->familyInfo ? (($user->familyInfo->father_live_status == $key) ? 'selected' : '') : (($key == 1) ? 'selected' : '')}}>{{$status}}</option>
+                                            @endforeach
+                                        </select>
+                                        <small class="text-danger error father_live_status_error"></small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="motherName" class="col-sm-2 col-form-label">Mother's Name</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="mother_name" id="motherName"  value="{{$user->familyInfo->mother_name ??''}}"  placeholder="Mother's Name">
@@ -82,6 +94,18 @@
                                     <div class="col-sm-10">
                                         <input type="text" maxlength="17" name="mother_nid" class="form-control" id="motherNID"  value="{{$user->familyInfo->mother_nid ?? ''}}" placeholder="Mother's NID">
                                         <small class="text-danger error mother_nid_error"></small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="motherLiveStatus" class="col-sm-2 col-form-label">Mother's Live Status</label>
+                                    <div class="col-sm-10">
+                                        <select name="mother_live_status" class="form-control" id="motherLiveStatus">
+                                            @foreach (family_constant_option('live_status') as $key => $status)
+                                                <option value="{{$key}}" {{$user->familyInfo ? (($user->familyInfo->mother_live_status == $key) ? 'selected' : '') : (($key == 1) ? 'selected' : '')}}>{{$status}}</option>
+                                            @endforeach
+                                        </select>
+                                        <small class="text-danger error mother_live_status_error"></small>
                                     </div>
                                 </div>
 

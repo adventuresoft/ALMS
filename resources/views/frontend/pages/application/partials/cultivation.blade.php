@@ -22,7 +22,6 @@
                 <th>Item</th>
                 <th>Land Owner</th>
                 <th>Quantity</th>
-                <th>Address</th>
                 <th>Description</th>
                 <th>
                     <button type="button" class="btn btn-sm btn-success add-new-cultivation">

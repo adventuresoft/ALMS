@@ -350,9 +350,9 @@
                                             </div>
             
                                             <div class="form-group row">
-                                                <label for="fathersLiveStatus" class="col-sm-2 col-form-label">Father's Live Statu</label>
-                                                <div class="col-sm-10">
-                                                    <select name="father_live_status" class="form-control" id="fathersLiveStatus">
+                                    <label for="fathersLiveStatus" class="col-sm-2 col-form-label">Father's Live Status</label>
+                                    <div class="col-sm-10">
+                                        <select name="father_live_status" class="form-control" id="fathersLiveStatus">
                                                         @foreach (family_constant_option('live_status') as $key => $live_status)
                                                             <option value="{{$key}}" {{$user->familyInfo ? ($user->familyInfo->father_live_status == $key ? 'selected' : '') : ''}}>{{$live_status}}</option>
                                                         @endforeach

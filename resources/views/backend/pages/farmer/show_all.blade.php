@@ -201,7 +201,7 @@
                                                     @if (count($user->loanInfos))
                                                         @foreach ($user->loanInfos as $loanInfo)
                                                             {{$loanInfo->bank->bn_name ?? ''}}<br>
-                                                            {{$loanInfo->branch->bn_name ?? '' }}
+                                                            {{$loanInfo->branch_name ?? '' }}
                                                         @endforeach
                                                     @endif
                                                 </td>

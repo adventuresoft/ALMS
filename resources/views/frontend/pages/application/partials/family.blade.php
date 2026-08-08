@@ -4,34 +4,45 @@
 @endpush
 <div class="panel-body">
     <div class="form-group row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="father_name">Father Name</label>
             <input type="text" value="" class="form-control" name="father_name" id="father_name"
                 placeholder="Father Name">
             <small class="error father_name-error text-danger"></small>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="father_name_bn">Father Name In Bengali</label>
             <input type="text" value="" class="form-control" name="father_name_bn" id="father_name_bn"
                 placeholder="Father Name In Bengali">
             <small class="error father_name_bn-error text-danger"></small>
         </div>
-        <div class="col-md-4">
+
+        <div class="col-md-3">
+            <label for="father_live_status">Father's Live Status</label>
+            <select name="father_live_status" class="form-control" id="father_live_status">
+                @foreach (family_constant_option('live_status') as $key => $status)
+                    <option value="{{$key}}" {{$key == 1 ? 'selected' : ''}}>{{$status}}</option>
+                @endforeach
+            </select>
+            <small class="error father_live_status-error text-danger"></small>
+        </div>
+
+        <div class="col-md-3">
             <label for="father_nid">Father's NID</label>
             <input type="text" value="" class="form-control" name="father_nid" id="father_nid" placeholder="Father's NID">
             <small class="error father_nid-error text-danger"></small>
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="mother_name">Mother Name</label>
             <input type="text" value="" class="form-control"
                 name="mother_name" id="mother_name" placeholder="Mother Name">
             <small class="error mother_name-error text-danger"></small>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="mother_name_bn">Mother Name In Bangla</label>
             <input type="text" value="" class="form-control"
                 name="mother_name_bn" id="mother_name_bn"
@@ -39,10 +50,20 @@
             <small class="error mother_name_bn-error text-danger"></small>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <label for="mother_live_status">Mother's Live Status</label>
+            <select name="mother_live_status" class="form-control" id="mother_live_status">
+                @foreach (family_constant_option('live_status') as $key => $status)
+                    <option value="{{$key}}" {{$key == 1 ? 'selected' : ''}}>{{$status}}</option>
+                @endforeach
+            </select>
+            <small class="error mother_live_status-error text-danger"></small>
+        </div>
+
+        <div class="col-md-3">
             <label for="mother_nid">Mother's NID</label>
             <input type="text" value="" class="form-control" name="mother_nid" id="mother_nid" placeholder="Mother's NID">
-            <small class="error father_nid-error text-danger"></small>
+            <small class="error mother_nid-error text-danger"></small>
         </div>
     </div>
 

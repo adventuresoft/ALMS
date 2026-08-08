@@ -30,8 +30,8 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{financialYears($loanInfo->financial_year)}}</td>
-                        <td>{{$loanInfo->branch->bank->bn_name ?? ''}}</td>
-                        <td>{{$loanInfo->branch->bn_name ?? ''}}</td>
+                        <td>{{$loanInfo->bank->bn_name ?? ''}}</td>
+                        <td>{{$loanInfo->branch_name ?? ''}}</td>
                         <td>{{loanTypes($loanInfo->loan_type)}}</td>
                         <td>{{$loanInfo->amount}}</td>
                         <td>{{loanStatuses($loanInfo->status)}}</td>

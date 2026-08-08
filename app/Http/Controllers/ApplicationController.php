@@ -118,9 +118,11 @@ class ApplicationController extends Controller
             $family->user_id = $user->id;
             $family->father_name = $request->father_name;
             $family->father_name_bn = $request->father_name_bn;
+            $family->father_live_status = $request->father_live_status ?? 1;
             $family->father_nid = $request->father_nid;
             $family->mother_name = $request->mother_name;
             $family->mother_name_bn = $request->mother_name_bn;
+            $family->mother_live_status = $request->mother_live_status ?? 1;
             $family->mother_nid = $request->mother_nid;
             $family->marital_status = $request->marital_status;
             $family->spouse = $request->spouse ? json_encode($request->spouse) : null;

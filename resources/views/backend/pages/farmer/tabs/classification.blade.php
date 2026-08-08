@@ -188,7 +188,7 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Bank</th>
+                                            <th style="min-width: 250px;">Bank</th>
                                             <th>Branch</th>
                                             <th>Types</th>
                                             <th>Amount</th>
@@ -305,27 +305,36 @@
             });
         })
 
-        $(document).on('change', '.bank', function(e){
-            e.preventDefault();
-            let _this = $(this);
-            let _this_html = _this.html();
-            $.ajax({
-                type: "GET",
-                url: "{{ url('branch-options') }}/"+_this.val(),
-                success: function(response) {
-                    let branch_html = '<option value="">Select Branch</option>';
-                    if (response.branches.length) {
-                        response.branches.forEach(element => {
-                            branch_html +='<option value="'+element.id+'">'+element.en_name+'</option>'
-                        });
-                    }
-                    _this.closest('tr').find(".branch").html(branch_html)
-                }
-            });
-        })
+        // Currency formatting for amount inputs (Bangladeshi format with .00)
+        function formatCurrency(input) {
+            let raw = input.val().replace(/[^0-9.]/g, '');
+            let parts = raw.split('.');
+            let intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            let decPart = parts[1] !== undefined ? parts[1].substring(0, 2) : '';
+            input.val(intPart + (decPart !== '' || raw.endsWith('.') ? '.' + decPart : ''));
+        }
 
+        function finalizeCurrency(input) {
+            let raw = input.val().replace(/[^0-9.]/g, '');
+            if (!raw) { input.val(''); return; }
+            let num = parseFloat(raw);
+            if (isNaN(num)) { input.val(''); return; }
+            let formatted = num.toLocaleString('en-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            input.val(formatted);
+        }
 
+        $(document).on('input', '.amount-input', function () {
+            formatCurrency($(this));
+        });
 
+        $(document).on('blur', '.amount-input', function () {
+            finalizeCurrency($(this));
+        });
+
+        // Format existing amount values on page load
+        $('.amount-input').each(function () {
+            finalizeCurrency($(this));
+        });
 
     </script>
 @endpush
