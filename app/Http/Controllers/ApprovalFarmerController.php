@@ -74,6 +74,7 @@ class ApprovalFarmerController extends Controller
     
         // 📄 Pagination
         $farmers = $query->select('farmers.*', 'users.name', 'users.system_id')
+                         ->orderBy('farmers.created_at', 'desc')
                          ->paginate(50)
                          ->withQueryString(); // keep search/filter in URL
         

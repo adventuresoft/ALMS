@@ -40,20 +40,35 @@ class ApplicationController extends Controller
     {
 
         $validate = Validator::make($request->all(), [
-            'name' => 'required|max:190',
-            'bn_name' => 'required|max:190',
-
-            'father_name' => 'nullable|max:190',
-            'father_name_bn' => 'nullable|max:190',
-
-            'mother_name' => 'nullable|max:190',
-            'mother_name_bn' => 'nullable|max:190',
-
+            'name' => 'required|max:190|regex:/^[a-zA-Z\s\.\-\(\)]+$/',
+            'bn_name' => 'required|max:190|regex:/^[\x{0980}-\x{09FF}\s\.\-\(\)]+$/u',
+            'father_name' => 'nullable|max:190|regex:/^[a-zA-Z\s\.\-\(\)]+$/',
+            'father_nid' => 'nullable|digits_between:10,17|regex:/^[0-9]+$/',
+            'mother_name' => 'nullable|max:190|regex:/^[a-zA-Z\s\.\-\(\)]+$/',
+            'mother_nid' => 'nullable|digits_between:10,17|regex:/^[0-9]+$/',
             'email' => 'nullable|email',
-            'mobile' => 'required|max:11|min:11',
-
+            'mobile' => 'required|digits:11|regex:/^[0-9]+$/',
             'date_of_birth' => 'required',
             'gender' => 'required',
+            'birth_certificate' => 'nullable|digits_between:10,17|regex:/^[0-9]+$/|unique:users,birth_certificate',
+            'nid' => 'nullable|digits_between:10,17|regex:/^[0-9]+$/|unique:users,nid',
+        ], [
+            'name.regex' => 'Name must contain only English characters.',
+            'bn_name.regex' => 'Name Bangla must contain only Bangla characters.',
+            'father_name.regex' => "Father's Name must contain only English characters.",
+            'father_nid.digits_between' => "Father's NID must be between 10 and 17 digits.",
+            'father_nid.regex' => "Father's NID must contain only English digits.",
+            'mother_name.regex' => "Mother's Name must contain only English characters.",
+            'mother_nid.digits_between' => "Mother's NID must be between 10 and 17 digits.",
+            'mother_nid.regex' => "Mother's NID must contain only English digits.",
+            'mobile.digits' => 'Mobile number must be exactly 11 digits.',
+            'mobile.regex' => 'Mobile number must contain only English digits.',
+            'birth_certificate.digits_between' => 'Birth Registration Number must be between 10 and 17 digits.',
+            'birth_certificate.regex' => 'Birth Registration Number must contain only English digits.',
+            'birth_certificate.unique' => 'This Birth Registration Number has already been registered.',
+            'nid.digits_between' => 'NID Number must be between 10 and 17 digits.',
+            'nid.regex' => 'NID Number must contain only English digits.',
+            'nid.unique' => 'This NID Number has already been registered.',
         ]);
 
         if ($validate->fails()) {

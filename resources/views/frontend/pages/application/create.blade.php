@@ -114,10 +114,116 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <script>
+        // Bangla to English digit conversion mapping
+        const banglaToEnglishMap = {
+            '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
+            '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9'
+        };
+
+        function convertBanglaToEnglish(str) {
+            return str.replace(/[০-৯]/g, d => banglaToEnglishMap[d]);
+        }
+
+        function filterNonDigits(str) {
+            return str.replace(/[^0-9]/g, '');
+        }
+
+        // Realtime sanitization for digit-only fields
+        $(document).on('input', '#mobile, #nid, #birth_certificate, #father_nid, #mother_nid', function() {
+            let val = $(this).val();
+            let converted = convertBanglaToEnglish(val);
+            let digitsOnly = filterNonDigits(converted);
+            $(this).val(digitsOnly);
+        });
+
+        $(document).ready(function() {
+            // Set maxlengths to prevent overflow
+            $('#mobile').attr('maxlength', 11);
+            $('#nid, #birth_certificate, #father_nid, #mother_nid').attr('maxlength', 17);
+        });
+
+        // English-only input constraint for Name, Father Name, Mother Name
+        $(document).on('keypress', '#name, #father_name, #mother_name', function(e) {
+            const char = String.fromCharCode(e.which);
+            const englishRegex = /^[a-zA-Z\s\.\-\(\)]+$/;
+            if (!englishRegex.test(char)) {
+                e.preventDefault();
+            }
+        });
+
+        $(document).on('input', '#name, #father_name, #mother_name', function() {
+            let val = $(this).val();
+            let cleaned = val.replace(/[^a-zA-Z\s\.\-\(\)]/g, '');
+            if (val !== cleaned) {
+                $(this).val(cleaned);
+            }
+        });
+
+        // Bangla-only input constraint for Name In Bangla, Father/Mother Bangla Names
+        $(document).on('keypress', '#bn_name, #father_name_bn, #mother_name_bn', function(e) {
+            const char = String.fromCharCode(e.which);
+            const isBangla = /^[\u0980-\u09FF\s\.\-\(\)]+$/.test(char);
+            if (!isBangla) {
+                e.preventDefault();
+            }
+        });
+
+        $(document).on('input', '#bn_name, #father_name_bn, #mother_name_bn', function() {
+            let val = $(this).val();
+            let cleaned = val.replace(/[^\u0980-\u09FF\s\.\-\(\)]/g, '');
+            if (val !== cleaned) {
+                $(this).val(cleaned);
+            }
+        });
 
         $(document).on('submit', "#applicationForm", function(e) {
             e.preventDefault();
             let thisForm = $(this);
+            
+            // Clear previous error texts
+            thisForm.find(".error").text("");
+
+            // Client-side validations
+            let mobile = $('#mobile').val();
+            if (mobile && mobile.length !== 11) {
+                $('#mobile').focus();
+                toastr.error("Mobile number must be exactly 11 digits.");
+                thisForm.find(".mobile-error").text("Mobile number must be exactly 11 digits.");
+                return false;
+            }
+
+            let nid = $('#nid').val();
+            if (nid && (nid.length < 10 || nid.length > 17)) {
+                $('#nid').focus();
+                toastr.error("NID number must be between 10 and 17 digits.");
+                thisForm.find(".nid-error").text("NID number must be between 10 and 17 digits.");
+                return false;
+            }
+
+            let birthCert = $('#birth_certificate').val();
+            if (birthCert && (birthCert.length < 10 || birthCert.length > 17)) {
+                $('#birth_certificate').focus();
+                toastr.error("Birth Registration number must be between 10 and 17 digits.");
+                thisForm.find(".birth_certificate-error").text("Birth Registration number must be between 10 and 17 digits.");
+                return false;
+            }
+
+            let fatherNid = $('#father_nid').val();
+            if (fatherNid && (fatherNid.length < 10 || fatherNid.length > 17)) {
+                $('#father_nid').focus();
+                toastr.error("Father's NID number must be between 10 and 17 digits.");
+                thisForm.find(".father_nid-error").text("Father's NID number must be between 10 and 17 digits.");
+                return false;
+            }
+
+            let motherNid = $('#mother_nid').val();
+            if (motherNid && (motherNid.length < 10 || motherNid.length > 17)) {
+                $('#mother_nid').focus();
+                toastr.error("Mother's NID number must be between 10 and 17 digits.");
+                thisForm.find(".mother_nid-error").text("Mother's NID number must be between 10 and 17 digits.");
+                return false;
+            }
+
             let _this_text = thisForm.find('button[type="submit"]').text();
             $.ajax({
                 type: "POST",

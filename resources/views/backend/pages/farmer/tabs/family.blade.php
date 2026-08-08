@@ -46,9 +46,17 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="fatherNameBn" class="col-sm-2 col-form-label">Father's Name (Bangla)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="father_name_bn" value="{{$user->familyInfo->father_name_bn ?? ''}}" class="form-control" id="fatherNameBn" placeholder="Father's Name (Bangla)">
+                                        <small class="text-danger error father_name_bn_error"></small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="fatherNID" class="col-sm-2 col-form-label">Father's NID</label>
                                     <div class="col-sm-10">
-                                        <input type="text" maxlength="17" name="father_nid" class="form-control" id="fatherNID"  value="{{$user->familyInfo->father_nid ?? ''}}"  placeholder="Fatherss NID">
+                                        <input type="text" maxlength="17" name="father_nid" class="form-control" id="fatherNID"  value="{{$user->familyInfo->father_nid ?? ''}}"  placeholder="Father's NID">
                                         <small class="text-danger error father_nid_error"></small>
                                     </div>
                                 </div>
@@ -58,6 +66,14 @@
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="mother_name" id="motherName"  value="{{$user->familyInfo->mother_name ??''}}"  placeholder="Mother's Name">
                                         <small class="text-danger error mother_name_error"></small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="motherNameBn" class="col-sm-2 col-form-label">Mother's Name (Bangla)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="mother_name_bn" id="motherNameBn"  value="{{$user->familyInfo->mother_name_bn ?? ''}}"  placeholder="Mother's Name (Bangla)">
+                                        <small class="text-danger error mother_name_bn_error"></small>
                                     </div>
                                 </div>
 
@@ -229,6 +245,19 @@
                 this.value = this.value.replace(/[^a-zA-Z\s\.\-\(\)]/g, '');
             });
 
+            // Bangla-only input constraint for Father's / Mother's Name (Bangla)
+            $('#fatherNameBn, #motherNameBn').on('keypress', function(e) {
+                const char = String.fromCharCode(e.which);
+                const isBangla = /^[\u0980-\u09FF\s\.\-\(\)]+$/.test(char);
+                if (!isBangla) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#fatherNameBn, #motherNameBn').on('input', function() {
+                this.value = this.value.replace(/[^\u0980-\u09FF\s\.\-\(\)]/g, '');
+            });
+
             // English numbers only, automatic conversion, and max 17 digits for Father's / Mother's NID
             $('#fatherNID, #motherNID').on('input', function() {
                 let val = convertBanglaToEnglishNumber(this.value);
@@ -246,6 +275,8 @@
                 // Client-side validations
                 let fatherName = $('#fatherName').val().trim();
                 let motherName = $('#motherName').val().trim();
+                let fatherNameBn = $('#fatherNameBn').val().trim();
+                let motherNameBn = $('#motherNameBn').val().trim();
                 let fatherNid = $('#fatherNID').val().trim();
                 let motherNid = $('#motherNID').val().trim();
 
@@ -257,8 +288,18 @@
                     hasError = true;
                 }
 
+                if (fatherNameBn && !/^[\u0980-\u09FF\s\.\-\(\)]+$/.test(fatherNameBn)) {
+                    thisForm.find('.father_name_bn_error').text("Father's Name (Bangla) must contain only Bangla characters.");
+                    hasError = true;
+                }
+
                 if (motherName && !/^[a-zA-Z\s\.\-\(\)]+$/.test(motherName)) {
                     thisForm.find('.mother_name_error').text("Mother's Name must contain only English characters.");
+                    hasError = true;
+                }
+
+                if (motherNameBn && !/^[\u0980-\u09FF\s\.\-\(\)]+$/.test(motherNameBn)) {
+                    thisForm.find('.mother_name_bn_error').text("Mother's Name (Bangla) must contain only Bangla characters.");
                     hasError = true;
                 }
 
