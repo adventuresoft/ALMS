@@ -48,12 +48,12 @@ class FamilyInfoController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'family_type_id' => 'nullable',
-            'father_name' => 'nullable|max:190',
+            'father_name' => 'nullable|max:190|regex:/^[a-zA-Z\s\.\-\(\)]+$/',
             'father_live_status' => 'nullable|max:190',
-            'father_nid' => 'nullable|max:190',
-            'mother_name' => 'nullable|max:190',
+            'father_nid' => 'nullable|digits_between:10,17|regex:/^[0-9]+$/',
+            'mother_name' => 'nullable|max:190|regex:/^[a-zA-Z\s\.\-\(\)]+$/',
             'mother_live_status' => 'nullable|max:190',
-            'mother_nid' => 'nullable|max:190',
+            'mother_nid' => 'nullable|digits_between:10,17|regex:/^[0-9]+$/',
             'marital_status' => 'nullable|max:190',
             'spouse_name' => 'nullable|max:190',
             'spouse_nid' => 'nullable|max:190',
@@ -61,6 +61,13 @@ class FamilyInfoController extends Controller
             'have_children' => 'nullable|max:190',
             'boys' => 'nullable|max:190',
             'girls' => 'nullable|max:190',
+        ], [
+            'father_name.regex' => "Father's Name must contain only English characters.",
+            'father_nid.digits_between' => "Father's NID must be between 10 and 17 digits.",
+            'father_nid.regex' => "Father's NID must contain only English digits.",
+            'mother_name.regex' => "Mother's Name must contain only English characters.",
+            'mother_nid.digits_between' => "Mother's NID must be between 10 and 17 digits.",
+            'mother_nid.regex' => "Mother's NID must contain only English digits.",
         ]);
 
         if ($validate->fails()) {

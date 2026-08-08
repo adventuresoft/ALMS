@@ -227,8 +227,8 @@
                                         <button type="submit" class="btn btn-success btn-block">Save</button>
                                     </div>
                                     <div class="col-sm-3">
-                                        <a href="{{ route('approval.edit', $user->id) }}"
-                                            class="btn btn-primary btn-block ">Approval</a>
+                                        <a href="{{ route('farmer.show', $user->id) }}"
+                                            class="btn btn-primary btn-block ">View Profile</a>
                                     </div>
                                 </div>
                             </div>

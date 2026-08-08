@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Validator;
 class ApprovalFarmerController extends Controller
 {
     public function __construct() {
-        $this->middleware('permission:approval-read', ['only' => ['index', 'show']]);
-        $this->middleware('permission:approval-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:approval-update', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:approval-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:farmer-approve-list-read', ['only' => ['index', 'show']]);
+        $this->middleware('permission:farmer-approve-list-create|farmer-approve-list-update', ['only' => ['create', 'store']]);
+        $this->middleware('permission:farmer-approve-list-update', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:farmer-approve-list-delete', ['only' => ['destroy']]);
     }
 
     /**
@@ -110,7 +110,7 @@ class ApprovalFarmerController extends Controller
 
             $data['status'] = true;
             $data['message'] = "Approved Successfully!";
-            $data['redirect_url'] = route('farmer.show', $request->user_id);
+            $data['redirect_url'] = route('approved-farmer.index');
             $data['user'] = $user;
 
             DB::commit();

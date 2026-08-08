@@ -28,9 +28,7 @@
                     <!-- Horizontal Form -->
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">
-                                @include('backend.pages.farmer.tabs.tab_header', ['user' => $user, 'active_tab' => 'family'])
-                            </h3>
+                            @include('backend.pages.farmer.tabs.tab_header', ['user' => $user, 'active_tab' => 'family'])
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -50,7 +48,7 @@
                                 <div class="form-group row">
                                     <label for="fatherNID" class="col-sm-2 col-form-label">Father's NID</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="father_nid" class="form-control" id="fatherNID"  value="{{$user->familyInfo->father_nid ?? ''}}"  placeholder="Fatherss NID">
+                                        <input type="text" maxlength="17" name="father_nid" class="form-control" id="fatherNID"  value="{{$user->familyInfo->father_nid ?? ''}}"  placeholder="Fatherss NID">
                                         <small class="text-danger error father_nid_error"></small>
                                     </div>
                                 </div>
@@ -66,7 +64,7 @@
                                 <div class="form-group row">
                                     <label for="motherNID" class="col-sm-2 col-form-label">Mother's NID</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="mother_nid" class="form-control" id="motherNID"  value="{{$user->familyInfo->mother_nid ?? ''}}" placeholder="Mother's NID">
+                                        <input type="text" maxlength="17" name="mother_nid" class="form-control" id="motherNID"  value="{{$user->familyInfo->mother_nid ?? ''}}" placeholder="Mother's NID">
                                         <small class="text-danger error mother_nid_error"></small>
                                     </div>
                                 </div>
@@ -217,10 +215,68 @@
 @endsection
 @push('script')
     <script>
+        // Convert Bangla digits to English digits
+        function convertBanglaToEnglishNumber(str) {
+            const banglaDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+            return str.replace(/[০-৯]/g, function(w) {
+                return banglaDigits[w];
+            });
+        }
+
         $(document).ready(function() {
+            // English-only input constraint for Father's / Mother's Name
+            $('#fatherName, #motherName').on('input', function() {
+                this.value = this.value.replace(/[^a-zA-Z\s\.\-\(\)]/g, '');
+            });
+
+            // English numbers only, automatic conversion, and max 17 digits for Father's / Mother's NID
+            $('#fatherNID, #motherNID').on('input', function() {
+                let val = convertBanglaToEnglishNumber(this.value);
+                val = val.replace(/[^0-9]/g, '');
+                if (val.length > 17) {
+                    val = val.slice(0, 17);
+                }
+                this.value = val;
+            });
+
             $("#farmerFamilyForm").on('submit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
+
+                // Client-side validations
+                let fatherName = $('#fatherName').val().trim();
+                let motherName = $('#motherName').val().trim();
+                let fatherNid = $('#fatherNID').val().trim();
+                let motherNid = $('#motherNID').val().trim();
+
+                thisForm.find('.error').html(''); // Clear previous errors
+                let hasError = false;
+
+                if (fatherName && !/^[a-zA-Z\s\.\-\(\)]+$/.test(fatherName)) {
+                    thisForm.find('.father_name_error').text("Father's Name must contain only English characters.");
+                    hasError = true;
+                }
+
+                if (motherName && !/^[a-zA-Z\s\.\-\(\)]+$/.test(motherName)) {
+                    thisForm.find('.mother_name_error').text("Mother's Name must contain only English characters.");
+                    hasError = true;
+                }
+
+                if (fatherNid && (fatherNid.length < 10 || fatherNid.length > 17)) {
+                    thisForm.find('.father_nid_error').text("Father's NID must be between 10 and 17 digits.");
+                    hasError = true;
+                }
+
+                if (motherNid && (motherNid.length < 10 || motherNid.length > 17)) {
+                    thisForm.find('.mother_nid_error').text("Mother's NID must be between 10 and 17 digits.");
+                    hasError = true;
+                }
+
+                if (hasError) {
+                    toastr.error('Please correct the validation errors before submitting.');
+                    return false;
+                }
+
                 $.ajax({
                     type: "POST",
                     url: "{{ route('farmer.familyStore') }}",

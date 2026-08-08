@@ -250,6 +250,29 @@
                             <td class="info-value">{{ $user->familyInfo->father_nid ?? '--' }}</td>
                         </tr>
                         <tr>
+                            <td class="info-label">Father's Live Status :</td>
+                            <td class="info-value">{{ family_constant_option('live_status')[$user->familyInfo->father_live_status ?? 0] ?? '--' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Marital Status :</td>
+                            <td class="info-value">{{ family_constant_option('marital_status')[$user->familyInfo->marital_status ?? 0] ?? '--' }}</td>
+                        </tr>
+                        @php
+                            $spouse = (isset($user->familyInfo->spouse) && !is_null($user->familyInfo->spouse)) ? json_decode($user->familyInfo->spouse, true) : [];
+                        @endphp
+                        @if(isset($user->familyInfo->marital_status) && $user->familyInfo->marital_status == 2)
+                            <tr>
+                                <td class="info-label">Spouse Name :</td>
+                                <td class="info-value">{{ $user->familyInfo->spouse_name ?? ($spouse['name'] ?? '--') }}</td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table info-table table-borderless">
+                    <tbody>
+                        <tr>
                             <td class="info-label">Mother's Name :</td>
                             <td class="info-value">{{ $user->familyInfo->mother_name ?? '--' }}</td>
                         </tr>
@@ -258,52 +281,58 @@
                             <td class="info-value">{{ $user->familyInfo->mother_nid ?? '--' }}</td>
                         </tr>
                         <tr>
-                            <td class="info-label">Marital Status :</td>
-                            <td class="info-value">{{ family_constant_option('marital_status')[$user->familyInfo->marital_status ?? 0] ?? '--' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Spouse Name :</td>
-                            <td class="info-value">
-                                @php
-                                    $spouse = (isset($user->familyInfo->spouse) && !is_null($user->familyInfo->spouse)) ? json_decode($user->familyInfo->spouse, true) : [];
-                                @endphp
-                                {{ $user->familyInfo->spouse_name ?? ($spouse['name'] ?? '--') }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <table class="table info-table table-borderless">
-                    <tbody>
-                        <tr>
-                            <td class="info-label">Father's Name :</td>
-                            <td class="info-value">{{ $user->familyInfo->father_name_bn ?? '--' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Father's Live Status :</td>
-                            <td class="info-value">{{ family_constant_option('live_status')[$user->familyInfo->father_live_status ?? 0] ?? '--' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Mother's Name :</td>
-                            <td class="info-value">{{ $user->familyInfo->mother_name_bn ?? '--' }}</td>
-                        </tr>
-                        <tr>
                             <td class="info-label">Mother's Live Status :</td>
                             <td class="info-value">{{ family_constant_option('live_status')[$user->familyInfo->mother_live_status ?? 0] ?? '--' }}</td>
                         </tr>
-                        <tr>
-                            <td class="info-label">Married Date :</td>
-                            <td class="info-value">{{ $user->familyInfo->married_date ?? '--' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Spouse NID :</td>
-                            <td class="info-value">{{ $user->familyInfo->spouse_nid ?? ($spouse['nid'] ?? '--') }}</td>
-                        </tr>
+                        @if(isset($user->familyInfo->marital_status) && $user->familyInfo->marital_status == 2)
+                            <tr>
+                                <td class="info-label">Married Date :</td>
+                                <td class="info-value">{{ $user->familyInfo->married_date ?? '--' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Spouse NID :</td>
+                                <td class="info-value">{{ $user->familyInfo->spouse_nid ?? ($spouse['nid'] ?? '--') }}</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <!-- Children Details -->
+        @php
+            $children = (isset($user->familyInfo->children) && !is_null($user->familyInfo->children)) ? json_decode($user->familyInfo->children, true) : [];
+        @endphp
+        @if(isset($user->familyInfo->have_children) && $user->familyInfo->have_children == 1 && !empty($children))
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <h5 class="bold mb-2 pb-1" style="border-bottom: 2px solid #0e6a38; color: #0e6a38; font-size: 14px; font-weight: bold;">সন্তানদের তথ্য / Children Information</h5>
+                    <table class="table table-bordered text-left" style="font-size: 13px;">
+                        <thead style="background-color: #f5f5f5; color: #333;">
+                            <tr>
+                                <th style="width: 80px;">ক্রমিক নং</th>
+                                <th>সন্তানের নাম / Child's Name</th>
+                                <th>পেশা / Profession</th>
+                                <th>জন্ম তারিখ / Date of Birth</th>
+                                <th>এনআইডি বা জন্ম নিবন্ধন নং / NID or Birth Reg. No.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $childSl = 0; @endphp
+                            @foreach($children as $child)
+                                <tr>
+                                    <td class="sl">{{ bnValue(++$childSl) }}</td>
+                                    <td>{{ $child['name'] ?? '--' }}</td>
+                                    <td>{{ $child['profession'] ?? '--' }}</td>
+                                    <td>{{ isset($child['date']) && $child['date'] ? date('d-m-Y', strtotime($child['date'])) : '--' }}</td>
+                                    <td>{{ $child['id'] ?? '--' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @endif
         
         <!-- Address Information Section -->
         <div class="section-header-green">
@@ -400,6 +429,65 @@
                             <td class="info-label">House :</td>
                             <td class="info-value">{{ $user->addressInfo->presentHouse->house ?? ($user->addressInfo->present_house ?? '--') }}</td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Cultivation & Agriculture Card Information -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="section-header-green">চাষাবাদ ও কৃষি কার্ডের তথ্য / Cultivation & Agriculture Card Info</div>
+                
+                <!-- Agriculture Card Details -->
+                <div class="card card-outline card-success mb-3 no-print" style="border-radius: 8px; border-top: 3px solid #0e6a38; background-color: #fcfcfc;">
+                    <div class="card-body py-3 px-4">
+                        <div class="row">
+                            <div class="col-md-6 col-6">
+                                <span class="font-weight-bold text-muted mr-2" style="font-size: 13px;">কৃষি কার্ড আছে কি না? / Has Agriculture Card? :</span>
+                                <span class="font-weight-bold text-dark" style="font-size: 14px;">
+                                    {{ isset($user->farmer->is_agriculture_card) ? ($user->farmer->is_agriculture_card == 1 ? 'হ্যাঁ / Yes' : 'না / No') : '--' }}
+                                </span>
+                            </div>
+                            @if(isset($user->farmer->is_agriculture_card) && $user->farmer->is_agriculture_card == 1)
+                                <div class="col-md-6 col-6">
+                                    <span class="font-weight-bold text-muted mr-2" style="font-size: 13px;">কৃষি কার্ড নম্বর / Agriculture Card No. :</span>
+                                    <span class="font-weight-bold text-dark" style="font-size: 14px; letter-spacing: 0.5px;">
+                                        {{ $user->farmer->agriculture_card_number ?? '--' }}
+                                    </span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cultivated Crops Table -->
+                <table class="table table-bordered text-left" style="font-size: 13px;">
+                    <thead style="background-color: #f5f5f5; color: #333;">
+                        <tr>
+                            <th style="width: 80px;">ক্রমিক নং</th>
+                            <th>ফসল / Crop Name</th>
+                            <th>জমির মালিকানা / Land Ownership</th>
+                            <th>জমির পরিমাণ / Land Quantity</th>
+                            <th>ঠিকানা / Location Address</th>
+                            <th>বিবরণ / Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($user->cultivations as $cultKey => $cultivation)
+                            <tr>
+                                <td class="sl">{{ bnValue(++$cultKey) }}</td>
+                                <td>{{ $cultivation->crop }}</td>
+                                <td>{{ $cultivation->land_owner === 'own' ? 'নিজের / Own' : 'লীজ / Leased' }}</td>
+                                <td>{{ $cultivation->quantity }}</td>
+                                <td>{{ $cultivation->address ?: '--' }}</td>
+                                <td>{{ $cultivation->description ?: '--' }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">কোন তথ্য পাওয়া যায়নি! / No records found!</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

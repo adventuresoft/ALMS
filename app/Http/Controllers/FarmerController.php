@@ -111,18 +111,27 @@ class FarmerController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name' => 'required|max:190',
-            'bn_name' => 'required|max:190',
+            'name' => 'required|max:190|regex:/^[a-zA-Z\s\.\-\(\)]+$/',
+            'bn_name' => 'required|max:190|regex:/^[\x{0980}-\x{09FF}\s\.\-\(\)]+$/u',
             'date_of_birth' => 'nullable|max:190',
             'birth_place' => 'nullable|max:190',
             'gender' => 'nullable|max:190',
             'religion' => 'nullable|max:190',
             'blood_group' => 'nullable|max:190',
-            'mobile' => 'nullable|max:190',
+            'mobile' => 'required|digits:11|regex:/^[0-9]+$/',
             'email'            => 'nullable|max:190|email',
-            'birth_certificate' => 'nullable|max:190|unique:users,birth_certificate',
-            'nid' => 'nullable|max:190|unique:users,nid',
+            'birth_certificate' => 'nullable|digits_between:10,17|regex:/^[0-9]+$/|unique:users,birth_certificate',
+            'nid' => 'nullable|digits_between:10,17|regex:/^[0-9]+$/|unique:users,nid',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ], [
+            'name.regex' => 'Name must contain only English characters.',
+            'bn_name.regex' => 'Bangla Name must contain only Bangla characters.',
+            'mobile.digits' => 'Mobile number must be exactly 11 digits.',
+            'mobile.regex' => 'Mobile number must contain only English digits.',
+            'birth_certificate.digits_between' => 'Birth Registration Number must be between 10 and 17 digits.',
+            'birth_certificate.regex' => 'Birth Registration Number must contain only English digits.',
+            'nid.digits_between' => 'NID Number must be between 10 and 17 digits.',
+            'nid.regex' => 'NID Number must contain only English digits.',
         ]);
 
         if ($validate->fails()) {
@@ -246,18 +255,27 @@ class FarmerController extends Controller
     public function update(Request $request, $userID)
     {
         $validate = Validator::make($request->all(), [
-            'name'             => 'required|max:190',
-            'bn_name'          => 'required|max:190',
+            'name'             => 'required|max:190|regex:/^[a-zA-Z\s\.\-\(\)]+$/',
+            'bn_name'          => 'required|max:190|regex:/^[\x{0980}-\x{09FF}\s\.\-\(\)]+$/u',
             'date_of_birth'    => 'nullable|max:190',
             'birth_place'      => 'nullable|max:190',
             'gender'           => 'nullable|max:190',
             'religion'         => 'nullable|max:190',
             'blood_group'      => 'nullable|max:190',
-            'mobile'           => 'nullable|max:190',
+            'mobile'           => 'required|digits:11|regex:/^[0-9]+$/',
             'email'            => 'nullable|max:190|email',
-            'birth_certificate'=> 'nullable|max:190|unique:users,birth_certificate,' . $userID . ',id',
-            'nid'              => 'nullable|max:190|unique:users,nid,' . $userID . ',id',
+            'birth_certificate'=> 'nullable|digits_between:10,17|regex:/^[0-9]+$/|unique:users,birth_certificate,' . $userID . ',id',
+            'nid'              => 'nullable|digits_between:10,17|regex:/^[0-9]+$/|unique:users,nid,' . $userID . ',id',
             'image'            => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ], [
+            'name.regex' => 'Name must contain only English characters.',
+            'bn_name.regex' => 'Bangla Name must contain only Bangla characters.',
+            'mobile.digits' => 'Mobile number must be exactly 11 digits.',
+            'mobile.regex' => 'Mobile number must contain only English digits.',
+            'birth_certificate.digits_between' => 'Birth Registration Number must be between 10 and 17 digits.',
+            'birth_certificate.regex' => 'Birth Registration Number must contain only English digits.',
+            'nid.digits_between' => 'NID Number must be between 10 and 17 digits.',
+            'nid.regex' => 'NID Number must contain only English digits.',
         ]);
 
 

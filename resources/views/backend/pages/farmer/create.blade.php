@@ -84,9 +84,9 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="mobile" class="col-sm-2 col-form-label">Mobile No.</label>
+                                    <label for="mobile" class="col-sm-2 col-form-label">Mobile No. <span class="text-danger" title="Required" data-toggle="tooltip" >*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="tel" value="" name="mobile"
+                                        <input type="tel" required maxlength="11" value="" name="mobile"
                                             placeholder="01111111111" class="form-control" id="mobile">
                                         <small class="error mobile-error text-danger"></small>
                                     </div>
@@ -97,7 +97,7 @@
                                 <div class="form-group row">
                                     <label for="birth_certificate" class="col-sm-2 col-form-label">Birth Reg. No.</label>
                                     <div class="col-sm-9">
-                                        <input type="text" value=""
+                                        <input type="text" maxlength="17" value=""
                                             name="birth_certificate" placeholder="0000000000000" class="form-control"
                                             id="birth_certificate">
                                         <small class="error birth_certificate-error text-danger"></small>
@@ -107,7 +107,7 @@
                                 <div class="form-group row">
                                     <label for="nid" class="col-sm-2 col-form-label">NID No. </label>
                                     <div class="col-sm-9">
-                                        <input type="text" value="" name="nid"
+                                        <input type="text" maxlength="17" value="" name="nid"
                                             placeholder="000 000 0000" class="form-control" id="nid">
                                         <small class="error nid-error text-danger"></small>
                                     </div>
@@ -155,10 +155,101 @@
 @endsection
 @push('script')
     <script>
+        // Convert Bangla digits to English digits
+        function convertBanglaToEnglishNumber(str) {
+            const banglaDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+            return str.replace(/[০-৯]/g, function(w) {
+                return banglaDigits[w];
+            });
+        }
+
         $(document).ready(function() {
+            // English-only input constraint for Name
+            $('#name').on('input', function() {
+                this.value = this.value.replace(/[^a-zA-Z\s\.\-\(\)]/g, '');
+            });
+
+            // Bangla-only input constraint for Name Bangla
+            $('#bn_name').on('input', function() {
+                this.value = this.value.replace(/[^ \u0980-\u09FF\.\-\(\)]/g, '');
+            });
+
+            // English numbers only, automatic conversion, and max 11 digits for Mobile
+            $('#mobile').on('input', function() {
+                let val = convertBanglaToEnglishNumber(this.value);
+                val = val.replace(/[^0-9]/g, '');
+                if (val.length > 11) {
+                    val = val.slice(0, 11);
+                }
+                this.value = val;
+            });
+
+            // English numbers only, automatic conversion, and max 17 digits for NID, Birth Reg
+            $('#birth_certificate, #nid').on('input', function() {
+                let val = convertBanglaToEnglishNumber(this.value);
+                val = val.replace(/[^0-9]/g, '');
+                if (val.length > 17) {
+                    val = val.slice(0, 17);
+                }
+                this.value = val;
+            });
+
+            // Initialize professional datepicker for date of birth
+            $('#date_of_birth').datepicker("destroy").datepicker({
+                dateFormat: "dd-mm-yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "1900:2026",
+                maxDate: 0
+            });
+
             $("#farmerPersonalForm").on('submit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
+
+                // Client-side validations
+                let name = $('#name').val().trim();
+                let bn_name = $('#bn_name').val().trim();
+                let mobile = $('#mobile').val().trim();
+                let birthReg = $('#birth_certificate').val().trim();
+                let nid = $('#nid').val().trim();
+
+                thisForm.find('.error').html(''); // Clear previous error text elements
+                let hasError = false;
+
+                if (name && !/^[a-zA-Z\s\.\-\(\)]+$/.test(name)) {
+                    thisForm.find('.name-error').text('Name must contain only English characters.');
+                    hasError = true;
+                }
+
+                if (bn_name && !/^[\u0980-\u09FF\s\.\-\(\)]+$/.test(bn_name)) {
+                    thisForm.find('.bn_name-error').text('Name Bangla must contain only Bangla characters.');
+                    hasError = true;
+                }
+
+                if (!mobile) {
+                    thisForm.find('.mobile-error').text('Mobile number is required.');
+                    hasError = true;
+                } else if (mobile.length !== 11) {
+                    thisForm.find('.mobile-error').text('Mobile number must be exactly 11 digits.');
+                    hasError = true;
+                }
+
+                if (birthReg && (birthReg.length < 10 || birthReg.length > 17)) {
+                    thisForm.find('.birth_certificate-error').text('Birth Registration Number must be between 10 and 17 digits.');
+                    hasError = true;
+                }
+
+                if (nid && (nid.length < 10 || nid.length > 17)) {
+                    thisForm.find('.nid-error').text('NID Number must be between 10 and 17 digits.');
+                    hasError = true;
+                }
+
+                if (hasError) {
+                    toastr.error('Please correct the validation errors before submitting.');
+                    return false;
+                }
+
                 $.ajax({
                     type: "POST",
                     url: "{{ route('farmer.store') }}",

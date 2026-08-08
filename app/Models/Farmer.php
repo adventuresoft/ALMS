@@ -9,6 +9,12 @@ class Farmer extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'is_agriculture_card',
+        'agriculture_card_number',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

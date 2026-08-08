@@ -73,7 +73,7 @@ class ClassificationInfoController extends Controller
             DB::commit();
             $data['status'] = true;
             $data['message'] = 'Saved Successfully';
-            $data['redirect_url'] = route('approval.edit', $request->user_id);
+            $data['redirect_url'] = route('farmer.show', $request->user_id);
             return response()->json($data);
         } catch (\Throwable $th) {
             DB::rollBack();
