@@ -49,6 +49,213 @@
                 @endcan
 
 
+            @can('basic-settings-read')
+                {{-- Basic Settings --}}
+                <li class="nav-item
+                    @if (
+                        $subMenu == 'CityCorporation' ||
+                        $subMenu == 'CityCorporationWard' ||
+                        $subMenu == 'FamilyCategory' ||
+                        $subMenu == 'FamilySubcategory' ||
+                        $subMenu == 'FamilyType' ||
+                        $subMenu == 'Financialyear' ||
+                        $subMenu == 'HouseType' ||
+                        $subMenu == 'HouseCategory' ||
+                        $subMenu == 'HouseOwnershipType' ||
+                        $subMenu == 'LandType' ||
+                        $subMenu == 'LandClass' ||
+                        $subMenu == 'LandOwnershipType' ||
+                        $subMenu == 'MarketType' ||
+                        $subMenu == 'MarketCategory' ||
+                        $subMenu == 'MarketOwnershipType' ||
+                        $subMenu == 'OrganizationCategory' ||
+                        $subMenu == 'OrganizationSubcategory' ||
+                        $subMenu == 'OrganizationWorkArea' ||
+                        $subMenu == 'OrganizationOwnershipType' ||
+                        $subMenu == 'OrganizationType' ||
+                        $subMenu == 'OrganizationSubtype' ||
+                        $subMenu == 'Profession' ||
+                        $subMenu == 'ProfessionCategory' ||
+                        $subMenu == 'ProfessionSubcategory' ||
+                        $subMenu == 'ProfessionType' ||
+                        $subMenu == 'RoadCategory' ||
+                        $subMenu == 'RoadType' ||
+                        $subMenu == 'RoadOwner' ||
+                        $subMenu == 'ResarvWard' ||
+                        $subMenu == 'VehicleCategory' ||
+                        $subMenu == 'VehicleSubcategory' ||
+                        $subMenu == 'VehicleType' ||
+                        $subMenu == 'UnionWard' ||
+                        $subMenu == 'ReserveWard' ||
+                        $subMenu == 'Village' ||
+                        $subMenu == 'VillageArea' ||
+                        $subMenu == 'Union' ||
+                        $subMenu == 'Year') menu-open
+                    @endif
+                ">
+                    <a href="#" class="nav-link @if ($mainMenu == 'Basic') active @endif">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>
+                            Basic Settings
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.city-corporation.index') }}"
+                                class="nav-link @if ($subMenu == 'CityCorporation') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>City Corporation</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.city-corporation-ward.index') }}"
+                                class="nav-link @if ($subMenu == 'CityCorporationWard') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>City Corporation Ward</p>
+                            </a>
+                        </li>
+                        {{-- Hide Family, House, and Land settings options as requested
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.family-category.index') }}"
+                                class="nav-link @if ($subMenu == 'FamilyCategory') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Family Category</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.family-subcategory.index') }}"
+                                class="nav-link @if ($subMenu == 'FamilySubcategory') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Family Subcategory</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.family-type.index') }}"
+                                class="nav-link @if ($subMenu == 'FamilyType') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Family Type</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.house-ownership-type.index') }}"
+                                class="nav-link @if ($subMenu == 'HouseOwnershipType') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>House Ownership Type</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.house-type.index') }}"
+                                class="nav-link @if ($subMenu == 'HouseType') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>House Type</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.house-category.index') }}"
+                                class="nav-link @if ($subMenu == 'HouseCategory') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>House Category</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.land-type.index') }}"
+                                class="nav-link @if ($subMenu == 'LandType') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Land Type</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.land-class.index') }}"
+                                class="nav-link @if ($subMenu == 'LandClass') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Land Class</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.land-ownership-type.index') }}"
+                                class="nav-link @if ($subMenu == 'LandOwnershipType') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Land Ownership Type</p>
+                            </a>
+                        </li>
+                        --}}
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.profession.index') }}"
+                                class="nav-link @if ($subMenu == 'Profession') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Profession</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.profession-type.index') }}"
+                                class="nav-link @if ($subMenu == 'ProfessionType') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Profession Type</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.profession-category.index') }}"
+                                class="nav-link @if ($subMenu == 'ProfessionCategory') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Profession Category</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.profession-subcategory.index') }}"
+                                class="nav-link @if ($subMenu == 'ProfessionSubcategory') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Profession Subcategory</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.union.index') }}"
+                                class="nav-link @if ($subMenu == 'Union') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Union</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.union-ward.index') }}"
+                                class="nav-link @if ($subMenu == 'UnionWard') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Union Ward</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.village.index') }}"
+                                class="nav-link @if ($subMenu == 'Village') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Village</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('basic-settings.village-area.index') }}"
+                                class="nav-link @if ($subMenu == 'VillageArea') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Village Area</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+            @endcan
+
+
             @can('access-management-read')
                 <li class="nav-item">
                     <a href="{{ route('user.index') }}"
