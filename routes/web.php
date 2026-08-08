@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AddressInfoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
@@ -688,11 +689,68 @@ Route::prefix('report')->name('report.')->group(function () {
 
 
 
-//Clear Cache facade value:
+// Clear Cache & Optimize Artisan Routes:
+Route::get('/optimize-clear', function () {
+    Artisan::call('optimize:clear');
+    return '<h3>Artisan optimize:clear executed successfully!</h3>';
+});
+
+Route::get('/optimize', function () {
+    Artisan::call('optimize');
+    return '<h3>Artisan optimize executed successfully!</h3>';
+});
+
+Route::get('/cache-clear', function () {
+    Artisan::call('cache:clear');
+    return '<h3>Artisan cache:clear executed successfully!</h3>';
+});
+
+Route::get('/route-clear', function () {
+    Artisan::call('route:clear');
+    return '<h3>Artisan route:clear executed successfully!</h3>';
+});
+
+Route::get('/config-clear', function () {
+    Artisan::call('config:clear');
+    return '<h3>Artisan config:clear executed successfully!</h3>';
+});
+
+Route::get('/view-clear', function () {
+    Artisan::call('view:clear');
+    return '<h3>Artisan view:clear executed successfully!</h3>';
+});
+
 Route::get('/cc', function () {
-    $exitCode = Artisan::call('cache:clear');
-    $exitCode = Artisan::call('route:clear');
-    $exitCode = Artisan::call('view:clear');
-    $exitCode = Artisan::call('config:cache');
-    return redirect()->back();
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('optimize:clear');
+    return '<h3>All caches (cache, route, config, view, optimize) cleared successfully!</h3>';
+});
+
+Route::get('/clear-all', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('optimize:clear');
+    return '<h3>All caches (cache, route, config, view, optimize) cleared successfully!</h3>';
+});
+
+// Run Migration with Secret Key:
+Route::get('/run-migrate/{key?}', function (\Illuminate\Http\Request $request, $key = null) {
+    $secretKey = env('MIGRATE_SECRET_KEY', 'alms2026secret');
+    $providedKey = $key ?? $request->query('key');
+
+    if (!$providedKey || $providedKey !== $secretKey) {
+        return response('<h3>Unauthorized Access! Invalid Secret Key.</h3><p>Usage: /run-migrate/YOUR_SECRET_KEY or /run-migrate?key=YOUR_SECRET_KEY</p>', 403);
+    }
+
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        return '<h3>Artisan migrate executed successfully!</h3><pre>' . Artisan::output() . '</pre>';
+    } catch (\Throwable $th) {
+        return '<h3>Migration Failed:</h3><pre>' . $th->getMessage() . '</pre>';
+    }
 });
