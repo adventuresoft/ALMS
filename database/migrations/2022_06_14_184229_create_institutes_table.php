@@ -13,21 +13,23 @@ class CreateInstitutesTable extends Migration
      */
     public function up()
     {
-        Schema::create('institutes', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('institute_category_id');
-            $table->bigInteger('institute_subcategory_id')->nullable();
-            $table->bigInteger('institute_type_id');
-            $table->bigInteger('union_id')->nullable();
-            $table->bigInteger('pourashava_id')->nullable();
-            $table->bigInteger('city_corporation_id')->nullable();
+        if (!Schema::hasTable('institutes')) {
+            Schema::create('institutes', function (Blueprint $table) {
+                $table->id();
+                $table->bigInteger('institute_category_id');
+                $table->bigInteger('institute_subcategory_id')->nullable();
+                $table->bigInteger('institute_type_id');
+                $table->bigInteger('union_id')->nullable();
+                $table->bigInteger('pourashava_id')->nullable();
+                $table->bigInteger('city_corporation_id')->nullable();
 
-            $table->date('activation_time')->nullable();
-            $table->string('top_image')->nullable();
-            $table->string('left_image')->nullable();
-            $table->string('right_image')->nullable();
-            $table->timestamps();
-        });
+                $table->date('activation_time')->nullable();
+                $table->string('top_image')->nullable();
+                $table->string('left_image')->nullable();
+                $table->string('right_image')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
