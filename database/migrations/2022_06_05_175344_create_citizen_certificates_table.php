@@ -25,6 +25,8 @@ class CreateCitizenCertificatesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

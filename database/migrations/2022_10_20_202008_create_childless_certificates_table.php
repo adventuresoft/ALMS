@@ -25,6 +25,8 @@ class CreateChildlessCertificatesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

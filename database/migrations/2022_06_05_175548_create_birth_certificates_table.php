@@ -24,6 +24,8 @@ class CreateBirthCertificatesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

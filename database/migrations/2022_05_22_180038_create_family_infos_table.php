@@ -38,6 +38,8 @@ class CreateFamilyInfosTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

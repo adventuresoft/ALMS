@@ -19,6 +19,8 @@ class CreateBridgesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

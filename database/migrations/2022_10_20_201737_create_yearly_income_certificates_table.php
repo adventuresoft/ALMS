@@ -25,6 +25,8 @@ class CreateYearlyIncomeCertificatesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

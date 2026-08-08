@@ -76,6 +76,8 @@ class CreatePropertyInfosTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

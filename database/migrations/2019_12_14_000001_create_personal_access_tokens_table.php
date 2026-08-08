@@ -24,6 +24,8 @@ class CreatePersonalAccessTokensTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

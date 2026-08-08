@@ -25,6 +25,8 @@ class CreateOrganizationOwnershipsTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

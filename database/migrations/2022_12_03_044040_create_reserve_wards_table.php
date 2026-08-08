@@ -24,6 +24,8 @@ class CreateReserveWardsTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

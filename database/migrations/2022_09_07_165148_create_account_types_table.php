@@ -25,6 +25,8 @@ class CreateAccountTypesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

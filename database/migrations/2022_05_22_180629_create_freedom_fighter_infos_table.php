@@ -26,6 +26,8 @@ class CreateFreedomFighterInfosTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

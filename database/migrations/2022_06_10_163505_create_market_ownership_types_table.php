@@ -25,6 +25,8 @@ class CreateMarketOwnershipTypesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

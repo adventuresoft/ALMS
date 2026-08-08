@@ -26,6 +26,8 @@ class CreateLandClassesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

@@ -30,6 +30,8 @@ class CreatePourashavasTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

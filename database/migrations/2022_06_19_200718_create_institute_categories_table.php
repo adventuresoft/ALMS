@@ -22,6 +22,8 @@ class CreateInstituteCategoriesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

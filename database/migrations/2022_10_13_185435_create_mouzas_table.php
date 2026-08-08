@@ -24,6 +24,8 @@ class CreateMouzasTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

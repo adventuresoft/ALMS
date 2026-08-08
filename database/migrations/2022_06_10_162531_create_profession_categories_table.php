@@ -26,6 +26,8 @@ class CreateProfessionCategoriesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

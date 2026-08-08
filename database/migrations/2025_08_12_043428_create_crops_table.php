@@ -22,6 +22,8 @@ class CreateCropsTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

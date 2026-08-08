@@ -24,6 +24,8 @@ class CreateLoanPaymentsTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

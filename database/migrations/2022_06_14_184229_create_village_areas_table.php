@@ -30,6 +30,8 @@ class CreateVillageAreasTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

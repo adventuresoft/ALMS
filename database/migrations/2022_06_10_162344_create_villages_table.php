@@ -29,6 +29,8 @@ class CreateVillagesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

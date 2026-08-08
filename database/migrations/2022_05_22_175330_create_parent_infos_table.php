@@ -19,6 +19,8 @@ class CreateParentInfosTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

@@ -24,6 +24,8 @@ class CreateReligionsTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

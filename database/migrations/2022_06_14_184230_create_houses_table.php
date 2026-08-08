@@ -37,6 +37,8 @@ class CreateHousesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

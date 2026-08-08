@@ -25,6 +25,8 @@ class CreateCharacterCertificatesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

@@ -76,6 +76,8 @@ class CreateFinancialYearsTable extends Migration
             }
         }
     }
+    }
+
 
     /**
      * Reverse the migrations.

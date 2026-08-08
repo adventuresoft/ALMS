@@ -25,6 +25,8 @@ class CreateRoadCategoriesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

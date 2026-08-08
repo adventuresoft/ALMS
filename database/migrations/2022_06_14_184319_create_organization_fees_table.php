@@ -28,6 +28,8 @@ class CreateOrganizationFeesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

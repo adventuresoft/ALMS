@@ -25,6 +25,8 @@ class CreateDisabilityCertificatesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

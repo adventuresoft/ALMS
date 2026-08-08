@@ -28,6 +28,8 @@ class CreateBankBranchesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

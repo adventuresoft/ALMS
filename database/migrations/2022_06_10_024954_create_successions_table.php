@@ -27,6 +27,8 @@ class CreateSuccessionsTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

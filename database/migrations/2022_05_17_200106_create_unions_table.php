@@ -25,6 +25,8 @@ class CreateUnionsTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

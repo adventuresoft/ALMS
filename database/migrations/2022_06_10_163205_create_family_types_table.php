@@ -25,6 +25,8 @@ class CreateFamilyTypesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

@@ -25,6 +25,8 @@ class CreateCultivationInfosTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

@@ -47,6 +47,8 @@ class CreateAddressInfosTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

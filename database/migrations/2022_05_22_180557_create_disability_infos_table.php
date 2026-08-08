@@ -27,6 +27,8 @@ class CreateDisabilityInfosTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

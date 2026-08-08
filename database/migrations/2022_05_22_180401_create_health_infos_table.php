@@ -42,6 +42,8 @@ class CreateHealthInfosTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

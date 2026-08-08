@@ -24,6 +24,8 @@ class CreateLoginActivitiesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

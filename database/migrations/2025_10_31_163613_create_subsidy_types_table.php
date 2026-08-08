@@ -22,6 +22,8 @@ class CreateSubsidyTypesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

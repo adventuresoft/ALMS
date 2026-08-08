@@ -25,6 +25,8 @@ class CreateHouseOwnerTypesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.

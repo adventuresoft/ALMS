@@ -26,6 +26,8 @@ class CreateVehicleSubCategoriesTable extends Migration
             $table->timestamps();
         });
     }
+    }
+
 
     /**
      * Reverse the migrations.
