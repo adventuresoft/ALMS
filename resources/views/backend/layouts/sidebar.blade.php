@@ -188,6 +188,14 @@
                         --}}
 
                         <li class="nav-item">
+                            <a href="{{ route('basic-settings.financial-year.index') }}"
+                                class="nav-link @if ($subMenu == 'Financialyear') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Financial Year</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('basic-settings.profession.index') }}"
                                 class="nav-link @if ($subMenu == 'Profession') active @endif">
                                 <i class="far fa-circle nav-icon"></i>

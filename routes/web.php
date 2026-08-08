@@ -29,6 +29,7 @@ use App\Http\Controllers\BasicSettings\OrganizationWorkAreaController;
 use App\Http\Controllers\BasicSettings\OrganizationTypeController;
 use App\Http\Controllers\BasicSettings\ProfessionCategoryController;
 use App\Http\Controllers\BasicSettings\ProfessionController;
+use App\Http\Controllers\BasicSettings\FinancialYearController;
 use App\Http\Controllers\BasicSettings\ProfessionSubCategoryController;
 use App\Http\Controllers\BasicSettings\ProfessionTypeController;
 use App\Http\Controllers\BasicSettings\ReserveWardController;
@@ -469,6 +470,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::resource('road-owner', RoadOwnerController::class);
 
         Route::resource('profession', ProfessionController::class);
+        Route::resource('financial-year', FinancialYearController::class);
         Route::resource('profession-category', ProfessionCategoryController::class);
         Route::resource('profession-subcategory', ProfessionSubCategoryController::class);
         Route::resource('profession-type', ProfessionTypeController::class);

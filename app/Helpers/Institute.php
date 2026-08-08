@@ -176,15 +176,30 @@ if(!function_exists('loanStatuses')){
 
 if(!function_exists('financialYears')){
     function financialYears($key=''){
-        $records = [
-            1 => '2020-2021',
-            2 => '2021-2022',
-            3 => '2022-2023',
-            4 => '2023-2024',
-            5 => '2024-2025',
-            6 => '2025-2026'
-        ];
-        return  $key ? $records[$key] : $records;
+        try {
+            if (Illuminate\Support\Facades\Schema::hasTable('financial_years')) {
+                $records = \App\Models\BasicSettings\FinancialYear::where('status', 1)
+                    ->orderBy('id', 'asc')
+                    ->pluck('en_name', 'id')
+                    ->toArray();
+            } else {
+                $records = [];
+            }
+        } catch (\Throwable $e) {
+            $records = [];
+        }
+
+        if (empty($records)) {
+            $records = [
+                1 => '2020-2021',
+                2 => '2021-2022',
+                3 => '2022-2023',
+                4 => '2023-2024',
+                5 => '2024-2025',
+                6 => '2025-2026'
+            ];
+        }
+        return  $key ? ($records[$key] ?? '') : $records;
     }
 }
 
