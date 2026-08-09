@@ -46,9 +46,11 @@
                                             <label for="people_id">People</label>
                                             <select class="form-control select2-ajax2" id="people_id" name="people_id"
                                                 required data-url="{{ route('autocomplete.users') }}">
-                                                <option value="{{ $singleBankUser->people->id }}" selected>
-                                                    {{ $singleBankUser->people->name }}
-                                                    ({{ $singleBankUser->people->system_id }})
+                                                <option value="{{ $singleBankUser->people?->id ?? $singleBankUser->people_id }}" selected>
+                                                    {{ $singleBankUser->people?->user?->name ?? $singleBankUser->people?->name ?? $singleBankUser->userinfo?->name ?? '' }}
+                                                    @if ($singleBankUser->people?->user?->system_id ?? $singleBankUser->userinfo?->system_id)
+                                                        ({{ $singleBankUser->people?->user?->system_id ?? $singleBankUser->userinfo?->system_id }})
+                                                    @endif
                                                 </option>
                                             </select>
                                         </div>
@@ -58,8 +60,8 @@
                                             <label for="bank_id">Bank</label>
                                             <select class="form-control select2-ajax" id="bank_id" name="bank_id" required
                                                 data-url="{{ route('autocomplete.banks') }}">
-                                                <option value="{{ $singleBankUser->bank->id }}" selected>
-                                                    {{ $singleBankUser->bank->name }}
+                                                <option value="{{ $singleBankUser->bank?->id ?? $singleBankUser->bank_id }}" selected>
+                                                    {{ $singleBankUser->bank?->en_name ?? $singleBankUser->bank?->name ?? '' }}
                                                 </option>
                                             </select>
                                         </div>

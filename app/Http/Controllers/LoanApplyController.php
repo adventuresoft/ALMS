@@ -35,10 +35,15 @@ class LoanApplyController extends Controller
     //    dd($role_id);
         // $user_id=6;
         // $role_id=6;
-        if($role_id==6){
-            
-            $bankEmployee=BankUser::where('people_id',$user_id)->first();
-            $data['bankinfo']=Bank::find($bankEmployee->bank_id);  
+        if ($role_id == 6) {
+            $people = \App\Models\People::where('user_id', $user_id)->first();
+            $bankEmployee = BankUser::where('people_id', $user_id)
+                ->when($people, function ($q) use ($people) {
+                    return $q->orWhere('people_id', $people->id);
+                })
+                ->first();
+
+            $data['bankinfo'] = ($bankEmployee && $bankEmployee->bank_id) ? Bank::find($bankEmployee->bank_id) : null;
         }
         $data['app'] = LoanApplication::findOrFail($id);
         return view('backend.pages.loan.view', $data);

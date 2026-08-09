@@ -25,6 +25,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Implicitly grant Superadmin & Union Admin all permissions
+        Gate::before(function ($user, $ability) {
+            if (is_superadmin() || (isset($user->role_id) && $user->role_id == 6)) {
+                return true;
+            }
+        });
     }
 }

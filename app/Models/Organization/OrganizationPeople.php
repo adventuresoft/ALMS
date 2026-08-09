@@ -48,6 +48,10 @@ class OrganizationPeople extends Model
         return $this->belongsTo(People::class, 'people_id');
     }
 
+    public function people()
+    {
+        return $this->belongsTo(People::class, 'people_id');
+    }
 
     public function userinfo()
     {

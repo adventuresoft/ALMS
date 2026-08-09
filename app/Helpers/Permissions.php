@@ -59,13 +59,13 @@ if (! function_exists('create_permission')) {
         $user = Auth::user();
         if ($module) {
             try {
-                return $user->hasPermissionTo($module . '.create');
+                return $user->hasPermissionTo($module . '.create') || $user->hasPermissionTo($module . '-create');
             } catch (\Exception $e) {
                 return false;
             }
         }
         return is_institutional_admin()
-            || $user->getAllPermissions()->contains(fn($p) => str_ends_with($p->name, '.create'));
+            || $user->getAllPermissions()->contains(fn($p) => str_ends_with($p->name, '.create') || str_ends_with($p->name, '-create'));
     }
 }
 
@@ -80,12 +80,12 @@ if (! function_exists('edit_permission')) {
         $user = Auth::user();
         if ($module) {
             try {
-                return $user->hasPermissionTo($module . '.update');
+                return $user->hasPermissionTo($module . '.update') || $user->hasPermissionTo($module . '-update');
             } catch (\Exception $e) {
                 return false;
             }
         }
-        return $user->getAllPermissions()->contains(fn($p) => str_ends_with($p->name, '.update'));
+        return $user->getAllPermissions()->contains(fn($p) => str_ends_with($p->name, '.update') || str_ends_with($p->name, '-update'));
     }
 }
 
@@ -102,18 +102,18 @@ if (! function_exists('view_permission')) {
             if (is_array($module)) {
                 foreach ($module as $m) {
                     try {
-                        if ($user->hasPermissionTo($m . '.read')) return true;
+                        if ($user->hasPermissionTo($m . '.read') || $user->hasPermissionTo($m . '-read')) return true;
                     } catch (\Exception $e) {}
                 }
                 return false;
             }
             try {
-                return $user->hasPermissionTo($module . '.read');
+                return $user->hasPermissionTo($module . '.read') || $user->hasPermissionTo($module . '-read');
             } catch (\Exception $e) {
                 return false;
             }
         }
-        return $user->getAllPermissions()->contains(fn($p) => str_ends_with($p->name, '.read'));
+        return $user->getAllPermissions()->contains(fn($p) => str_ends_with($p->name, '.read') || str_ends_with($p->name, '-read'));
     }
 }
 
@@ -128,11 +128,11 @@ if (! function_exists('delete_permission')) {
         $user = Auth::user();
         if ($module) {
             try {
-                return $user->hasPermissionTo($module . '.delete');
+                return $user->hasPermissionTo($module . '.delete') || $user->hasPermissionTo($module . '-delete');
             } catch (\Exception $e) {
                 return false;
             }
         }
-        return $user->getAllPermissions()->contains(fn($p) => str_ends_with($p->name, '.delete'));
+        return $user->getAllPermissions()->contains(fn($p) => str_ends_with($p->name, '.delete') || str_ends_with($p->name, '-delete'));
     }
 }

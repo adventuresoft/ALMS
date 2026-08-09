@@ -46,9 +46,11 @@
                                             <label for="people_id">People</label>
                                             <select class="form-control select2-ajax2" id="people_id" name="people_id"
                                                 required data-url="{{ route('autocomplete.users') }}">
-                                                <option value="{{ $singleBankUser->people->id }}" selected>
-                                                    {{ $singleBankUser->people->name }}
-                                                    ({{ $singleBankUser->people->system_id }})
+                                                <option value="{{ $singleBankUser->people?->id ?? $singleBankUser->people_id }}" selected>
+                                                    {{ $singleBankUser->people?->user?->name ?? $singleBankUser->people?->name ?? $singleBankUser->userinfo?->name ?? '' }}
+                                                    @if ($singleBankUser->people?->user?->system_id ?? $singleBankUser->userinfo?->system_id)
+                                                        ({{ $singleBankUser->people?->user?->system_id ?? $singleBankUser->userinfo?->system_id }})
+                                                    @endif
                                                 </option>
                                             </select>
                                         </div>
@@ -58,17 +60,16 @@
                                             <label for="bank_id">Bank</label>
                                             <select class="form-control select2-ajax" id="bank_id" name="bank_id" required
                                                 data-url="{{ route('autocomplete.banks') }}">
-                                                <option value="{{ $singleBankUser->bank->id }}" selected>
-                                                    {{ $singleBankUser->bank->name }}
+                                                <option value="{{ $singleBankUser->bank?->id ?? $singleBankUser->bank_id }}" selected>
+                                                    {{ $singleBankUser->bank?->en_name ?? $singleBankUser->bank?->name ?? '' }}
                                                 </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="branch_id">Branch</label>
-                                            <select class="form-control" id="new_branch_id" name="branch_id" required
-                                               >
-                                                <option value="{{ $singleBankUser->branch->id }}" selected>
-                                                    {{ $singleBankUser->branch->name }}
+                                            <select class="form-control" id="branch_id" name="branch_id" required>
+                                                <option value="{{ $singleBankUser->branch?->id ?? $singleBankUser->branch_id }}" selected>
+                                                    {{ $singleBankUser->branch?->en_name ?? $singleBankUser->branch?->bn_name ?? $singleBankUser->branch?->name ?? '' }}
                                                 </option>
                                             </select>
                                         </div>
@@ -153,10 +154,12 @@
                                             @foreach ($bankUsers as $i => $item)
                                                 <tr class="text-center">
                                                     <td>{{ $i + 1 }}</td>
-                                                    <td>{{ $item->bank->en_name }}</td>
-                                                    <td>{{ $item->branch?->en_name }}</td>
-                                                    <td>{{ $item->userinfo->name }}
-                                                        ({{ $item->userinfo->system_id }})
+                                                    <td>{{ $item->bank?->en_name ?? $item->bank?->name }}</td>
+                                                    <td>{{ $item->branch?->en_name ?? $item->branch?->bn_name }}</td>
+                                                    <td>{{ $item->people?->user?->name ?? $item->userinfo?->name ?? $item->people?->name }}
+                                                        @if ($item->people?->user?->system_id ?? $item->userinfo?->system_id)
+                                                            ({{ $item->people?->user?->system_id ?? $item->userinfo?->system_id }})
+                                                        @endif
                                                     </td>
 
                                                     <td>
