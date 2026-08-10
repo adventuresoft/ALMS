@@ -14,6 +14,7 @@ class People extends Model
     protected $fillable = ['user_id',
     'account_type',
     'name',
+    'bn_name',
     'date_of_birth',
     'birth_place',
     'gender',

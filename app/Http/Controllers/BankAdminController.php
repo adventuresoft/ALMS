@@ -96,19 +96,34 @@ class BankAdminController extends Controller
             $user->assignRole($role->name);
 
             // Create People record for compatibility
-            $people = People::create([
-                'user_id' => $user->id,
-                'bn_name' => $user->name,
-            ]);
+            $people = People::where('user_id', $user->id)->first();
+            if (!$people) {
+                $people = new People();
+                $maxPeopleId = People::max('id') ?? 0;
+                $people->id = $maxPeopleId + 1;
+                $people->user_id = $user->id;
+                $people->bn_name = $user->name;
+                $people->name    = $user->name;
+                $people->email   = $user->email;
+                $people->mobile  = $user->mobile;
+                $people->status  = 1;
+                $people->created_by = Auth::id();
+                $people->save();
+            }
 
             // Create BankUser mapping
-            BankUser::create([
-                'people_id' => $people->id,
-                'user_id'   => $user->id,
-                'bank_id'   => $request->bank_id,
-                'branch_id' => $request->branch_id,
-                'status'    => 1,
-            ]);
+            $bankUser = BankUser::where('user_id', $user->id)->first();
+            if (!$bankUser) {
+                $bankUser = new BankUser();
+                $maxBankUserId = BankUser::max('id') ?? 0;
+                $bankUser->id = $maxBankUserId + 1;
+                $bankUser->people_id = $people->id;
+                $bankUser->user_id   = $user->id;
+                $bankUser->bank_id   = $request->bank_id;
+                $bankUser->branch_id = $request->branch_id;
+                $bankUser->status    = 1;
+                $bankUser->save();
+            }
 
             DB::commit();
             session()->flash("success", "Bank Admin created successfully with System ID: {$systemId}");
@@ -169,14 +184,23 @@ class BankAdminController extends Controller
             // Update associated People record
             $people = People::where('user_id', $user->id)->first();
             if ($people) {
-                $people->update([
-                    'bn_name' => $user->name,
-                ]);
+                $people->bn_name = $user->name;
+                $people->name    = $user->name;
+                $people->email   = $user->email;
+                $people->mobile  = $user->mobile;
+                $people->save();
             } else {
-                $people = People::create([
-                    'user_id' => $user->id,
-                    'bn_name' => $user->name,
-                ]);
+                $people = new People();
+                $maxPeopleId = People::max('id') ?? 0;
+                $people->id = $maxPeopleId + 1;
+                $people->user_id = $user->id;
+                $people->bn_name = $user->name;
+                $people->name    = $user->name;
+                $people->email   = $user->email;
+                $people->mobile  = $user->mobile;
+                $people->status  = 1;
+                $people->created_by = Auth::id();
+                $people->save();
             }
 
             // Update BankUser mapping
@@ -185,19 +209,21 @@ class BankAdminController extends Controller
                 ->first();
 
             if ($bankUser) {
-                $bankUser->update([
-                    'people_id' => $people->id,
-                    'bank_id'   => $request->bank_id,
-                    'branch_id' => $request->branch_id,
-                ]);
+                $bankUser->people_id = $people->id;
+                $bankUser->user_id   = $user->id;
+                $bankUser->bank_id   = $request->bank_id;
+                $bankUser->branch_id = $request->branch_id;
+                $bankUser->save();
             } else {
-                BankUser::create([
-                    'people_id' => $people->id,
-                    'user_id'   => $user->id,
-                    'bank_id'   => $request->bank_id,
-                    'branch_id' => $request->branch_id,
-                    'status'    => 1,
-                ]);
+                $bankUser = new BankUser();
+                $maxBankUserId = BankUser::max('id') ?? 0;
+                $bankUser->id = $maxBankUserId + 1;
+                $bankUser->people_id = $people->id;
+                $bankUser->user_id   = $user->id;
+                $bankUser->bank_id   = $request->bank_id;
+                $bankUser->branch_id = $request->branch_id;
+                $bankUser->status    = 1;
+                $bankUser->save();
             }
 
             DB::commit();
