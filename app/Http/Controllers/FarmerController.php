@@ -30,6 +30,10 @@ class FarmerController extends Controller
      */
     public function index(Request $request)
     {
+        $authUser = Auth::user();
+        if ($authUser && in_array($authUser->role_id, [13, 5])) {
+            abort(403, 'Unauthorized access: Farmers cannot view the general farmer list.');
+        }
         // $data['farmers'] = Farmer::with('user.addressInfo.presentThana', 'user.addressInfo.presentUnion' )
         // ->join('users', 'users.id', 'farmers.user_id')
         // ->where('users.is_verified', false)

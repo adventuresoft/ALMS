@@ -314,6 +314,7 @@
                             @endcan
                             @endif
                        
+                            @if(!Auth::check() || !in_array(Auth::user()->role_id, [13, 5]))
                             @can('farmer-general-list-read')
                             <li class="nav-item">
                                 <a href="{{ route('farmer.index') }}"
@@ -323,6 +324,7 @@
                                 </a>
                             </li>
                             @endcan
+                            @endif
                        
                             @can('farmer-approve-list-read')
                             <li class="nav-item">
