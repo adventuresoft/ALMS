@@ -103,10 +103,6 @@ class BankAdminController extends Controller
                 $people->id = $maxPeopleId + 1;
                 $people->user_id = $user->id;
                 $people->bn_name = $user->name;
-                $people->name    = $user->name;
-                $people->email   = $user->email;
-                $people->mobile  = $user->mobile;
-                $people->status  = 1;
                 $people->created_by = Auth::id();
                 $people->save();
             }
@@ -185,9 +181,6 @@ class BankAdminController extends Controller
             $people = People::where('user_id', $user->id)->first();
             if ($people) {
                 $people->bn_name = $user->name;
-                $people->name    = $user->name;
-                $people->email   = $user->email;
-                $people->mobile  = $user->mobile;
                 $people->save();
             } else {
                 $people = new People();
@@ -195,10 +188,6 @@ class BankAdminController extends Controller
                 $people->id = $maxPeopleId + 1;
                 $people->user_id = $user->id;
                 $people->bn_name = $user->name;
-                $people->name    = $user->name;
-                $people->email   = $user->email;
-                $people->mobile  = $user->mobile;
-                $people->status  = 1;
                 $people->created_by = Auth::id();
                 $people->save();
             }
