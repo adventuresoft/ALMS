@@ -47,7 +47,7 @@
                                 <div class="form-group row">
                                     <label for="bn_name" class="col-sm-2 col-form-label">Name Bangla <span class="text-danger" title="Required" data-toggle="tooltip" >*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" required value="{{ $user->farmer->bn_name ?? '' }}" class="form-control"
+                                        <input type="text" required value="{{ $user->farmer?->bn_name ?? $user->name ?? '' }}" class="form-control"
                                             name="bn_name" id="bn_name" placeholder="Name Bangla">
                                         <small class="error bn_name-error text-danger"></small>
                                     </div>
@@ -65,20 +65,20 @@
                                 <div class="form-group row">
                                     <label for="date_of_birth" class="col-sm-2 col-form-label">Date of Birth</label>
                                     <div class="col-sm-9">
-                                        <input type="text" placeholder="dd-mm-yyyy" value="{{ $user->farmer->date_of_birth ? date('d-m-Y', strtotime($user->farmer->date_of_birth))  : '' }}" name="date_of_birth"
+                                        <input type="text" placeholder="dd-mm-yyyy" value="{{ ($user->farmer && $user->farmer->date_of_birth) ? date('d-m-Y', strtotime($user->farmer->date_of_birth)) : '' }}" name="date_of_birth"
                                             class="form-control datepicker" id="date_of_birth">
                                         <small class="error date_of_birth-error text-danger"></small>
                                     </div>
                                 </div>
 
 
-                                <div class="form-group row countries {{isset($user->farmer->birth_place) ? (($user->farmer->birth_place == 2) ? '' : 'd-none') : 'd-none'}} ">
+                                <div class="form-group row countries {{ ($user->farmer && $user->farmer->birth_place == 2) ? '' : 'd-none' }} ">
                                     <label for="country_id" class="col-sm-2 col-form-label">Country</label>
                                     <div class="col-sm-9">
                                         <select name="country_id" class="form-control" id="country_id">
                                             @if (count($countries))
                                                 @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}" {{isset($user->farmer->country_id) ? (($user->farmer->country_id == $country->id) ? 'selected' : '') : ''}}>{{ $country->name }}</option>
+                                                    <option value="{{ $country->id }}" {{ ($user->farmer && $user->farmer->country_id == $country->id) ? 'selected' : '' }}>{{ $country->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -93,7 +93,7 @@
                                             <option value="">Select Gender</option>
                                             @if (count(people_constant_option('gender')))
                                                 @foreach (people_constant_option('gender') as $key => $item)
-                                                    <option value="{{ $key }}" {{isset($user->farmer->gender) ? (($user->farmer->gender == $key) ? 'selected' : '') : ''}}>{{ $item }}</option>
+                                                    <option value="{{ $key }}" {{ ($user->farmer && $user->farmer->gender == $key) ? 'selected' : '' }}>{{ $item }}</option>
                                                 @endforeach
                                             @endif
                                         </select>

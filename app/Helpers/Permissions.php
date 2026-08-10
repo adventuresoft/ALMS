@@ -22,6 +22,31 @@ if (! function_exists('is_superadmin')) {
     }
 }
 
+if (! function_exists('is_bank_admin')) {
+    function is_bank_admin() {
+        if (!Auth::check()) return false;
+        $user = Auth::user();
+        return in_array($user->role_id, [17, 18]) || ($user->roles && $user->roles->contains('name', 'Bank Admin'));
+    }
+}
+
+if (! function_exists('get_user_bank_id')) {
+    function get_user_bank_id($userId = null) {
+        $userId = $userId ?? Auth::id();
+        if (!$userId) return null;
+        $bankUser = \App\Models\BankUser::where('user_id', $userId)
+            ->orWhere('people_id', $userId)
+            ->first();
+        if (!$bankUser) {
+            $people = \App\Models\People::where('user_id', $userId)->first();
+            if ($people) {
+                $bankUser = \App\Models\BankUser::where('people_id', $people->id)->first();
+            }
+        }
+        return $bankUser ? $bankUser->bank_id : null;
+    }
+}
+
 if (! function_exists('is_institutional_admin')) {
     function is_institutional_admin() {
         if (!Auth::check()) return false;

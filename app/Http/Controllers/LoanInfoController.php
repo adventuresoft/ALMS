@@ -196,6 +196,8 @@ class LoanInfoController extends Controller
     {
     
         $infos=$request->validate([
+            'bank_id'         => 'required|exists:banks,id',
+            'branch_id'       => 'nullable|exists:bank_branches,id',
             'financial_year'  => 'required',
             'loan_amount'     => 'required|numeric',
 
@@ -214,6 +216,8 @@ class LoanInfoController extends Controller
     try {
 
         $loan = LoanApplication::create([
+            'bank_id'         => $request->bank_id,
+            'branch_id'       => $request->branch_id,
             'financial_year'  => $request->financial_year,
             'loan_amount'     => $request->loan_amount,
             'g_name'          => $request->g_name,
@@ -225,7 +229,8 @@ class LoanInfoController extends Controller
             'g_dob'           => $request->g_dob,
             'g_relation'      => $request->g_relation,
             'g_address'       => $request->g_address,
-            'created_by'=>Auth::user()->id,
+            'created_by'      => Auth::user()->id,
+            'status'          => 'pending',
         ]);
 
         // return response()->json([

@@ -6,6 +6,7 @@
     ];
 
     if (is_superadmin() || view_permission('roles') || (Auth::check() && Auth::user()->role_id == 6)) {
+        $tabs[] = ['name' => 'Bank Admins', 'route' => 'bank-admin.index', 'icon' => 'fas fa-university'];
         $tabs[] = ['name' => 'Role Definitions', 'route' => 'role.index', 'icon' => 'fas fa-user-tag'];
         $tabs[] = ['name' => 'Permission Pool', 'route' => 'permission.index', 'icon' => 'fas fa-key'];
         $tabs[] = ['name' => 'Modules', 'route' => 'module.index', 'icon' => 'fas fa-cubes'];

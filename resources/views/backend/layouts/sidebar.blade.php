@@ -283,7 +283,7 @@
 
                 {{-- Farmer Info --}}
                 @can('farmer-info-read')
-                <li class="nav-item @if ($subMenu == 'FarmerCreate' || $subMenu == 'FarmerView' || $subMenu == 'FarmerShow' || $subMenu == 'ApprovedFarmer') menu-open @endif">
+                <li class="nav-item @if ($subMenu == 'FarmerCreate' || $subMenu == 'FarmerView' || $subMenu == 'FarmerShow' || $subMenu == 'ApprovedFarmer' || $subMenu == 'FarmerEdit') menu-open @endif">
                     <a href="#" class="nav-link @if ($mainMenu == 'Farmer') active @endif">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
@@ -292,6 +292,17 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                            @if(Auth::check() && in_array(Auth::user()->role_id, [13, 5]))
+                            <li class="nav-item">
+                                <a href="{{ route('farmer.show', Auth::user()->id) }}"
+                                    class="nav-link @if ($subMenu == 'FarmerShow' || $subMenu == 'MyProfile') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>My Profile</p>
+                                </a>
+                            </li>
+                            @endif
+
+                            @if(!Auth::check() || !in_array(Auth::user()->role_id, [13, 5]))
                             @can('farmer-create-read')
                             <li class="nav-item">
                                 <a href="{{ route('farmer.create') }}"
@@ -301,6 +312,7 @@
                                 </a>
                             </li>
                             @endcan
+                            @endif
                        
                             @can('farmer-general-list-read')
                             <li class="nav-item">
@@ -311,7 +323,7 @@
                                 </a>
                             </li>
                             @endcan
-                      
+                       
                             @can('farmer-approve-list-read')
                             <li class="nav-item">
                                 <a href="{{ route('approved-farmer.index') }}"
@@ -325,12 +337,6 @@
                 </li>
                 @endcan
 
-
-
-
-              @php 
-          //var_dump (auth()->user()->roles->pluck('name'));
-              @endphp
                 @can('loan-info-read')
                 <li class="nav-item
                     @if (
@@ -339,6 +345,8 @@
                             $subMenu == 'LoanRateList' ||
                             $subMenu == 'LoanList' ||
                             $subMenu == 'AllLoanApply' ||
+                            $subMenu == 'LoanApply' ||
+                            $subMenu == 'LoanApplyForm' ||
                             $subMenu == 'LoanPayment') menu-open @endif ">
                     <a href="#" class="nav-link @if ($mainMenu == 'Loan') active @endif">
                         <i class="nav-icon fas fa-money-bill"></i>
@@ -348,6 +356,16 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                            @if(Auth::check() && in_array(Auth::user()->role_id, [13, 5]))
+                            <li class="nav-item">
+                                <a href="{{ route('loan.apply') }}"
+                                    class="nav-link @if ($subMenu == 'LoanApplyForm') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Apply for Loan</p>
+                                </a>
+                            </li>
+                            @endif
+
                             @can('loan-all-loans-read')
                             <li class="nav-item">
                                 <a href="{{ route('loan-info.index') }}"
@@ -361,9 +379,9 @@
                             @can('loan-all-loan-apply-read')
                              <li class="nav-item">
                                 <a href="{{ route('loan.apply.all') }}"
-                                    class="nav-link  @if ($subMenu == 'LoanApply') active @endif">
+                                    class="nav-link @if ($subMenu == 'LoanApply') active @endif">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>All Loan Apply</p>
+                                    <p>{{ Auth::check() && in_array(Auth::user()->role_id, [13, 5]) ? 'My Loan Applications' : 'All Loan Apply' }}</p>
                                 </a>
                             </li>
                             @endcan

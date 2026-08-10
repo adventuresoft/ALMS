@@ -25,10 +25,22 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Implicitly grant Superadmin & Union Admin all permissions
+        // Implicitly grant Superadmin & Union Admin all permissions, and Farmers self-profile/loan permissions
         Gate::before(function ($user, $ability) {
             if (is_superadmin() || (isset($user->role_id) && $user->role_id == 6)) {
                 return true;
+            }
+            if (isset($user->role_id) && in_array($user->role_id, [13, 5])) {
+                if (in_array($ability, [
+                    'farmer-info-read',
+                    'farmer-general-list-read',
+                    'farmer-general-list-update',
+                    'loan-info-read',
+                    'loan-all-loan-apply-read',
+                    'loan-all-loan-apply-create'
+                ])) {
+                    return true;
+                }
             }
         });
     }

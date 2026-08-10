@@ -11,6 +11,7 @@ class BankUser extends Model
     protected $fillable = [
         'bank_id',
         'people_id',
+        'user_id',
         'branch_id',
         'status',
     ];
@@ -43,22 +44,16 @@ class BankUser extends Model
 
     public function userinfo()
     {
-        return $this->belongsTo(\App\Models\User::class, 'people_id');
+        return $this->belongsTo(\App\Models\User::class, 'user_id')->withDefault(function() {
+            return $this->belongsTo(\App\Models\User::class, 'people_id')->first();
+        });
     }
 
     /**
      * Direct access to Laravel User
-     * (through the People model)
      */
     public function user()
     {
-        return $this->hasOneThrough(
-            \App\Models\User::class,
-            \App\Models\People::class,
-            'id',        // people.id
-            'id',        // users.id
-            'people_id', // bank_users.people_id
-            'user_id'    // people.user_id
-        );
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 }

@@ -175,8 +175,13 @@ class User extends Authenticatable
         return $this->hasMany(LandInfo::class, 'user_id', 'id');
     }
     
-     public function role()
+    public function role()
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');
-    }   
+    }
+
+    public function bankUser()
+    {
+        return $this->hasOne(BankUser::class, 'user_id', 'id');
+    }
 }

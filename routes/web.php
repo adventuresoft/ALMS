@@ -129,6 +129,7 @@ use App\Http\Controllers\LandInfoController;
 use App\Http\Controllers\LoanInfoController;
 use App\Http\Controllers\LoanPaymentController;
 use App\Http\Controllers\LoanApplyController;
+use App\Http\Controllers\BankAdminController;
 use App\Http\Controllers\ReportController;
 use Database\Seeders\LoanInfoSeeder;
 use Illuminate\Support\Facades\Route;
@@ -260,6 +261,7 @@ Route::get('/autocomplete/roles', [RoleUserController::class, 'autocompleteRoles
     
 Route::post('/user/assign-role', [UserController::class, 'assignRole'])->name('user.assignRole');
 Route::resource('user',UserController::class);
+Route::resource('bank-admin', BankAdminController::class);
  
 Route::resource('people', PeopleController::class);
 
@@ -538,6 +540,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     
     // Approve application → save to loan_infos
     Route::post('/loan-apply/approve/{id}', [LoanApplyController::class, 'approve'])->name('loan.apply.approve');
+    
+    // Reject application
+    Route::post('/loan-apply/reject/{id}', [LoanApplyController::class, 'reject'])->name('loan.apply.reject');
     
     Route::get('/get-branches/{bank_id}', [LoanApplyController::class, 'getBranches'])
         ->name('loan.getBranches');

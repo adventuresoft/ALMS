@@ -147,9 +147,19 @@
 
 
     <div class="text-center my-3">
-    <input type="button" id="proceedBtn" class="btn btn-primary btn-sm" value="Proceed">
-    <a href="{{ route('loan-info.index') }}" class="btn btn-dark btn-sm ml-2"> <i class="	fa fa-arrow-circle-left"></i> Cancel</a>
-</div>
+        @if($app->status != 'rejected')
+            <input type="button" id="proceedBtn" class="btn btn-primary btn-sm" value="Proceed">
+            <a href="#" class="btn btn-danger btn-sm ml-2" onclick="if(confirm('Are you sure you want to reject this loan application?')){ event.preventDefault(); document.getElementById('view-reject-form').submit(); }">
+                <i class="fa fa-times"></i> Reject Application
+            </a>
+            <form id="view-reject-form" action="{{ route('loan.apply.reject', $app->id) }}" method="POST" style="display:none;">
+                @csrf
+            </form>
+        @else
+            <span class="badge badge-danger p-2">Application Rejected</span>
+        @endif
+        <a href="{{ route('loan.apply.all') }}" class="btn btn-dark btn-sm ml-2"> <i class="fa fa-arrow-circle-left"></i> Back to List</a>
+    </div>
 <div id="approveForm" style="display:none;">
     {{-- -------------------------------------
         APPROVAL FORM SECTION (FINAL PART)

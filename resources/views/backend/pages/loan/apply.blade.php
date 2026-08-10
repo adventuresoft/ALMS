@@ -44,8 +44,25 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label>Required Loan Amount</label>
-                            <input type="text" class="form-control" name="loan_amount" placeholder="1000000.00">
+                            <label>Required Loan Amount <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="loan_amount" placeholder="1000000.00" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Select Bank <span class="text-danger">*</span></label>
+                            <select name="bank_id" id="apply_bank_id" class="form-control" required>
+                                <option value="">-- Select Bank --</option>
+                                @foreach($banks as $bank)
+                                    <option value="{{ $bank->id }}">{{ $bank->en_name }} ({{ $bank->bn_name }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Select Branch (Optional)</label>
+                            <select name="branch_id" id="apply_branch_id" class="form-control">
+                                <option value="">-- Select Branch --</option>
+                            </select>
                         </div>
 
                     </div>
@@ -135,4 +152,27 @@
 
     </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#apply_bank_id').on('change', function() {
+            var bankId = $(this).val();
+            if (!bankId) {
+                $('#apply_branch_id').html('<option value="">-- Select Branch --</option>');
+                return;
+            }
+            $.ajax({
+                url: "{{ route('loan.getBranches', '') }}/" + bankId,
+                type: "GET",
+                success: function(data) {
+                    $('#apply_branch_id').html('<option value="">-- Select Branch --</option>');
+                    $.each(data, function(key, branch) {
+                        $('#apply_branch_id').append('<option value="' + branch.id + '">' + branch.bn_name + '</option>');
+                    });
+                }
+            });
+        });
+    });
+</script>
 @endsection

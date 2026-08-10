@@ -98,6 +98,11 @@ class FarmerController extends Controller
      */
     public function create()
     {
+        $authUser = Auth::user();
+        if ($authUser && in_array($authUser->role_id, [13, 5])) {
+            abort(403, 'Unauthorized access: Farmers cannot create other farmer accounts.');
+        }
+
         $data['districts'] = District::orderBy('name','asc')->get();
         $data['countries'] = Country::orderBy('name','asc')->get();
         return view('backend.pages.farmer.create', $data);
@@ -111,6 +116,14 @@ class FarmerController extends Controller
      */
     public function store(Request $request)
     {
+        $authUser = Auth::user();
+        if ($authUser && in_array($authUser->role_id, [13, 5])) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized access: Farmers cannot create other farmer accounts.',
+                'code' => 403
+            ], 403);
+        }
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:190|regex:/^[a-zA-Z\s\.\-\(\)]+$/',
             'bn_name' => 'required|max:190|regex:/^[\x{0980}-\x{09FF}\s\.\-\(\)]+$/u',
@@ -239,10 +252,27 @@ class FarmerController extends Controller
      */
     public function edit($id)
     {
+        $authUser = Auth::user();
+        if (in_array($authUser->role_id, [13, 5]) && $authUser->id != $id) {
+            abort(403, 'Unauthorized access: You can only edit your own profile.');
+        }
+
         $data['districts'] = District::orderBy('name','asc')->get();
         $data['countries'] = Country::orderBy('name','asc')->get();
         $data['religions'] = Religion::orderBy('name','asc')->get();
-        $data['user'] = User::find($id);
+        $user = User::with('farmer')->find($id);
+
+        if ($user && !$user->farmer) {
+            $farmer = Farmer::create([
+                'user_id' => $user->id,
+                'bn_name' => $user->name,
+            ]);
+            $user->load('farmer');
+        }
+
+        $data['user']     = $user;
+        $data['mainMenu'] = 'Farmer';
+        $data['subMenu']  = 'FarmerEdit';
         return view('backend.pages.farmer.edit', $data);
     }
 
@@ -255,6 +285,14 @@ class FarmerController extends Controller
      */
     public function update(Request $request, $userID)
     {
+        $authUser = Auth::user();
+        if (in_array($authUser->role_id, [13, 5]) && $authUser->id != $userID) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized access: You can only update your own profile.',
+                'code' => 403
+            ], 403);
+        }
         $validate = Validator::make($request->all(), [
             'name'             => 'required|max:190|regex:/^[a-zA-Z\s\.\-\(\)]+$/',
             'bn_name'          => 'required|max:190|regex:/^[\x{0980}-\x{09FF}\s\.\-\(\)]+$/u',
