@@ -103,7 +103,6 @@ class BankAdminController extends Controller
                 $people->id = $maxPeopleId + 1;
                 $people->user_id = $user->id;
                 $people->bn_name = $user->name;
-                $people->created_by = Auth::id();
                 $people->save();
             }
 
@@ -188,7 +187,6 @@ class BankAdminController extends Controller
                 $people->id = $maxPeopleId + 1;
                 $people->user_id = $user->id;
                 $people->bn_name = $user->name;
-                $people->created_by = Auth::id();
                 $people->save();
             }
 
