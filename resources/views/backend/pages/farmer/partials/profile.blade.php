@@ -538,10 +538,10 @@
                             @if (count($user->loanInfos))
                                 @foreach ($user->loanInfos as $loanInfo)
                                     <tr>
-                                        <td>{{ $loanInfo->bank->bn_name ?? '' }}, {{ $loanInfo->branch_name ?? '' }}</td>
-                                        <td>{{ bnValue(financialYears($loanInfo->financial_year)) }} </td>
+                                        <td>{{ $loanInfo->bank?->bn_name ?? $loanInfo->bank?->en_name ?? '' }}, {{ $loanInfo->branch_name ?? '' }}</td>
+                                        <td>{{ is_array(financialYears($loanInfo->financial_year)) ? '' : bnValue(financialYears($loanInfo->financial_year)) }}</td>
                                         <td>{{ bnValue(currencyFormat($loanInfo->amount)) }}</td>
-                                        <td>{{ loanStatuses($loanInfo->status) }}</td>
+                                        <td>{{ is_array(loanStatuses($loanInfo->status)) ? '' : loanStatuses($loanInfo->status) }}</td>
                                     </tr>
                                 @endforeach
                             @else

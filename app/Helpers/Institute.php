@@ -64,9 +64,12 @@ if (!function_exists('user_institute_name')) {
 if (!function_exists('bnValue')) {
 
     function bnValue($value){
+        if (is_array($value) || is_object($value)) {
+            return '';
+        }
         $enValueList=[ "", ":","/","-",".","0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
         $bnValueList=[ "", ":","/","-",".","০","১","২","৩","৪","৫","৬","৭","৮","৯","এ","বি","সি","ডি","ই","এফ","জি","এইচ","আই","জে","কে","এল","এম","এন","ও","পি","কিউ","আর","এস","টি","ইউ","ভি","ডাব্লিউ","এক্স","ওয়াই","জেড","এ","বি","সি","ডি","ই","এফ","জি","এইচ","আই","জে","কে","এল","এম","এন","ও","পি","কিউ","আর","এস","টি","ইউ","ভি","ডাব্লিউ","এক্স","ওয়াই","জেড"];
-        $converted_value=str_replace($enValueList,$bnValueList,$value);
+        $converted_value=str_replace($enValueList,$bnValueList,(string)($value ?? ''));
         return $converted_value;
     }
 
@@ -121,14 +124,17 @@ if (!function_exists('currencyFormat')) {
 
 
 if(!function_exists('farmerTypes')){
-    function farmerTypes($key=''){
+    function farmerTypes($key = null){
         $records = [
             1 => 'Beginner (05-50)',
             2 => 'Smaller (51-250)',
             3 => 'Medium (251-700)',
             4 => 'Larger (701 - upper)'
         ];
-        return  $key ? $records[$key] : $records;
+        if (func_num_args() === 0) {
+            return $records;
+        }
+        return $records[$key] ?? '';
     }
 }
 
@@ -151,18 +157,21 @@ if(!function_exists('farmerTypesByLandQuantity')){
 }
 
 if(!function_exists('loanTypes')){
-    function loanTypes($key=''){
+    function loanTypes($key = null){
         $records = [
             1 => 'কৃষি লোন',
             2 => 'শস্য লোন',
             3 => 'গোখাদ্য লোন',
         ];
-        return  $key ? $records[$key] : $records;
+        if (func_num_args() === 0) {
+            return $records;
+        }
+        return $records[$key] ?? '';
     }
 }
 
 if(!function_exists('loanStatuses')){
-    function loanStatuses($key=''){
+    function loanStatuses($key = null){
         $records = [
             'pending' => 'পেন্ডিং',
             'approved' => 'অনুমোদিত',
@@ -170,12 +179,15 @@ if(!function_exists('loanStatuses')){
             'paid' => 'পরিশোধিত',
             'unpaid' => 'অপরিশোধিত'
         ];
-        return  $key ? $records[$key] : $records;
+        if (func_num_args() === 0) {
+            return $records;
+        }
+        return $records[$key] ?? '';
     }
 }
 
 if(!function_exists('financialYears')){
-    function financialYears($key=''){
+    function financialYears($key = null){
         try {
             if (Illuminate\Support\Facades\Schema::hasTable('financial_years')) {
                 $records = \App\Models\BasicSettings\FinancialYear::where('status', 1)
@@ -199,7 +211,10 @@ if(!function_exists('financialYears')){
                 6 => '2025-2026'
             ];
         }
-        return  $key ? ($records[$key] ?? '') : $records;
+        if (func_num_args() === 0) {
+            return $records;
+        }
+        return $records[$key] ?? '';
     }
 }
 
