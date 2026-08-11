@@ -55,6 +55,7 @@ class FarmerController extends Controller
             $query->where(function($q) use ($search) {
                 $q->where('users.name', 'like', "%{$search}%")
                   ->orWhere('users.system_id', 'like', "%{$search}%")
+                  ->orWhere('users.approved_id', 'like', "%{$search}%")
                   ->orWhere('users.nid', 'like', "%{$search}%");
             });
         }
@@ -170,7 +171,7 @@ class FarmerController extends Controller
             $user->nid = $request->nid;
             $user->status = $request->status ?? true;
             $user->created_by = Auth::id();
-            $user->password = Hash::make('12345678');
+            $user->password = Hash::make('123456');
             $image = $request->file('image');
             if ($image) {
                 $image_name = $request->name.'-'.rand(1111,9999);

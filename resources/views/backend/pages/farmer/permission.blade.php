@@ -38,15 +38,26 @@
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form class="form-horizontal" id="farmerApprovalForm" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" {{$user->is_verified ? 'checked' : ''}} id="is_verified" name="is_verified" value="1">
-                                            <label class="form-check-label" for="is_verified">
-                                                আমি ব্যবহারকারীকে একজন কৃষক হিসেবে পর্যালোচনা করেছি এবং এই প্রোফাইলটি অনুমোদন করছি।                                            </label>
+                                    @if(Auth::check() && in_array(Auth::user()->role_id, [13, 5]))
+                                        <div class="text-muted font-weight-bold p-2 text-center">
+                                            @if($user->is_verified)
+                                                <span class="badge badge-success px-3 py-2" style="font-size: 14px;"><i class="fas fa-check-circle mr-1"></i> আপনার কৃষক আইডি অনুমোদিত (Approved ID: {{ $user->approved_id }})</span>
+                                            @else
+                                                <span class="badge badge-warning px-3 py-2" style="font-size: 14px;"><i class="fas fa-clock mr-1"></i> আপনার কৃষক প্রোফাইলটি অনুমোদনের জন্য অপেক্ষমাণ (Pending Approval)</span>
+                                            @endif
                                         </div>
-                                    </form>
+                                    @else
+                                        <form class="form-horizontal" id="farmerApprovalForm" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" {{$user->is_verified ? 'checked' : ''}} id="is_verified" name="is_verified" value="1">
+                                                <label class="form-check-label" for="is_verified">
+                                                    আমি ব্যবহারকারীকে একজন কৃষক হিসেবে পর্যালোচনা করেছি এবং এই প্রোফাইলটি অনুমোদন করছি।
+                                                </label>
+                                            </div>
+                                        </form>
+                                    @endif
                                 </div>
                             </div>
                         </div>

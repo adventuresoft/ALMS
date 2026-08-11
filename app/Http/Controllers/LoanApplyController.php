@@ -77,8 +77,12 @@ class LoanApplyController extends Controller
     // Approve loan → move to loan_infos table
     public function approve(Request $request, $id)
     {
-        $app = LoanApplication::findOrFail($id);
         $user = Auth::user();
+        if ($user && in_array($user->role_id, [13, 5])) {
+            return back()->with('error', 'Unauthorized access: Farmers cannot approve loan applications.');
+        }
+
+        $app = LoanApplication::findOrFail($id);
 
         if (is_bank_admin()) {
             $userBankId = get_user_bank_id($user->id);
@@ -137,8 +141,12 @@ class LoanApplyController extends Controller
     // Reject loan application
     public function reject($id)
     {
-        $app = LoanApplication::findOrFail($id);
         $user = Auth::user();
+        if ($user && in_array($user->role_id, [13, 5])) {
+            return back()->with('error', 'Unauthorized access: Farmers cannot reject loan applications.');
+        }
+
+        $app = LoanApplication::findOrFail($id);
 
         if (is_bank_admin()) {
             $userBankId = get_user_bank_id($user->id);
@@ -166,6 +174,11 @@ class LoanApplyController extends Controller
 
     public function proceed($id)
     {
+        $user = Auth::user();
+        if ($user && in_array($user->role_id, [13, 5])) {
+            return response()->json(['error' => 'Unauthorized access'], 403);
+        }
+
         $app = LoanApplication::findOrFail($id);
         $app->step = 1;
         $app->step_time = now();

@@ -143,14 +143,17 @@ Route::get('/sms', function(){
 
 Route::get('test-api', [HomeController::class, 'testHttpRequest']);
 
-// Login
+// Login & Password
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login-check', [LoginController::class, 'loginCheck'])->name('login.check');
+Route::post('/password/reset-request', [LoginController::class, 'resetPasswordRequest'])->name('password.resetRequest');
 
 // Register
 Route::get('/register', [LoginController::class, 'register'])->name('register');
 Route::post('/register/store', [LoginController::class, 'registerStore'])->name('register.store');
 Route::get('/profile', [LoginController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/change-password', [LoginController::class, 'changePasswordView'])->name('password.change')->middleware('auth');
+Route::post('/update-password', [LoginController::class, 'updatePasswordStore'])->name('password.update')->middleware('auth');
 
 // Application
 Route::prefix('application')->name('application.')->group(function () {

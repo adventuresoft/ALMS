@@ -79,6 +79,9 @@
           <a href="{{ route('farmer.show', $authUser->id) }}" class="dropdown-item mt-1">
             <i class="fas fa-id-badge mr-2 text-primary"></i> Profile
           </a>
+          <a href="{{ route('password.change') }}" class="dropdown-item">
+            <i class="fas fa-key mr-2 text-warning"></i> Change Password
+          </a>
           <div class="dropdown-divider"></div>
           <button type="button" onclick="event.preventDefault();document.getElementById('logoutForm').submit();" class="dropdown-item text-danger">
             <i class="fas fa-sign-out-alt mr-2"></i> Logout

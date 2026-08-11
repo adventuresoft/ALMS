@@ -186,7 +186,6 @@ class LoanInfoController extends Controller
 
     public function apply()
     {
-        
         $data['loan'] = '';
         $data['banks'] = Bank::orderBy('en_name', 'asc')->get();        
         return view('backend.pages.loan.apply', $data);

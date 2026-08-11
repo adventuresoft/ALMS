@@ -170,9 +170,12 @@
                                 </tbody>
                             </table>
                             <div class="mt-3 d-flex justify-content-between align-items-center">
-                                Showing {{ $farmers->firstItem() }} to {{ $farmers->lastItem() }} of {{ $farmers->total() }}
-
-                                {{$farmers->links()}}
+                                <div class="text-muted">
+                                    Showing {{ $farmers->firstItem() ?? ($farmers->total() > 0 ? 1 : 0) }} to {{ $farmers->lastItem() ?? $farmers->total() }} of {{ $farmers->total() }} entries
+                                </div>
+                                <div>
+                                    {{ $farmers->links() }}
+                                </div>
                             </div>
                             
                         </div>

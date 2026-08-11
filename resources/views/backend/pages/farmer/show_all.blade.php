@@ -129,7 +129,10 @@
                                                 <td class="text-center">{{ bnValue($loop->iteration) }}</td>
                                                 <td>
                                                     {{ $user->farmer->bn_name ?? '--' }}<br>
-                                                    {{ bnValue($user->system_id) }}
+                                                    @if(!empty($user->approved_id))
+                                                        <small class="text-success font-weight-bold">অনুমোদিত আইডি: {{ bnValue($user->approved_id) }}</small><br>
+                                                    @endif
+                                                    <small class="text-muted">সিস্টেম আইডি: {{ bnValue($user->system_id) }}</small>
                                                 </td>
                                                 <td>
                                                     {{ $user->familyInfo->father_name ?? '' }}<br>

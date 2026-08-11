@@ -111,59 +111,153 @@ class LoginController extends Controller
 
     public function loginCheck(Request $request)
     {
-            $validate = Validator::make($request->all(), [
-                'email' => 'required|max:190',
-                'password' => 'required',
-            ]);
+        $validate = Validator::make($request->all(), [
+            'email' => 'required|max:190',
+            'password' => 'required',
+        ]);
 
-            if ($validate->fails()) {
-                $data['status'] = false;
-                $data['message'] = "Invalid input contains! Please check your entries...";
-                $data['errors'] = $validate->errors();
-                return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
-            }
+        if ($validate->fails()) {
+            $data['status'] = false;
+            $data['message'] = "Invalid input! Please check your entries...";
+            $data['errors'] = $validate->errors();
+            return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
+        }
 
-            $remember = $request->remember ? true : false;
+        $loginInput = trim($request->email);
+        $remember = $request->remember ? true : false;
 
+        $user = User::where(function($q) use ($loginInput) {
+            $q->where('email', $loginInput)
+              ->orWhere('system_id', $loginInput)
+              ->orWhere('approved_id', $loginInput)
+              ->orWhere('mobile', $loginInput)
+              ->orWhere('nid', $loginInput);
+        })->where('status', 1)->first();
 
-            // $user = User::where('email', $email)->where('status', 1)->whereIn('role_id', [1,2,3,4,5,6])->first();
-            // $user = User::where('email', $request->email)->orWhere('system_id', $request->email)->where('status', 1)->whereIn('role_id', [1,2,3,4,5,6])->first();
-            $user = User::where('email', $request->email)->orWhere('system_id', $request->email)->where('status', 1)->first();
-
-            if ($user) {
-
-                $credential = [];
-                if(filter_var($request->email, FILTER_VALIDATE_EMAIL)){
-                    $credential = ['email' =>  $request->email, 'password' => $request->password];
-                } else  {
-                    $credential = ['system_id' => $request->email, 'password' => $request->password];
-                }
-
-
-                try {
-
-                    if (Auth::attempt($credential, $remember)) {
-                        $data['status'] = true;
-                        $data['user'] = $user;
-                        $data['message'] = "Login Successfully! Redirecting to the authenticate page...";
-                        return response()->json($data, 200);
-                    } else {
-                        $data['status'] = false;
-                        $data['message'] = "Email or password does not match!";
-                        return response()->json($data, 403);
-                    }
-                } catch (\Throwable $th) {
+        if ($user) {
+            // Check if user is a Farmer and not yet approved
+            if (in_array($user->role_id, [13, 5]) || $user->farmer) {
+                if (!$user->is_verified) {
                     $data['status'] = false;
-                    $data['message'] = "Something went wrong! Please try again...";
-                    $data['errors'] = $th;
-                    return response()->json($data, 500);
+                    $data['message'] = "আপনার কৃষক প্রোফাইলটি এখনো অনুমোদিত নয়। প্রশাসনিক অনুমোদনের পর অনুমোদিত আইডি ও ডিফল্ট পাসওয়ার্ড (123456) দিয়ে লগইন করতে পারবেন।";
+                    return response()->json($data, 403);
                 }
-            } else {
-                $data['status'] = false;
-                $data['message'] = "User is not authenticate!";
-                return response()->json($data, 404);
             }
-      
+
+            $credential = ['password' => $request->password];
+            if (filter_var($loginInput, FILTER_VALIDATE_EMAIL)) {
+                $credential['email'] = $loginInput;
+            } elseif ($user->approved_id === $loginInput) {
+                $credential['approved_id'] = $loginInput;
+            } elseif ($user->system_id === $loginInput) {
+                $credential['system_id'] = $loginInput;
+            } elseif ($user->mobile === $loginInput) {
+                $credential['mobile'] = $loginInput;
+            } else {
+                $credential['id'] = $user->id;
+            }
+
+            try {
+                if (Auth::attempt($credential, $remember)) {
+                    $data['status'] = true;
+                    $data['user'] = $user;
+                    $data['message'] = "Login Successfully! Redirecting...";
+                    return response()->json($data, 200);
+                } else {
+                    $data['status'] = false;
+                    $data['message'] = "User ID or password does not match!";
+                    return response()->json($data, 403);
+                }
+            } catch (\Throwable $th) {
+                $data['status'] = false;
+                $data['message'] = "Something went wrong! Please try again...";
+                $data['errors'] = $th->getMessage();
+                return response()->json($data, 500);
+            }
+        } else {
+            $data['status'] = false;
+            $data['message'] = "User not found or account is inactive!";
+            return response()->json($data, 404);
+        }
+    }
+
+    /**
+     * Password Reset Request specifically for Farmers
+     */
+    public function resetPasswordRequest(Request $request)
+    {
+        $request->validate([
+            'user_identity' => 'required|string',
+        ]);
+
+        $identity = trim($request->user_identity);
+
+        $user = User::where(function($q) use ($identity) {
+            $q->where('approved_id', $identity)
+              ->orWhere('system_id', $identity)
+              ->orWhere('mobile', $identity)
+              ->orWhere('nid', $identity)
+              ->orWhere('email', $identity);
+        })->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'প্রদত্ত আইডি বা নম্বরের কোন একাউন্ট পাওয়া যায়নি!'
+            ], 404);
+        }
+
+        // Only Farmer reset is allowed directly
+        if (!in_array($user->role_id, [13, 5]) && !$user->farmer) {
+            return response()->json([
+                'status' => false,
+                'message' => 'সরাসরি পাসওয়ার্ড রিসেট অপশনটি শুধুমাত্র কৃষকদের জন্য প্রযোজ্য।'
+            ], 403);
+        }
+
+        $user->password = Hash::make('123456');
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'পাসওয়ার্ড সফলভাবে রিসেট করা হয়েছে! আপনার ডিফল্ট পাসওয়ার্ড "123456" সেট করা হয়েছে।'
+        ], 200);
+    }
+
+    /**
+     * Change Password View for Logged-In User
+     */
+    public function changePasswordView()
+    {
+        $user = Auth::user();
+        return view('backend.pages.user.change_password', compact('user'));
+    }
+
+    /**
+     * Update Password Store for Logged-In User
+     */
+    public function updatePasswordStore(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password'         => 'required|min:6|confirmed',
+        ], [
+            'current_password.required' => 'বর্তমান পাসওয়ার্ড প্রদান করুন।',
+            'password.required'         => 'নতুন পাসওয়ার্ড প্রদান করুন।',
+            'password.min'              => 'নতুন পাসওয়ার্ড অন্তত ৬ অক্ষরের হতে হবে।',
+            'password.confirmed'        => 'নতুন পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড মিলছে না।',
+        ]);
+
+        $user = User::find(Auth::id());
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->with('error', 'বর্তমান পাসওয়ার্ডটি সঠিক নয়!');
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে!');
     }
 
     public function profile()

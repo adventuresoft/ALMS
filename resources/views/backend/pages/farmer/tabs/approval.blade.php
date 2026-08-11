@@ -33,6 +33,13 @@
                             ])
                         </div>
                         <!-- /.card-header -->
+                        @if(Auth::check() && in_array(Auth::user()->role_id, [13, 5]))
+                            <div class="card-body text-center p-4">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle mr-1"></i> কৃষক অনুমোদন সম্পর্কিত কার্যক্রম শুধুমাত্র প্রশাসকদের জন্য সংরক্ষিত।
+                                </div>
+                            </div>
+                        @else
                         <!-- form start -->
                         <form class="form-horizontal" id="farmerApprovalForm" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -66,6 +73,7 @@
                             </div>
                             <!-- /.card-footer -->
                         </form>
+                        @endif
                     </div>
                     <!-- /.card -->
                 </div>

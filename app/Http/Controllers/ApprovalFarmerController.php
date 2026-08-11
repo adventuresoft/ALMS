@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
+use App\Models\Division;
 use App\Models\Farmer;
 use App\Models\User;
-use App\Models\Division;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ApprovalFarmerController extends Controller
@@ -45,6 +48,7 @@ class ApprovalFarmerController extends Controller
             $query->where(function($q) use ($search) {
                 $q->where('users.name', 'like', "%{$search}%")
                   ->orWhere('users.system_id', 'like', "%{$search}%")
+                  ->orWhere('users.approved_id', 'like', "%{$search}%")
                   ->orWhere('users.nid', 'like', "%{$search}%");
             });
         }
@@ -73,7 +77,7 @@ class ApprovalFarmerController extends Controller
        
     
         // 📄 Pagination
-        $farmers = $query->select('farmers.*', 'users.name', 'users.system_id')
+        $farmers = $query->select('farmers.*', 'users.name', 'users.system_id', 'users.approved_id')
                          ->orderBy('farmers.created_at', 'desc')
                          ->paginate(50)
                          ->withQueryString(); // keep search/filter in URL
@@ -103,10 +107,27 @@ class ApprovalFarmerController extends Controller
      */
     public function store(Request $request)
     {
+        $authUser = Auth::user();
+        if ($authUser && in_array($authUser->role_id, [13, 5])) {
+            return response()->json([
+                'status' => false,
+                'message' => 'অনুমতি নেই: কৃষক একাউন্ট থেকে কৃষক অনুমোদন পরিচালনা করা সম্ভব নয়।',
+            ], 403);
+        }
+
         DB::beginTransaction();
         try {
             $user = User::find($request->user_id);
-            $user->is_verified = $request->is_verified ? 1 : 0;
+            $isVerified = $request->is_verified ? 1 : 0;
+            
+            if ($isVerified && empty($user->approved_id)) {
+                $user->approved_id = User::generateApprovedId();
+                if (in_array($user->role_id, [13, 5]) || $user->farmer) {
+                    $user->password = Hash::make('123456');
+                }
+            }
+
+            $user->is_verified = $isVerified;
             $user->save();
 
             $data['status'] = true;
@@ -120,7 +141,7 @@ class ApprovalFarmerController extends Controller
             DB::rollBack();
             $data['status'] = false;
             $data['errors'] = $th->getMessage();
-            $data['message'] = "Something went wrong! Please try again or contact on support...";
+            $data['message'] = "Approval failed: " . $th->getMessage();
             return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
         }
     }

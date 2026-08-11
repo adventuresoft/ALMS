@@ -138,6 +138,13 @@
         <div class="text-center mb-4">
             <h3 class="bold mb-1" style="color: #0e6a38; font-family: 'Nikosh', 'Arial', sans-serif; font-size: 26px; font-weight: bold;">কৃষক তথ্য বিবরণী</h3>
             <h5 style="color: #555; font-family: 'Arial', sans-serif; font-weight: normal; margin-top: -2px;">Farmer Information Record</h5>
+            @if(Auth::id() == $user->id)
+                <div class="no-print mt-2">
+                    <a href="{{ route('password.change') }}" class="btn btn-sm btn-outline-warning font-weight-bold" style="border-radius: 6px;">
+                        <i class="fas fa-key mr-1"></i> পাসওয়ার্ড পরিবর্তন করুন / Change Password
+                    </a>
+                </div>
+            @endif
         </div>
         
         <!-- Photo and Pill fields -->
@@ -175,6 +182,12 @@
                     <span class="label">Reg. People ID :</span>
                     <span class="value">{{ $user->system_id }}</span>
                 </div>
+                @if(!empty($user->approved_id))
+                    <div class="profile-pill" style="background-color: #e6f4ea; border-color: #ceead6;">
+                        <span class="label" style="color: #137333;">Approved ID :</span>
+                        <span class="value" style="color: #137333;">{{ $user->approved_id }}</span>
+                    </div>
+                @endif
                 <div class="profile-pill">
                     <span class="label">NID :</span>
                     <span class="value">{{ $user->nid ?? '--' }}</span>
@@ -198,6 +211,12 @@
                             <td class="info-label">Name (English) :</td>
                             <td class="info-value">{{ $user->name }}</td>
                         </tr>
+                        @if(!empty($user->approved_id))
+                        <tr>
+                            <td class="info-label">Approved ID :</td>
+                            <td class="info-value"><span class="badge badge-success" style="font-size: 13px;">{{ $user->approved_id }}</span></td>
+                        </tr>
+                        @endif
                         <tr>
                             <td class="info-label">NID No. :</td>
                             <td class="info-value">{{ $user->nid ?? '--' }}</td>

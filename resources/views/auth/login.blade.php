@@ -75,16 +75,16 @@
                     <form id="loginForm" method="post">
                         @csrf
                         <div class="form-group mb-3">
-                            <label style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">User ID</label>
+                            <label style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">User ID / Approved ID</label>
                             <div class="input-group">
-                                <input type="text" name="email" id="email" placeholder="User ID / Email" class="form-control" style="font-size: 13.5px; padding: 8px 10px; height: auto; border: 1px solid #d1d5db; border-radius: 4px;" />
+                                <input type="text" name="email" id="email" placeholder="Approved ID (9 Digit) / System ID / Email" class="form-control" style="font-size: 13.5px; padding: 8px 10px; height: auto; border: 1px solid #d1d5db; border-radius: 4px;" />
                             </div>
                         </div>
 
                         <div class="form-group mb-3">
                             <label style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Password</label>
                             <div class="input-group">
-                                <input type="password" name="password" id="password" placeholder="Password" class="form-control" style="font-size: 13.5px; padding: 8px 10px; height: auto; border: 1px solid #d1d5db; border-right: none; border-radius: 4px 0 0 4px;" />
+                                <input type="password" name="password" id="password" placeholder="Password (Default: 123456)" class="form-control" style="font-size: 13.5px; padding: 8px 10px; height: auto; border: 1px solid #d1d5db; border-right: none; border-radius: 4px 0 0 4px;" />
                                 <div class="input-group-append password-show-hide pointer" style="cursor: pointer;">
                                     <span class="input-group-text" style="background: white; border: 1px solid #d1d5db; border-left: none; border-radius: 0 4px 4px 0; color: #6b7280; padding: 8px 12px;">
                                         <i class="fa fa-eye-slash" id="eyeIcon"></i>
@@ -93,11 +93,10 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-block mt-2" type="submit" style="background-color: #006a4e; color: white; font-weight: bold; padding: 9px; font-size: 14px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,106,78,0.2);">Login</button>
+                        <button class="btn btn-block mt-3" type="submit" style="background-color: #006a4e; color: white; font-weight: bold; padding: 9px; font-size: 14px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,106,78,0.2);">Login</button>
 
                         <div class="text-center mt-3" style="font-size: 12px; color: #6b7280;">
-                            <a href="#" style="color: #6b7280; text-decoration: none;">Forgot password?</a> &nbsp;|&nbsp; 
-                            <a href="#" style="color: #6b7280; text-decoration: none;">Privacy policy</a>
+                            <a href="#" data-toggle="modal" data-target="#forgotPasswordModal" style="color: #006a4e; text-decoration: none; font-weight: bold;"><i class="fas fa-key mr-1"></i> Forgot / Reset Password?</a>
                         </div>
                     </form>
                 </div>
@@ -105,6 +104,40 @@
             </div>
         </div>
     </section>
+
+    <!-- Forgot / Reset Password Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="border-radius: 12px; overflow: hidden; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+                <div class="modal-header text-white" style="background: linear-gradient(135deg, #006a4e 0%, #004d39 100%);">
+                    <h5 class="modal-title font-weight-bold" id="forgotPasswordModalLabel" style="font-size: 16px;">
+                        <i class="fas fa-lock-open mr-2"></i> পাসওয়ার্ড রিসেট / Reset Password
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="forgotPasswordForm" method="POST">
+                    @csrf
+                    <div class="modal-body p-4">
+                        <p class="text-muted mb-3" style="font-size: 13px;">
+                            আপনার <strong>অনুমোদিত আইডি (Approved ID)</strong>, সিস্টেম আইডি, এনআইডি বা মোবাইল নম্বর লিখুন। পাসওয়ার্ড রিসেট করলে ডিফল্ট পাসওয়ার্ড <code>123456</code> সেট করা হবে।
+                        </p>
+                        <div class="form-group mb-0">
+                            <label style="font-size: 13px; font-weight: 600; color: #374151;">User Identity / ID</label>
+                            <input type="text" name="user_identity" class="form-control" placeholder="Approved ID / System ID / NID / Mobile" required style="font-size: 14px; padding: 10px; border-radius: 6px;">
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light px-4 py-3">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" style="border-radius: 6px;">বাতিল</button>
+                        <button type="submit" class="btn text-white btn-sm font-weight-bold px-4" style="background-color: #006a4e; border-radius: 6px;">
+                            <i class="fas fa-redo mr-1"></i> রিসেট করুন
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')
@@ -162,7 +195,36 @@
 
             });
 
-        })
+        });
+
+        // Forgot Password AJAX Form
+        $("#forgotPasswordForm").on('submit', function(e) {
+            e.preventDefault();
+            let thisForm = $(this);
+            let btn = thisForm.find('button[type="submit"]');
+
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                type: "POST",
+                url: "{{ route('password.resetRequest') }}",
+                data: thisForm.serialize(),
+                dataType: "json",
+                beforeSend: function() {
+                    btn.prop("disabled", true);
+                },
+                success: function(response) {
+                    btn.prop("disabled", false);
+                    toastr.success(response.message);
+                    $("#forgotPasswordModal").modal('hide');
+                    thisForm[0].reset();
+                },
+                error: function(xhr) {
+                    btn.prop("disabled", false);
+                    var responseText = jQuery.parseJSON(xhr.responseText);
+                    toastr.error(responseText.message || 'Something went wrong!');
+                }
+            });
+        });
 
         let defaultPasswordType = false;
         $(document).on('click', '.password-show-hide', function(e) {
@@ -171,15 +233,15 @@
             defaultPasswordType = !defaultPasswordType;
 
             if (defaultPasswordType) {
-                _this.find("i").removeClass('fa-lock').addClass('fa-unlock');
+                _this.find("i").removeClass('fa-eye-slash').addClass('fa-eye');
                 $("#password").attr("type", "text");
             } else {
-                _this.find("i").removeClass('fa-unlock').addClass('fa-lock');
+                _this.find("i").removeClass('fa-eye').addClass('fa-eye-slash');
                 $("#password").attr("type", "password");
             }
 
-        })
-    })
+        });
+    });
 </script>
 
 @endpush

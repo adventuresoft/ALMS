@@ -117,10 +117,15 @@
                                             <tr>
                                                 <td>{{ $loop->iteration + ($farmers->currentPage() - 1) * $farmers->perPage() }}</td>
                                                 <td>
-                                                    {{ $farmer->user->name ?? '' }}
-                                                    <br>@can('farmer-update')
-<a href="{{ route('farmer.edit', $farmer->user->id) }}">{{ $farmer->user->system_id ?? '' }}</a>
-@endcan  
+                                                    <strong>{{ $farmer->user->name ?? '' }}</strong>
+                                                    <br>
+                                                    @if(!empty($farmer->user->approved_id ?? $farmer->approved_id))
+                                                        <span class="badge badge-success mb-1" style="font-size: 12px;" title="Approved ID">Approved ID: {{ $farmer->user->approved_id ?? $farmer->approved_id }}</span>
+                                                        <br>
+                                                    @endif
+                                                    @can('farmer-update')
+                                                        <a href="{{ route('farmer.edit', $farmer->user->id) }}" class="text-muted" style="font-size: 12px;">Sys ID: {{ $farmer->user->system_id ?? '' }}</a>
+                                                    @endcan  
                                                 </td>
                                                 <td>
                                                     @php
@@ -178,10 +183,13 @@
                                     @endif
                                 </tbody>
                             </table>
-                           <div class="mt-3 d-flex justify-content-between align-items-center">
-                                Showing {{ $farmers->firstItem() }} to {{ $farmers->lastItem() }} of {{ $farmers->total() }}
-
-                                {{$farmers->links()}}
+                            <div class="mt-3 d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Showing {{ $farmers->firstItem() ?? ($farmers->total() > 0 ? 1 : 0) }} to {{ $farmers->lastItem() ?? $farmers->total() }} of {{ $farmers->total() }} entries
+                                </div>
+                                <div>
+                                    {{ $farmers->links() }}
+                                </div>
                             </div>
                         </div>
                         <!-- /.card-body -->

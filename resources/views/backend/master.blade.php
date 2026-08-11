@@ -353,6 +353,63 @@ width:100%!important;
             font-size: 0.75rem !important;
         }
     }
+
+    /* Custom Bootstrap Pagination Styling */
+    .pagination {
+        display: inline-flex !important;
+        padding-left: 0 !important;
+        list-style: none !important;
+        border: 1px solid #dcdcdc !important;
+        border-radius: 6px !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+    }
+
+    .pagination .page-item {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    .pagination .page-item .page-link {
+        position: relative !important;
+        display: block !important;
+        padding: 6px 14px !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #007bff !important;
+        background-color: #ffffff !important;
+        border: none !important;
+        border-right: 1px solid #e2e8f0 !important;
+        line-height: 1.4 !important;
+        text-decoration: none !important;
+        transition: all 0.15s ease-in-out !important;
+    }
+
+    .pagination .page-item:last-child .page-link {
+        border-right: none !important;
+    }
+
+    .pagination .page-item.active .page-link {
+        z-index: 3 !important;
+        color: #ffffff !important;
+        background-color: #007bff !important;
+        border-color: #007bff !important;
+        font-weight: bold !important;
+    }
+
+    .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+        color: #0056b3 !important;
+        background-color: #f1f5f9 !important;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #94a3b8 !important;
+        pointer-events: none !important;
+        background-color: #ffffff !important;
+    }
   </style>
   @stack('style')
   @stack('css')

@@ -147,19 +147,31 @@
 
 
     <div class="text-center my-3">
-        @if($app->status != 'rejected')
-            <input type="button" id="proceedBtn" class="btn btn-primary btn-sm" value="Proceed">
-            <a href="#" class="btn btn-danger btn-sm ml-2" onclick="if(confirm('Are you sure you want to reject this loan application?')){ event.preventDefault(); document.getElementById('view-reject-form').submit(); }">
-                <i class="fa fa-times"></i> Reject Application
-            </a>
-            <form id="view-reject-form" action="{{ route('loan.apply.reject', $app->id) }}" method="POST" style="display:none;">
-                @csrf
-            </form>
+        @if(!Auth::check() || !in_array(Auth::user()->role_id, [13, 5]))
+            @if($app->status != 'rejected')
+                <input type="button" id="proceedBtn" class="btn btn-primary btn-sm" value="Proceed">
+                <a href="#" class="btn btn-danger btn-sm ml-2" onclick="if(confirm('Are you sure you want to reject this loan application?')){ event.preventDefault(); document.getElementById('view-reject-form').submit(); }">
+                    <i class="fa fa-times"></i> Reject Application
+                </a>
+                <form id="view-reject-form" action="{{ route('loan.apply.reject', $app->id) }}" method="POST" style="display:none;">
+                    @csrf
+                </form>
+            @else
+                <span class="badge badge-danger p-2">Application Rejected</span>
+            @endif
         @else
-            <span class="badge badge-danger p-2">Application Rejected</span>
+            @if($app->status == 'approved')
+                <span class="badge badge-success p-2" style="font-size: 14px;"><i class="fas fa-check-circle mr-1"></i> Loan Approved</span>
+            @elseif($app->status == 'rejected')
+                <span class="badge badge-danger p-2" style="font-size: 14px;"><i class="fas fa-times-circle mr-1"></i> Application Rejected</span>
+            @else
+                <span class="badge badge-warning p-2" style="font-size: 14px;"><i class="fas fa-clock mr-1"></i> Pending Approval</span>
+            @endif
         @endif
         <a href="{{ route('loan.apply.all') }}" class="btn btn-dark btn-sm ml-2"> <i class="fa fa-arrow-circle-left"></i> Back to List</a>
     </div>
+
+@if(!Auth::check() || !in_array(Auth::user()->role_id, [13, 5]))
 <div id="approveForm" style="display:none;">
     {{-- -------------------------------------
         APPROVAL FORM SECTION (FINAL PART)
@@ -255,6 +267,7 @@
 
     </form>
 </div>
+@endif
 </div>
 </div>
 

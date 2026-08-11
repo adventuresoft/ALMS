@@ -66,7 +66,28 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Generate 9-digit Approved ID in format YYMM00000
+     * YY: 2-digit year of approval
+     * MM: 2-digit month of approval
+     * 5-digit serial number
+     */
+    public static function generateApprovedId()
+    {
+        $prefix = date('ym'); // 2 digit Year + 2 digit Month
 
+        $latest = self::where('approved_id', 'like', $prefix . '%')
+            ->orderBy('approved_id', 'desc')
+            ->value('approved_id');
+
+        if ($latest) {
+            $number = (int) substr($latest, 4) + 1;
+        } else {
+            $number = 1;
+        }
+
+        return $prefix . str_pad($number, 5, '0', STR_PAD_LEFT);
+    }
 
     public static function boot()
     {
