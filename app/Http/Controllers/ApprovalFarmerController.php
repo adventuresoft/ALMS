@@ -120,11 +120,14 @@ class ApprovalFarmerController extends Controller
             $user = User::find($request->user_id);
             $isVerified = $request->is_verified ? 1 : 0;
             
-            if ($isVerified && empty($user->approved_id)) {
-                $user->approved_id = User::generateApprovedId();
+            if ($isVerified) {
+                if (empty($user->approved_id)) {
+                    $user->approved_id = User::generateApprovedId();
+                }
                 if (in_array($user->role_id, [13, 5]) || $user->farmer) {
                     $user->password = Hash::make('123456');
                 }
+                $user->status = 1;
             }
 
             $user->is_verified = $isVerified;

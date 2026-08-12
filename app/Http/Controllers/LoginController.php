@@ -124,44 +124,61 @@ class LoginController extends Controller
         }
 
         $loginInput = trim($request->email);
+        $password = $request->password;
         $remember = $request->remember ? true : false;
 
+        // Find user by approved_id, system_id, email, mobile, or nid
         $user = User::where(function($q) use ($loginInput) {
-            $q->where('email', $loginInput)
+            $q->where('approved_id', $loginInput)
               ->orWhere('system_id', $loginInput)
-              ->orWhere('approved_id', $loginInput)
+              ->orWhere('email', $loginInput)
               ->orWhere('mobile', $loginInput)
               ->orWhere('nid', $loginInput);
-        })->where('status', 1)->first();
+        })->first();
 
         if ($user) {
+            $isFarmer = in_array($user->role_id, [13, 5]) || $user->farmer;
+
             // Check if user is a Farmer and not yet approved
-            if (in_array($user->role_id, [13, 5]) || $user->farmer) {
+            if ($isFarmer) {
                 if (!$user->is_verified) {
                     $data['status'] = false;
                     $data['message'] = "আপনার কৃষক প্রোফাইলটি এখনো অনুমোদিত নয়। প্রশাসনিক অনুমোদনের পর অনুমোদিত আইডি ও ডিফল্ট পাসওয়ার্ড (123456) দিয়ে লগইন করতে পারবেন।";
                     return response()->json($data, 403);
                 }
-            }
 
-            $credential = ['password' => $request->password];
-            if (filter_var($loginInput, FILTER_VALIDATE_EMAIL)) {
-                $credential['email'] = $loginInput;
-            } elseif ($user->approved_id === $loginInput) {
-                $credential['approved_id'] = $loginInput;
-            } elseif ($user->system_id === $loginInput) {
-                $credential['system_id'] = $loginInput;
-            } elseif ($user->mobile === $loginInput) {
-                $credential['mobile'] = $loginInput;
-            } else {
-                $credential['id'] = $user->id;
+                // If approved farmer does not have an approved_id yet, generate it automatically
+                if (empty($user->approved_id)) {
+                    $user->approved_id = User::generateApprovedId();
+                    $user->save();
+                }
             }
 
             try {
-                if (Auth::attempt($credential, $remember)) {
+                $passwordMatched = Hash::check($password, $user->password);
+
+                // Backward compatibility for farmers created with old default password (12345678)
+                if (!$passwordMatched && $isFarmer && $password === '123456') {
+                    if (Hash::check('12345678', $user->password) || empty($user->password)) {
+                        $user->password = Hash::make('123456');
+                        $user->save();
+                        $passwordMatched = true;
+                    }
+                }
+
+                if ($passwordMatched) {
+                    // Activate status if inactive but verified
+                    if ($user->status == 0 && $user->is_verified == 1) {
+                        $user->status = 1;
+                        $user->save();
+                    }
+
+                    Auth::login($user, $remember);
+
                     $data['status'] = true;
                     $data['user'] = $user;
                     $data['message'] = "Login Successfully! Redirecting...";
+                    $data['redirect_url'] = route('dashboard');
                     return response()->json($data, 200);
                 } else {
                     $data['status'] = false;
@@ -176,7 +193,7 @@ class LoginController extends Controller
             }
         } else {
             $data['status'] = false;
-            $data['message'] = "User not found or account is inactive!";
+            $data['message'] = "User ID not found or invalid!";
             return response()->json($data, 404);
         }
     }

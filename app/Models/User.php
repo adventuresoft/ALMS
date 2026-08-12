@@ -35,6 +35,7 @@ class User extends Authenticatable
     public $table = 'users';
     protected $fillable = [
         'system_id',
+        'approved_id',
         'institute_id',
         'role_id',
         'name',
