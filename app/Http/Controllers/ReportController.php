@@ -6,6 +6,7 @@ use App\Models\BasicSettings\BankBranch;
 use App\Models\BankSelling;
 use App\Models\Farmer;
 use App\Models\LoanInfo;
+use App\Models\LoanPayment;
 use App\Models\Subsidy;
 use Illuminate\Http\Request;
 
@@ -49,17 +50,76 @@ class ReportController extends Controller
 
     public function loanReport(Request $request)
     {
-        return view("backend.pages.report.loan");
+        $data['banks'] = Bank::orderBy('en_name', 'asc')->get();
+
+        $query = LoanInfo::with(['user.addressInfo', 'user.farmer', 'bank', 'branch'])
+            ->latest();
+
+        if ($request->filled('financial_year')) {
+            $query->where('financial_year', $request->financial_year);
+        }
+
+        if ($request->filled('bank_id')) {
+            $query->where('bank_id', $request->bank_id);
+        }
+
+        if ($request->filled('branch_id')) {
+            $query->where('branch_id', $request->branch_id);
+        }
+
+        $data['loans'] = $query->paginate(50)->withQueryString();
+
+        return view("backend.pages.report.loan", $data);
     }
 
     public function paymentReport(Request $request)
     {
-        return view("backend.pages.report.payment");
+        $data['banks'] = Bank::orderBy('en_name', 'asc')->get();
+
+        $query = LoanPayment::with(['loanInfo.user.addressInfo', 'loanInfo.user.farmer', 'loanInfo.bank', 'loanInfo.branch'])
+            ->latest();
+
+        if ($request->filled('financial_year') || $request->filled('bank_id') || $request->filled('branch_id')) {
+            $query->whereHas('loanInfo', function($q) use ($request) {
+                if ($request->filled('financial_year')) {
+                    $q->where('financial_year', $request->financial_year);
+                }
+                if ($request->filled('bank_id')) {
+                    $q->where('bank_id', $request->bank_id);
+                }
+                if ($request->filled('branch_id')) {
+                    $q->where('branch_id', $request->branch_id);
+                }
+            });
+        }
+
+        $data['payments'] = $query->paginate(50)->withQueryString();
+
+        return view("backend.pages.report.payment", $data);
     }
 
     public function dueReport(Request $request)
     {
-        return view("backend.pages.report.due");
+        $data['banks'] = Bank::orderBy('en_name', 'asc')->get();
+
+        $query = LoanInfo::with(['user.addressInfo', 'user.farmer', 'bank', 'branch', 'payments'])
+            ->latest();
+
+        if ($request->filled('financial_year')) {
+            $query->where('financial_year', $request->financial_year);
+        }
+
+        if ($request->filled('bank_id')) {
+            $query->where('bank_id', $request->bank_id);
+        }
+
+        if ($request->filled('branch_id')) {
+            $query->where('branch_id', $request->branch_id);
+        }
+
+        $data['loans'] = $query->paginate(50)->withQueryString();
+
+        return view("backend.pages.report.due", $data);
     }
 
     public function subsidyReport(Request $request)
